@@ -22,13 +22,13 @@ graph LR;
 # Dependencies
 
 Current Dependencies:
- - [[https://kordamp.org/ikonli/|Ikonli]] - For Icons within JavaFX
+ - <a href="https://kordamp.org/ikonli" title="Ikonli">Ikonli</a> - For Icons within JavaFX
 
 ---
 
 # Project Artifacts
-**Trello** - [[https://trello.com/b/mpXRuewo/kanban-valtracker|Click Here]]
-**Planning Document** - [[https://docs.google.com/document/d/1hIcoOruoC8xPmuXMUxzN9V4KKmBMKsP9LJqwm5hEZnM/edit#heading=h.10uml1mjtve7|Click Here]]
+**Trello** - <a href="https://trello.com/b/mpXRuewo/kanban-valtracker" title="Trello">Click Here</a>
+**Planning Document** -  <a href="https://docs.google.com/document/d/1hIcoOruoC8xPmuXMUxzN9V4KKmBMKsP9LJqwm5hEZnM/edit#heading=h.10uml1mjtve7" title="CAB302 Planning Document">Click Here</a>
 ### Project Goal
 Player tracker for FPS games, with match results, stats, rank 
 Potentially Valorant - valorant.op.gg

@@ -28,6 +28,7 @@ Current Dependencies:
 
 # Project Artifacts
 **Trello** - <a href="https://trello.com/b/mpXRuewo/kanban-valtracker" title="Trello">Click Here</a>
+
 **Planning Document** -  <a href="https://docs.google.com/document/d/1hIcoOruoC8xPmuXMUxzN9V4KKmBMKsP9LJqwm5hEZnM/edit#heading=h.10uml1mjtve7" title="CAB302 Planning Document">Click Here</a>
 ### Project Goal
 Player tracker for FPS games, with match results, stats, rank 

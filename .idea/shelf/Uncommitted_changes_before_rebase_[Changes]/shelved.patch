@@ -1,0 +1,214 @@
+Index: Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.Insets?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.layout.VBox?>\r\n\r\n<?import javafx.scene.control.Button?>\r\n<VBox alignment=\"CENTER\" spacing=\"20.0\" xmlns:fx=\"http://javafx.com/fxml\"\r\n      fx:controller=\"com.example.technica_valtracker.HelloController\">\r\n    <padding>\r\n        <Insets bottom=\"20.0\" left=\"20.0\" right=\"20.0\" top=\"20.0\"/>\r\n    </padding>\r\n\r\n    <Label fx:id=\"welcomeText\"/>\r\n    <Button text=\"Hello!\" onAction=\"#onHelloButtonClick\"/>\r\n</VBox>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml b/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml
+--- a/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml	(revision 72eea14f693e342e2fd6769cf24ebc8dfc3f3d21)
++++ b/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml	(date 1725328903567)
+@@ -5,6 +5,8 @@
+ <?import javafx.scene.layout.VBox?>
+ 
+ <?import javafx.scene.control.Button?>
++
++
+ <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+       fx:controller="com.example.technica_valtracker.HelloController">
+     <padding>
+@@ -12,5 +14,6 @@
+     </padding>
+ 
+     <Label fx:id="welcomeText"/>
+-    <Button text="Hello!" onAction="#onHelloButtonClick"/>
++    <Button text="Login" onAction="#onLoginButtonClick"/>
++    <Button text="Register" onAction="#onRegButtonClick"/>
+ </VBox>
+Index: Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.technica_valtracker;\r\n\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.Label;\r\n\r\npublic class HelloController {\r\n    @FXML\r\n    private Label welcomeText;\r\n\r\n    @FXML\r\n    protected void onHelloButtonClick() {\r\n        welcomeText.setText(\"Welcome to JavaFX Application!\");\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java b/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java
+--- a/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java	(revision 72eea14f693e342e2fd6769cf24ebc8dfc3f3d21)
++++ b/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java	(date 1725354534682)
+@@ -2,13 +2,152 @@
+ 
+ import javafx.fxml.FXML;
+ import javafx.scene.control.Label;
++import javafx.fxml.FXMLLoader;
++import javafx.scene.Scene;
++import javafx.stage.Stage;
++import javafx.event.ActionEvent;
++import javafx.scene.Parent;
++import javafx.scene.Node;
++import javafx.scene.control.PasswordField;
++import javafx.scene.control.TextField;
++
++
++import java.io.IOException;
++
++// Note that this Controller currently handles three windows
++// 1. Hello Window
++// 2. Login window
++// 3. Register Window
++// This may want to be separated later for clarity
+ 
+ public class HelloController {
++    // Reference to the previous scene
++    private Scene previousScene;
++
++
++
++    // Method to set the previous scene
++    public void setPreviousScene(Scene scene) {
++        this.previousScene = scene;
++    }
++
++    /// Text fields
++    @FXML
++    private TextField emailTextField;
++    @FXML
++    private PasswordField passwordTextField;
++    @FXML
++    private TextField riotIDTextField;
++    @FXML
++    private TextField nicknameTextField;
++
++    // Text
+     @FXML
+     private Label welcomeText;
+ 
++    // Buttons
++    @FXML
++    private void onBackButtonClick(ActionEvent event) {
++        if (previousScene != null) {
++            // Get the current stage using the event source
++            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
++
++            // Set the previous scene
++            stage.setScene(previousScene);
++            stage.show();
++        }
++    }
++    @FXML
++    private void LoginButtonClick(ActionEvent event) {
++        // Get the current text from both text fields
++        String email = emailTextField.getText();
++        String password = passwordTextField.getText();
++
++        // Print the values or use them as needed
++        System.out.println("Email: " + email);
++        System.out.println("Password: " + password);
++
++    }
++    @FXML
++    private void RegButtonClick(ActionEvent event) {
++        // Get the current text from all fields
++        String email = emailTextField.getText();
++        String password = passwordTextField.getText();
++        String riotID = riotIDTextField.getText();
++        String nickname = nicknameTextField.getText();
++
++        // Print the values or use them as needed
++        System.out.println("Email: " + email);
++        System.out.println("Password: " + password);
++        System.out.println("Riot ID: " + riotID);
++        System.out.println("Nickname: " + nickname);
++
++    }
+     @FXML
+-    protected void onHelloButtonClick() {
+-        welcomeText.setText("Welcome to JavaFX Application!");
++    private void onLoginButtonClick(ActionEvent event) {
++        try {
++            // Load the new scene from the FXML file
++            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
++            Parent root = loader.load();
++
++            // Get the current stage using the event source
++            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
++
++            // Get current scene dimensions
++            double width = stage.getScene().getWidth();
++            double height = stage.getScene().getHeight();
++
++            // Create a new scene with the same dimensions
++            Scene newScene = new Scene(root, width, height);
++
++            // Store the current scene as previous before switching
++            HelloController controller = loader.getController();
++            controller.setPreviousScene(stage.getScene());
++
++            // Set the new scene
++            stage.setScene(newScene);
++            stage.show();
++        } catch (IOException e) {
++            e.printStackTrace();
++        }
++    }
++    @FXML
++    private void onRegButtonClick(ActionEvent event) {
++        try {
++            // Load the new scene from the FXML file
++            FXMLLoader loader = new FXMLLoader(getClass().getResource("register-view.fxml"));
++            Parent root = loader.load();
++
++            // Get the current stage using the event source
++            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
++
++            // Get current scene dimensions
++            double width = stage.getScene().getWidth();
++            double height = stage.getScene().getHeight();
++
++            // Create a new scene with the same dimensions
++            Scene newScene = new Scene(root, width, height);
++
++            // Store the current scene as previous before switching
++            HelloController controller = loader.getController();
++            controller.setPreviousScene(stage.getScene());
++
++            // Set the new scene
++            stage.setScene(newScene);
++            stage.show();
++        } catch (IOException e) {
++            e.printStackTrace();
++        }
++
++
++    }
++
++    // Closes the current window
++    private void closeCurrentWindow() {
++        // Get the current window
++        Stage stage = (Stage) welcomeText.getScene().getWindow();
++        if (stage != null) {
++            stage.close(); // Close the current window
++        }
+     }
+ }
+\ No newline at end of file
+Index: Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.technica_valtracker;\r\n\r\nimport javafx.application.Application;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.io.IOException;\r\n\r\npublic class HelloApplication extends Application {\r\n    @Override\r\n    public void start(Stage stage) throws IOException {\r\n        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource(\"hello-view.fxml\"));\r\n        Scene scene = new Scene(fxmlLoader.load(), 320, 240);\r\n        stage.setTitle(\"Hello!\");\r\n        stage.setScene(scene);\r\n        stage.show();\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        launch();\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java b/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java
+--- a/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java	(revision 72eea14f693e342e2fd6769cf24ebc8dfc3f3d21)
++++ b/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java	(date 1725353664991)
+@@ -11,8 +11,8 @@
+     @Override
+     public void start(Stage stage) throws IOException {
+         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
+-        stage.setTitle("Hello!");
++        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
++        stage.setTitle("Technica Tracker");
+         stage.setScene(scene);
+         stage.show();
+     }

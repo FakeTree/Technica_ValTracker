@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+
+<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.technica_valtracker.HelloController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+    </padding>
+
+    <!-- Title Label -->
+    <Label text="Register Window"/>
+
+    <!-- Email Section -->
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label text="Email:"/>
+        <TextField fx:id="emailTextField" promptText="Enter your email" maxWidth="175"/>
+    </VBox>
+
+    <!-- Password Section -->
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label text="Password:"/>
+        <PasswordField fx:id="passwordTextField" promptText="Enter your password" maxWidth="175"/>
+    </VBox>
+
+    <!-- Riot ID Section -->
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label text="Riot ID:"/>
+        <TextField fx:id="riotIDTextField" promptText="Enter your Riot ID" maxWidth="175"/>
+    </VBox>
+
+    <!-- Nickname Section -->
+    <VBox alignment="CENTER" spacing="10.0">
+        <Label text="Nickname:"/>
+        <TextField fx:id="nicknameTextField" promptText="Enter your nickname" maxWidth="175"/>
+    </VBox>
+
+    <!-- Login Button Section -->
+    <Button text="Register" onAction="#RegButtonClick" minWidth="100"/>
+
+    <!-- Back Button Section -->
+    <Button text="Back" onAction="#onBackButtonClick" minWidth="100"/>
+</VBox>

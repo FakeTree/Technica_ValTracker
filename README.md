@@ -17,10 +17,12 @@ graph LR;
     0.2.X-Beta-USER-->0.2.X-Beta
 ```
 
+This can be quickly done using this git command. Push to your own branch first then this
+
+git push origin 0.1.0-Beta-_YourName_:0.1.0-Beta
+
 ---
 
-This can be quickly done using this git command. Push to your own branch first then this
-git push origin 0.1.0-Beta-_YourName_:0.1.0-Beta
 
 # Dependencies
 

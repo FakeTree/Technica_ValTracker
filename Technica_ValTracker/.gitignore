@@ -4,7 +4,7 @@ target/
 !**/src/test/**/target/
 
 ### Project Files ###
-src/main/java/com.example.technica_valtracker/Constants.java
+src/main/java/com/example/technica_valtracker/Constants.java
 
 ### IntelliJ IDEA ###
 .idea/modules.xml

@@ -1,4 +1,4 @@
-package model;
+package com.example.technica_valtracker.model;
 
 /**
  * Interface for the <> Data Access Objects that handles

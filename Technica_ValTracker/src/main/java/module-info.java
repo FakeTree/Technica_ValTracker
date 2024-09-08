@@ -7,4 +7,6 @@ module com.example.technica_valtracker {
 
     opens com.example.technica_valtracker to javafx.fxml;
     exports com.example.technica_valtracker;
+
+    exports com.example.technica_valtracker.api to javafx.fxml;
 }

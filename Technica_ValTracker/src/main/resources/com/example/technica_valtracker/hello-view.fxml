@@ -3,14 +3,73 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.Button?>
-<VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.technica_valtracker.HelloController">
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.collections.FXCollections?>
+<?import com.example.technica_valtracker.api.Region?>
+<VBox alignment="TOP_LEFT" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.technica_valtracker.HelloController"
+      style=" -fx-border-color:black; -fx-border-width: 1; -fx-border-style: solid;">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label fx:id="welcomeText">Welcome to the dark side</Label>
-    <Button text="Get API data" onAction="#onAPIButtonClick"/>
+    <Label text="Sign up screen -> riot id searchbar."/>
+
+    <Label text="Enter a Riot ID and region"/>
+    <HBox spacing="10.0" xmlns:fx="http://javafx.com/fxml" style=" -fx-border-color:white; -fx-border-width: 1; -fx-border-style: solid;">
+        <TextField fx:id="gameNameTextField" promptText="Username" />
+        <Label text="#" style="-fx-font-size: 20;" />
+        <TextField fx:id="tagLineTextField" promptText="Tag" />
+        <ComboBox fx:id="regionComboBox" promptText="Select region">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <Region fx:constant="BR1"/>
+                    <Region fx:constant="EUN1" />
+                    <Region fx:constant="EUW1" />
+                    <Region fx:constant="JP1" />
+                    <Region fx:constant="KR" />
+                    <Region fx:constant="LA1" />
+                    <Region fx:constant="LA2" />
+                    <Region fx:constant="ME1" />
+                    <Region fx:constant="NA1" />
+                    <Region fx:constant="OC1" />
+                    <Region fx:constant="PH2" />
+                    <Region fx:constant="RU" />
+                    <Region fx:constant="SG2" />
+                    <Region fx:constant="TH2" />
+                    <Region fx:constant="TR1" />
+                    <Region fx:constant="TW2" />
+                    <Region fx:constant="VN2" />
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <Button fx:id="searchButton"
+                text="Submit"
+                onAction="#onSearchButtonClick"
+        />
+    </HBox>
+
+    <Label text="JSON output"
+           wrapText="true"/>
+    <TextArea fx:id="apiDataView"
+              wrapText="true"
+              editable="false"
+    />
+<!--    <CheckBox fx:id="agreeCheckBox"-->
+<!--              text="I agree to the terms and conditions."-->
+<!--              onAction="#onAgreeCheckBoxClick"-->
+<!--    />-->
+<!--    <HBox alignment="BOTTOM_RIGHT" spacing="10.0">-->
+<!--        <Button text="Cancel" onAction="#onCancelButtonClick"/>-->
+<!--        <Button fx:id="nextButton"-->
+<!--                text="Next"-->
+<!--                onAction="#onNextButtonClick"-->
+<!--                disable="true"-->
+<!--        />-->
+<!--    </HBox>-->
 </VBox>

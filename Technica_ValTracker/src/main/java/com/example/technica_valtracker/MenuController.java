@@ -2,26 +2,63 @@ package com.example.technica_valtracker;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.*;
 
 public class MenuController {
 
     @FXML
-    private Menu TTeMenu;
+private Label TTMenu;
     @FXML
-    private Menu HomeMenu;
+private Label HomeMenu;
     @FXML
-    private Menu TrainerMenu;
+private Label TrainerMenu;
     @FXML
-    private Menu FriendsMenu;
+private Label FriendsMenu;
     @FXML
-    private Menu AboutMenu;
+private Label AboutMenu;
     @FXML
-    private Menu AccountMenu;
+private Label AccountMenu;
+    @FXML
+private Label TestLabel;
 
 
 
 
 
+
+    @FXML
+    protected void OnTTClick(){
+       TestLabel.setText("TT Clicked");
+
+    }
+
+    @FXML
+    protected void OnHomeClick(){
+        TestLabel.setText("Home Clicked");
+
+    }
+
+    @FXML
+    protected void OnTrainerClick(){
+        TestLabel.setText("Trainer Clicked");
+
+    }
+
+    @FXML
+    protected void OnFriendsClick(){
+        TestLabel.setText("Friends Clicked");
+
+    }
+
+    @FXML
+    protected void OnAboutClick(){
+        TestLabel.setText("About Clicked");
+
+    }
+
+    @FXML
+    protected void OnAccountClick(){
+        TestLabel.setText("Account Clicked");
+
+    }
 
 }

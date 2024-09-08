@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.layout.BorderPane?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.technica_valtracker.MenuController">
-    <top>
-
-        <MenuBar>
-
-            <Menu text="TT" fx:id="TTMenu">
-
-            </Menu>
-            <Menu text="Home" fx:id="HomeMenu">
-
-            </Menu>
-            <Menu text="Trainer" fx:id="TrainerMenu">
-
-            </Menu>
-            <Menu text="Friends" fx:id="FriendsMenu">
-
-            </Menu>
-            <Menu text="About" fx:id="AboutMenu">
-
-            </Menu>
-            <Menu text="Home" fx:id="AccountMenu">
-
-            </Menu>
-
-
-        </MenuBar>
-
-
-
-    </top>
-
-
-
-
-
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.MenuController">
+   <top>
+       <MenuBar>
+           <Menu>
+               <graphic>
+                   <Label fx:id="TTMenu" text="TT" onMouseClicked="#OnTTClick"/>
+               </graphic>
+           </Menu>
+           <Menu>
+               <graphic>
+                   <Label fx:id="HomeMenu" text="Home" onMouseClicked="#OnHomeClick"/>
+               </graphic>
+           </Menu>
+           <Menu>
+               <graphic>
+                   <Label fx:id="TrainerMenu" text="Trainer" onMouseClicked="#OnTrainerClick"/>
+               </graphic>
+           </Menu>
+           <Menu>
+               <graphic>
+                   <Label fx:id="FriendsMenu" text="Friends" onMouseClicked="#OnFriendsClick"/>
+               </graphic>
+           </Menu>
+           <Menu>
+               <graphic>
+                   <Label fx:id="AboutMenu" text="About" onMouseClicked="#OnAboutClick"/>
+               </graphic>
+           </Menu>
+           <Menu>
+               <graphic>
+                   <Label fx:id="AccountMenu" text="Account" onMouseClicked="#OnAccountClick"/>
+               </graphic>
+           </Menu>
+       </MenuBar>
+   </top>
+   <center>
+      <Label fx:id="TestLabel" text="Label" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

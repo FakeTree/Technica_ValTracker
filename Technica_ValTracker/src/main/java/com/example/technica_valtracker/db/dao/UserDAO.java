@@ -35,6 +35,7 @@ public class UserDAO implements IUserDAO {
         }
     }
 
+    // TODO: createTable() - Better error handling
     public void createTable() {
         try {
             Statement statement = connection.createStatement();

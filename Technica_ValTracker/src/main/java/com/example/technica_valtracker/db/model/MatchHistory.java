@@ -1,4 +1,4 @@
-package com.example.technica_valtracker.db;
+package com.example.technica_valtracker.db.model;
 
 public class MatchHistory {
     private int userId;

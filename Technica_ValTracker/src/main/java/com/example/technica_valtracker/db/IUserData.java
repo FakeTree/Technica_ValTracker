@@ -12,11 +12,7 @@ public interface IUserData {
      * @param object The object to add.
       */
     public void addNew(Object object);
-    /**
-     * Updates an existing object in the table based on the userId.
-     * @param object The object to update.
-     */
-    public void update(Object object);
+
     /**
      * Retrieves a database entry.
      * @param userId The userId of the given object to retrieve.

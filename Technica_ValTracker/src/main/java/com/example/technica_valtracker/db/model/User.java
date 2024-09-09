@@ -1,9 +1,10 @@
-package com.example.technica_valtracker.db;
+package com.example.technica_valtracker.db.model;
 
 public class User {
     private int userId;
     private String email;       // OR private String username
     private String password;    // look into password hashing
+    private boolean isLoggedIn;
 
     public User() {}            // modify constructor as needed...
 
@@ -23,4 +24,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public boolean getIsLoggedIn() { return isLoggedIn; }
+    public void setIsLoggedIn(boolean isLoggedIn) { this.isLoggedIn = isLoggedIn; }
 }

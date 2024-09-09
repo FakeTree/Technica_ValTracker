@@ -12,6 +12,7 @@ public class Summoner {
 
     private int summonerLevel;
     private int profileIconId;
+    private String profileImageLink;
     private long revisionDate;
 
     public int getUserId() {
@@ -73,6 +74,9 @@ public class Summoner {
     public void setProfileIconId(int profileIconId) {
         this.profileIconId = profileIconId;
     }
+
+    public String getProfileImageLink() { return profileImageLink; }
+    public void setProfileImageLink(String profileImageLink) { this.profileImageLink = profileImageLink; }
 
     public long getRevisionDate() {
         return revisionDate;

@@ -1,9 +1,12 @@
 package com.example.technica_valtracker.db.dao;
 
 import com.example.technica_valtracker.db.model.Summoner;
-
 import java.util.List;
 
+/**
+ * Interface for the Summoner Data Access Object that handles CRUD
+ * operations for the Summoner table.
+ */
 public interface ISummonerDAO {
     /**
      * Add a new entry to the Summoner table.

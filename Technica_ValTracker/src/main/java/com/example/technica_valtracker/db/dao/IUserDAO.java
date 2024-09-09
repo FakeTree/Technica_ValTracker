@@ -5,7 +5,7 @@ import com.example.technica_valtracker.db.model.User;
 import java.util.List;
 
 /**
- * Interface for the User Data Access Object that handle
+ * Interface for the User Data Access Object that handles
  * CRUD database operations for the User table.
  */
 public interface IUserDAO {

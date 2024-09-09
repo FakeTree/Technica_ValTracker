@@ -1,6 +1,6 @@
 package com.example.technica_valtracker.db.model;
 
-public class MatchHistory {
+public class Match {
     private int userId;
     private String matchId;
     private long date;

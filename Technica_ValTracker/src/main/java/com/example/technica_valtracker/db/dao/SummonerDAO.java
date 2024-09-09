@@ -14,7 +14,6 @@ public class SummonerDAO implements ISummonerDAO {
     public SummonerDAO() {
         connection = DbConnection.getInstance();
          createTable();
-        // insertSampleData(); ?
     }
 
     // TODO: createTable() - Better error handling
@@ -30,8 +29,9 @@ public class SummonerDAO implements ISummonerDAO {
                     + "tagLine VARCHAR(5) NOT NULL, "
                     + "summonerLevel INTEGER NOT NULL, "
                     + "profileIconId INTEGER NOT NULL, "
+                    + "profileImageLink TEXT, "
                     + "revisionDate INTEGER NOT NULL, "
-                    + "userID TEXT UNIQUE, "
+                    + "userId TEXT NOT NULL UNIQUE, "
                     + "FOREIGN KEY(userId) REFERENCES user (userId)"
                     + ")";
             statement.execute(query);

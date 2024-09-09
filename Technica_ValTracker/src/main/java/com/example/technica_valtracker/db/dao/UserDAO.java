@@ -62,7 +62,7 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public User getUser(int userId) {
+    public User getUser(String userId) {
         return null;
     }
 

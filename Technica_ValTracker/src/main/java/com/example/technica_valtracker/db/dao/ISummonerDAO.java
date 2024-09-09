@@ -22,7 +22,7 @@ public interface ISummonerDAO {
      * Retrieve an existing Summoner entry by their userId.
      * @param userId User ID to retrieve Summoner from.
      */
-    public Summoner getSummoner(int userId);
+    public Summoner getSummoner(String userId);
     /**
      * Retrieve all summoners from the database.
      * @return A list of all Summoners in the database.

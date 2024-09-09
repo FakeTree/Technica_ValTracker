@@ -1,7 +1,7 @@
 package com.example.technica_valtracker.db.dao;
 
 import com.example.technica_valtracker.db.DbConnection;
-import com.example.technica_valtracker.db.IUserData;
+import com.example.technica_valtracker.db.IUserDAO;
 import com.example.technica_valtracker.db.model.User;
 
 import java.sql.Connection;
@@ -10,7 +10,7 @@ import java.sql.Statement;
 import java.util.List;
 
 // Need to restructure the interface
-public class UserDAO implements IUserData {
+public class UserDAO implements IUserDAO {
     private Connection connection;
 
     public UserDAO() {

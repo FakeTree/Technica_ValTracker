@@ -8,7 +8,7 @@ import java.util.List;
  * Interface for the User Data Access Object that handle
  * CRUD database operations for the User table.
  */
-public interface IUserData {
+public interface IUserDAO {
     /**
      * Add a new user.
      * @param user The user to add.

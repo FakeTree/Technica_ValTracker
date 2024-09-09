@@ -1,7 +1,7 @@
 package com.example.technica_valtracker;
 
 import com.example.technica_valtracker.db.DbConnection;
-import com.example.technica_valtracker.db.IUserData;
+import com.example.technica_valtracker.db.IUserDAO;
 import com.example.technica_valtracker.db.dao.UserDAO;
 import com.example.technica_valtracker.db.model.User;
 import javafx.application.Application;
@@ -39,7 +39,7 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        IUserData userDAO;
+        IUserDAO userDAO;
 
         Connection connection = DbConnection.getInstance();
         userDAO = new UserDAO();// Connect to db

@@ -29,8 +29,8 @@ public class HelloApplication extends Application {
 
         // Load FXML
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1024, 600);
-        stage.setTitle("Technica Tracker");
+//        Scene scene = new Scene(fxmlLoader.load(), 1024, 600);
+//        stage.setTitle("Technica Tracker");
         // Create Scene
         Scene scene = new Scene(fxmlLoader.load(), 450, 450);
         stage.setTitle("Technica Tracker");

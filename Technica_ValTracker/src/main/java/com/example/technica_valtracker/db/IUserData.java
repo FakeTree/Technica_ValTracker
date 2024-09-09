@@ -6,12 +6,17 @@ package com.example.technica_valtracker.db;
  * The database is composed of several tables which are all linked
  * by a single foreign key, 'userId'.
  */
-public interface IData {
+public interface IUserData {
     /**
-     * Add a new object to the database.
+     * Add a new object to the table.
      * @param object The object to add.
       */
     public void addNew(Object object);
+    /**
+     * Updates an existing object in the table based on the userId.
+     * @param object The object to update.
+     */
+    public void update(Object object);
     /**
      * Retrieves a database entry.
      * @param userId The userId of the given object to retrieve.

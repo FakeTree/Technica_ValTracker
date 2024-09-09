@@ -5,10 +5,8 @@ import com.example.technica_valtracker.db.model.User;
 import java.util.List;
 
 /**
- * Interface for the <> Data Access Objects that handles
- * CRUD database operations for each respective DAO.
- * The database is composed of several tables which are all linked
- * by a single foreign key, 'userId'.
+ * Interface for the User Data Access Object that handle
+ * CRUD database operations for the User table.
  */
 public interface IUserData {
     /**

@@ -5,7 +5,6 @@ import com.example.technica_valtracker.db.model.User;
 import java.util.ArrayList;
 import java.util.List;
 
-
 // User manager class. Contains them in memory and interacts with them as a list
 // Note: This is a singleton. Done so that JavaFX is easy to use with it
 

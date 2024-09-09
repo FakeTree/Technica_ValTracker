@@ -26,7 +26,7 @@ public interface IUserDAO {
      * @param userId The userId of the user to retrieve.
      * @return The user with the given id.
      */
-    public User getUser(int userId);
+    public User getUser(String userId);
 
     /**
      * Retrieves all users from the database.

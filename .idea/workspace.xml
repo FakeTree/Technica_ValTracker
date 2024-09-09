@@ -5,24 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="41c532be-a053-4d3f-96fc-706c087ee9e7" name="Changes" comment="Added meaningful UI. Register and Login windows are added. Back button added. Text can be retrieved by program.">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/squareup_okhttp3_mockwebserver.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/api/RequestService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/api/error/ErrorMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/api/error/ErrorResponseInterceptor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/utils/Deserialiser.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/utils/URLBuilder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/test/ApiRequestTestInterceptor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_annotations.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_annotations.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_databind.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/fasterxml_jackson_core_databind.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/test/ApiTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/test/ApiTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/IMatchHistoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/IMatchHistoryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/ISummonerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/ISummonerDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/IUserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/IUserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/MatchHistoryDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/MatchHistoryDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/SummonerDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/SummonerDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/UserDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -41,7 +29,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="0.1.0-Beta-DBIntegration" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -76,24 +64,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.HelloApplication.executor": "Run",
-    "Downloaded.Files.Path.Enabled": "false",
-    "JUnit.ApiTest.executor": "Run",
-    "JUnit.ApiTest.givenErrorResponseInterceptor_whenResponseBodyHasErrorStatusCode_shouldReturnErrorMessageObject.executor": "Debug",
-    "Repository.Attach.Annotations": "false",
-    "Repository.Attach.JavaDocs": "true",
-    "Repository.Attach.Sources": "false",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "0.1.0-Beta-Annette-APItoDB",
-    "kotlin-language-version-configured": "true",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.4402299"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
+    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+    &quot;JUnit.ApiTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ApiTest.givenErrorResponseInterceptor_whenResponseBodyHasErrorStatusCode_shouldReturnErrorMessageObject.executor&quot;: &quot;Debug&quot;,
+    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+    &quot;Repository.Attach.JavaDocs&quot;: &quot;true&quot;,
+    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;0.1.0-Beta-Annette-APItoDB&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.4402299&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="JUnit.ApiTest">
     <configuration name="HelloApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.example.technica_valtracker.HelloApplication" />

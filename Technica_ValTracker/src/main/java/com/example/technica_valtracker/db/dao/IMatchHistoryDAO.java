@@ -22,7 +22,7 @@ public interface IMatchHistoryDAO {
      * @param userId The id of the user to retrieve matches from.
      * @return A list of all matches with the given ID in the database.
      */
-    public List<Match> getAllMatchesById(int userId);
+    public List<Match> getAllMatchesById(String userId);
 
     /**
      * Retrieves all matches of registered users in the database.

@@ -51,7 +51,7 @@ public class SummonerDAO implements ISummonerDAO {
     }
 
     @Override
-    public Summoner getSummoner(int userId) {
+    public Summoner getSummoner(String userId) {
         return null;
     }
 

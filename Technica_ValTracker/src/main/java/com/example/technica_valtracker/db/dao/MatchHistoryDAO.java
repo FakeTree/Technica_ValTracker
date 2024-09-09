@@ -48,7 +48,7 @@ public class MatchHistoryDAO implements IMatchHistoryDAO {
     }
 
     @Override
-    public List<Match> getAllMatchesById(int userId) {
+    public List<Match> getAllMatchesById(String userId) {
         return List.of();
     }
 

@@ -10,6 +10,8 @@ import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 
 import java.io.IOException;
@@ -20,8 +22,13 @@ import java.io.IOException;
 // 3. Register Window
 // This may want to be separated later for clarity
 
+
 public class HelloController {
-    // Reference to the previous scene
+
+    // Access UserManager
+    private UserManager userManager = UserManager.getInstance();
+
+    // Field for remembering the previous scene
     private Scene previousScene;
 
 
@@ -29,6 +36,17 @@ public class HelloController {
     // Method to set the previous scene
     public void setPreviousScene(Scene scene) {
         this.previousScene = scene;
+    }
+
+    // Method to go to the previous scene
+    private void goToPreviousScene(ActionEvent event) {
+        if (previousScene != null) {
+            // Get the current stage using the event source
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            // Set the previous scene
+            stage.setScene(previousScene);
+            stage.show();
+        }
     }
 
     /// Text fields
@@ -48,41 +66,89 @@ public class HelloController {
     // Buttons
     @FXML
     private void onBackButtonClick(ActionEvent event) {
-        if (previousScene != null) {
-            // Get the current stage using the event source
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            // Set the previous scene
-            stage.setScene(previousScene);
-            stage.show();
-        }
+        goToPreviousScene(event);
     }
+
+
     @FXML
     private void LoginButtonClick(ActionEvent event) {
         // Get the current text from both text fields
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
-        // Print the values or use them as needed
-        System.out.println("Email: " + email);
-        System.out.println("Password: " + password);
+        // Check if the userManager exists
+        if (userManager == null) {
+            showAlert(AlertType.ERROR, "Login Error", "UserManager not initialized.");
+            return;
+        }
 
+        // Find the user with the provided email and password
+        // This will return null if details do not match exactly
+        User user = userManager.findUserByCredentials(email, password);
+
+        // Check if user is found
+        if (user != null) {
+            // Login successful
+            showAlert(AlertType.INFORMATION, "Login Success", "Login successful.");
+
+            // Something happens
+            user.IHaveBeenAccessed();
+
+        } else {
+            // Login failed
+            // Note: Deliberately ambiguous
+            showAlert(AlertType.ERROR, "Login Failed", "Invalid email or password.");
+        }
     }
+
     @FXML
     private void RegButtonClick(ActionEvent event) {
         // Get the current text from all fields
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String riotID = riotIDTextField.getText();
-        String nickname = nicknameTextField.getText();
 
-        // Print the values or use them as needed
-        System.out.println("Email: " + email);
-        System.out.println("Password: " + password);
-        System.out.println("Riot ID: " + riotID);
-        System.out.println("Nickname: " + nickname);
+        // Validate the input fields
+        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty()) {
+            showAlert(AlertType.ERROR, "Registration Error", "Please fill in all fields.");
+            return;
+        }
 
+        // Validate the email address
+        if (!Validation.isEmailValid(email)) {
+            showAlert(AlertType.ERROR, "Invalid Email", "Invalid email format.");
+            return;
+        }
+
+        // Validate the password
+        if (!Validation.isPasswordValid(password)) {
+            showAlert(AlertType.ERROR, "Invalid Password", "Invalid password format. Must be 8 chars long, 1 Capital and 1 Numeral.");
+            return;
+        }
+
+        // Create a new User object
+        User newUser = new User(riotID, password, email);
+
+        // Check if the UserManager is initialized
+        if (userManager == null) {
+            System.out.println("UserManager not initialized.");
+            showAlert(AlertType.INFORMATION, "Error", "User Manager not initialized. Please restart application.");
+            return;
+        }
+
+        // Add the user to UserManager
+        boolean success = userManager.addUser(newUser);
+
+        // Print the result
+        if (success) {
+            showAlert(AlertType.INFORMATION, "Registration Success", "User successfully registered.");
+            goToPreviousScene(event);
+        } else {
+            // Note: May want a better error system then above. if this error is reached it almost certainly is a riotID conflict
+            showAlert(AlertType.ERROR, "Registration Failed", "Registration failed. RiotID may already be taken.");
+        }
     }
+
     @FXML
     private void onLoginButtonClick(ActionEvent event) {
         try {
@@ -149,5 +215,19 @@ public class HelloController {
         if (stage != null) {
             stage.close(); // Close the current window
         }
+    }
+
+    /// Sanity check for class initialization
+    public HelloController() {
+        System.out.println("HelloController initialized");
+    }
+
+    // Helper method to show alerts
+    private void showAlert(AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

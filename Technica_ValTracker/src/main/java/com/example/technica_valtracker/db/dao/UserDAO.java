@@ -1,7 +1,6 @@
 package com.example.technica_valtracker.db.dao;
 
 import com.example.technica_valtracker.db.DbConnection;
-import com.example.technica_valtracker.db.IUserDAO;
 import com.example.technica_valtracker.db.model.User;
 
 import java.sql.Connection;

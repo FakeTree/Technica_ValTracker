@@ -35,11 +35,6 @@
         <TextField fx:id="riotIDTextField" promptText="Enter your Riot ID" maxWidth="175"/>
     </VBox>
 
-    <!-- Nickname Section -->
-    <VBox alignment="CENTER" spacing="10.0">
-        <Label text="Nickname:"/>
-        <TextField fx:id="nicknameTextField" promptText="Enter your nickname" maxWidth="175"/>
-    </VBox>
 
     <!-- Login Button Section -->
     <Button text="Register" onAction="#RegButtonClick" minWidth="100"/>

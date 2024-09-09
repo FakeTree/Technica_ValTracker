@@ -1,5 +1,7 @@
 package com.example.technica_valtracker;
 
+import com.example.technica_valtracker.db.IUserData;
+import com.example.technica_valtracker.db.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;

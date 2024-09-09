@@ -1,21 +1,25 @@
 package com.example.technica_valtracker.db.model;
 
 public class User {
-    private int userId;
-    private String email;       // OR private String username
-    private String password;    // look into password hashing
-    private boolean isLoggedIn;
+    private String riotId;
+    private String password;
+    private String email;
+    private Boolean isLoggedIn;
 
-    public User() {}            // modify constructor as needed...
-
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId  = userId;  }
-
-    public String getEmail() {
-        return email;
-    }
-    public void setEmail(String email) {
+    // Constructor
+    public User(String riotId, String password, String email) {
+        this.riotId = riotId;
+        this.password = password;
         this.email = email;
+        this.isLoggedIn = false;
+    }
+
+    // Getters and Setters
+    public String getRiotID() {
+        return riotId;
+    }
+    public void setRiotID(String riotid) {
+        this.riotId = riotid;
     }
 
     public String getPassword() {
@@ -25,6 +29,25 @@ public class User {
         this.password = password;
     }
 
-    public boolean getIsLoggedIn() { return isLoggedIn; }
-    public void setIsLoggedIn(boolean isLoggedIn) { this.isLoggedIn = isLoggedIn; }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /// Placeholder for a 'do something' after login
+    public void IHaveBeenAccessed() {
+        System.out.println("I have been accessed! My email is " + email);
+    }
+
+    // Override toString() for easy debugging
+    @Override
+    public String toString() {
+        return "User{" +
+                "RiotID='" + riotId + '\'' +
+                ", email='" + email + '\'' +
+                ", Is logged in ='" + isLoggedIn + '\'' +
+                '}';
+    }
 }

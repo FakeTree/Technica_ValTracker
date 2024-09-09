@@ -1,5 +1,7 @@
 package com.example.technica_valtracker;
 
+import com.example.technica_valtracker.db.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.technica_valtracker.model;
+package com.example.technica_valtracker.db;
 
 public class Summoner {
     private int userId;

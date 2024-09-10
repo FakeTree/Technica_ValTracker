@@ -57,7 +57,7 @@ public class RequestService {
      * @return The response body parsed as a string.
      */
     public static String getAccountByRiotId(String userName, String tagLine) throws IOException {
-        String url = Constants.ACCOUNTV1_BASE_LINK + userName + "/" + tagLine;
+        String url = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + userName + "/" + tagLine;
         return sendGetRequest(url);
     }
 

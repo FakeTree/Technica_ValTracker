@@ -40,3 +40,4 @@ build/
 ### Mac OS ###
 .DS_Store!/src/main/test/ApiRequestTestInterceptor.java
 !/src/main/java/com/example/technica_valtracker/Constants.java
+!/src/main/java/com/example/technica_valtracker/Constants.java

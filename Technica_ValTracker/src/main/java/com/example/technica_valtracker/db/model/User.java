@@ -1,13 +1,15 @@
 package com.example.technica_valtracker.db.model;
 
 public class User {
+    private String userId;
     private String riotId;
     private String password;
     private String email;
     private Boolean isLoggedIn;
 
     // Constructor
-    public User(String riotId, String password, String email) {
+    public User(String userId, String riotId, String password, String email) {
+        this.userId = userId;
         this.riotId = riotId;
         this.password = password;
         this.email = email;
@@ -15,6 +17,9 @@ public class User {
     }
 
     // Getters and Setters
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
+
     public String getRiotID() {
         return riotId;
     }

@@ -15,6 +15,17 @@ public class Validation {
     private static final String PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*\\d).{8,}$";
     private static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
 
+    // Riot ID
+    private static final String RIOT_ID_REGEX = "^(.*?)#(.+)$";
+    private static final Pattern RIOT_ID_PATTERN = Pattern.compile(RIOT_ID_REGEX);
+
+    // Riot ID Split
+    private static final String RIOT_ID_REGEX_SPLIT = "^(.*?)(#(.*))?$";
+    private static final Pattern RIOT_ID_PATTERN_SPLIT = Pattern.compile(RIOT_ID_REGEX_SPLIT);
+
+
+
+
 
 
     /// VALIDATION METHODS ///
@@ -32,6 +43,30 @@ public class Validation {
             return false;
         }
         return PASSWORD_PATTERN.matcher(password).matches();
+    }
+
+    // Validate Riot ID
+    public static boolean isRiotIDValid(String riotID) {
+        System.out.println(riotID);
+        System.out.println("Checking if valid!");
+        if (riotID == null) {
+            return false;
+        }
+        System.out.println(RIOT_ID_PATTERN.matcher(riotID).matches());
+        return RIOT_ID_PATTERN.matcher(riotID).matches();
+    }
+
+    // Split Riot ID into username and tagline
+    public static String[] splitRiotID(String riotID) {
+        String[] result = new String[2]; // [0] -> username, [1] -> tagline
+        if (riotID != null) {
+            var matcher = RIOT_ID_PATTERN_SPLIT.matcher(riotID);
+            if (matcher.matches()) {
+                result[0] = matcher.group(1); // Username
+                result[1] = matcher.group(3); // Tagline (can be null if not present)
+            }
+        }
+        return result;
     }
 
 }

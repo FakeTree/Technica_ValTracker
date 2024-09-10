@@ -1,6 +1,8 @@
 package com.example.technica_valtracker;
 
 import com.example.technica_valtracker.db.model.User;
+import com.example.technica_valtracker.db.dao.UserDAO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +11,26 @@ import java.util.List;
 // Note: This is a singleton. Done so that JavaFX is easy to use with it
 
 public class UserManager {
+
+    /// Fields
     // The single instance of UserManager
     private static UserManager instance;
+    private UserDAO userDAO;
 
+    // Others
     private List<User> userList;
+
 
     // Private constructor to prevent instantiation from outside
     private UserManager() {
         this.userList = new ArrayList<>();
+        this.userDAO = new UserDAO();
+
+        // Placeholder to load users on launch
+        loadUsersFromDB();
+        System.out.println("Reached");
+        // Have a looksies
+        printAllUsers();
     }
 
     // Public method to provide access to the single instance
@@ -27,17 +41,18 @@ public class UserManager {
         return instance;
     }
 
-    // Add a new user, ensuring unique RiotID (this is only local ATM)
+    // Add a new user, ensuring unique RiotID
     public boolean addUser(User user) {
 
-        // Check if a user with the same RiotID already exists
+        // Check if a user with the same RiotID already exists both locally and in the DB
         for (User existingUser : userList) {
-            if (existingUser.getRiotID().equals(user.getRiotID())) {
+            if (existingUser.getRiotID().equals(user.getRiotID()) || userDAO.isRiotIDTaken(user.getRiotID())) {
                 System.out.println("Error: RiotID has already been taken!");
                 return false; // Don't add the user
             }
         }
         userList.add(user);
+        userDAO.addNewUser(user);
         return true; // User successfully added
     }
 
@@ -75,6 +90,23 @@ public class UserManager {
     public void printAllUsers() {
         for (User user : userList) {
             System.out.println(user);
+        }
+    }
+
+    /// Pull users from DB VIA UserDAO
+    private void loadUsersFromDB() {
+        List<User> usersFromDB = userDAO.getAllUsers();  // Retrieve users from the DB
+        if (usersFromDB != null) {
+            userList.addAll(usersFromDB);  // Sync with in-memory list
+        }
+    }
+
+    /// Send users from memory to DB via UserDAO
+    // Note: Make sure that duplicates cannot occur
+    // This method likely wont get used
+    private void saveUsersToDB() {
+        for (User user : userList) {
+            userDAO.addNewUser(user);  // Persist each user to the database
         }
     }
 }

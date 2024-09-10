@@ -13,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
@@ -58,7 +59,8 @@ public class HelloController {
     @FXML
     private TextField riotIDTextField;
     @FXML
-    private TextField nicknameTextField;
+    private ComboBox<String> regionComboBox;
+
 
     // Text
     @FXML
@@ -108,12 +110,16 @@ public class HelloController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String riotID = riotIDTextField.getText();
+        String selectedRegion = regionComboBox.getValue();
 
         // Validate the input fields
-        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty()) {
-            showAlert(AlertType.ERROR, "Registration Error", "Please fill in all fields.");
+        // Note: this is supposed to validate that an option has been used in the combobox
+        // but I couldnt get it to work, so at the moment users dont have to send a region
+        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty() || "Select region".equals(selectedRegion)) {
+            showAlert(AlertType.ERROR, "Registration Error", "Please fill in all fields and select a region.");
             return;
         }
+        System.out.println(selectedRegion);
 
         // Validate the email address
         if (!Validation.isEmailValid(email)) {
@@ -124,6 +130,12 @@ public class HelloController {
         // Validate the password
         if (!Validation.isPasswordValid(password)) {
             showAlert(AlertType.ERROR, "Invalid Password", "Invalid password format. Must be 8 chars long, 1 Capital and 1 Numeral.");
+            return;
+        }
+
+        // Validate the Riot ID
+        if (!Validation.isRiotIDValid(riotID)) {
+            showAlert(AlertType.ERROR, "Invalid Riot ID", "Invalid Riot ID format. Must be in the format: username#tagline");
             return;
         }
 

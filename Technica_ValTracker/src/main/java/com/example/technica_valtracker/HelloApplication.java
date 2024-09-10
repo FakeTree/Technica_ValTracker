@@ -20,11 +20,12 @@ public class HelloApplication extends Application {
         // Powerful but might make debugging hard
         UserManager userManager = UserManager.getInstance();
         // Define and add static test users
-        userManager.addUser(new User("RiotID1", "password1", "user1@example.com"));
-        userManager.addUser(new User("RiotID2", "password2", "user2@example.com"));
-        userManager.addUser(new User("RiotID3", "password3", "user3@example.com"));
-        userManager.addUser(new User("RiotID4", "password4", "user4@example.com"));
-        userManager.addUser(new User("RiotID5", "password5", "user5@example.com"));
+        // They need all details in order for the DB to function
+        userManager.addUser(new User("2o0oH2mB1yACRUlp1IA90ncgreXaMkR_KXzndaBCPYxnNh6YoNPjvd3rrBh5jkogYH5xT9GIsios5i", "user1@example.com", "password1", "Riot#ID1"));
+        userManager.addUser(new User("dAwZYLh0XPQr6mw_rYAd9tSU1OBdjlFcmPJDYt8nqxtefC5zH1Z8LZlArxu9lUdMknlx8_kY5y_Lcf", "user2@example.com", "password2", "Riot#ID2"));
+        userManager.addUser(new User("IJKT5O60Z3DuUsbZCKKFuKrv4p5QpKTkT4r7vcpNkuYU1lGlyy21tWKmtKXHTyb7PK8hU9eUM6tDRt", "user3@example.com", "password3", "Riot#ID3"));
+        userManager.addUser(new User("Yu0Y0EGEUgkB90Nurly8f9dyUQNzOdDxyntp0zF9RBgfUq1DR5qhbqF9R622H9f0zHy4JkEG12XjR7", "user4@example.com", "password4", "Riot#ID4"));
+        userManager.addUser(new User("MHBzH1hDGwyJOojAUYMv3lmlnlOLt5OHmzak_R5nBGD1z1L6hiQpUoSOjoInEbzgWttIcO7qrqoBcL", "user5@example.com", "password5", "Riot#ID5"));
 
 
         // Load FXML
@@ -38,14 +39,11 @@ public class HelloApplication extends Application {
     }
 
     public static void main(String[] args) {
-        // Probably need to move all the DAO activation stuff to
-        // another function at some point
-        IUserDAO userDAO;
+
+        // I have not linked this to any functions yet
         ISummonerDAO summonerDAO;
         IMatchHistoryDAO matchHistoryDAO;
 
-        Connection connection = DbConnection.getInstance(); // Connect to db
-        userDAO = new UserDAO();
         summonerDAO = new SummonerDAO();
         matchHistoryDAO = new MatchHistoryDAO();
         launch();                                           // Launch javaFX app

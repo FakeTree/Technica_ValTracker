@@ -7,15 +7,26 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+import java.sql.ResultSet;
+import java.sql.PreparedStatement;
+import java.util.ArrayList;
+
 
 // Need to restructure the interface
 public class UserDAO implements IUserDAO {
+
     private Connection connection;
 
     public UserDAO() {
-        connection = DbConnection.getInstance();
+        try {
+            connection = DbConnection.getInstance();
+            connection.setAutoCommit(true); // Enable auto-commit
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         createTable();
-        insertSampleData();
+        //insertSampleData();
     }
 
     private void insertSampleData() {
@@ -53,21 +64,85 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public void addNewUser(User user) {
-
+        String insertQuery = "INSERT INTO user (userId, email, password, riotId) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
+            pstmt.setString(1, user.getUserId());
+            pstmt.setString(2, user.getEmail());
+            pstmt.setString(3, user.getPassword());
+            pstmt.setString(4, user.getRiotID());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void updateUser(User user) {
-
+        String updateQuery = "UPDATE user SET email = ?, password = ?, riotId = ? WHERE userId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(updateQuery)) {
+            pstmt.setString(1, user.getEmail());
+            pstmt.setString(2, user.getPassword());
+            pstmt.setString(3, user.getRiotID());
+            pstmt.setString(4, user.getUserId());
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public User getUser(String userId) {
-        return null;
+        String query = "SELECT * FROM user WHERE userId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("riotId")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // No user found
     }
 
     @Override
     public List<User> getAllUsers() {
-        return List.of();
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM user";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            while (rs.next()) {
+                User user = new User(
+                        rs.getString("userId"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("riotId")
+                );
+                users.add(user);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    /// This is a preliminary to prevent duplicates before the PUUID is found
+    public boolean isRiotIDTaken(String riotId) {
+        String query = "SELECT 1 FROM user WHERE riotId = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, riotId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return true; // RiotID exists
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // RiotID not found
     }
 }

@@ -1,9 +1,12 @@
 package com.example.technica_valtracker.db.model;
+import com.fasterxml.jackson.annotation.*;
 
 public class Summoner {
+    @JsonIgnore
     private int userId;
     private String puuid;
     private String accountId;
+    @JsonAlias("id")
     private String summonerId;
 
     private String region;
@@ -12,8 +15,11 @@ public class Summoner {
 
     private int summonerLevel;
     private int profileIconId;
+    @JsonIgnore
     private String profileImageLink;
     private long revisionDate;
+
+    public Summoner() {}
 
     public int getUserId() {
         return userId;

@@ -7,6 +7,8 @@ public class User {
     private String email;
     private Boolean isLoggedIn;
 
+    public User() {}
+
     // Constructor
     public User(String userId, String riotId, String password, String email) {
         this.userId = userId;

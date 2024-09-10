@@ -1,5 +1,8 @@
 package com.example.technica_valtracker;
 
+import com.example.technica_valtracker.api.temp.TempResponseObject;
+import com.example.technica_valtracker.api.RequestService;
+import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,6 +19,12 @@ import javafx.scene.control.Alert.AlertType;
 
 
 import java.io.IOException;
+import java.util.Objects;
+
+import static com.example.technica_valtracker.api.RequestService.getAccountByRiotId;
+import static com.example.technica_valtracker.api.RequestService.getSummonerByPuuid;
+import static com.example.technica_valtracker.utils.Deserialiser.getSummonerFromJson;
+import static com.example.technica_valtracker.utils.Deserialiser.getTempResponseObjectFromJson;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -103,11 +112,53 @@ public class HelloController {
     }
 
     @FXML
-    private void RegButtonClick(ActionEvent event) {
+    private void RegButtonClick(ActionEvent event) throws IOException {
         // Get the current text from all fields
+        String userId = "blah";
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String riotID = riotIDTextField.getText();
+
+        // TODO: TESTING ONLY - MAY NEED TO REFACTOR OR REMOVE LATER
+        // This should be done after all fields have been successfully validated
+        String userName = "Agurin";
+        String tagLine = "EUW";
+        TempResponseObject tempResponseObject = new TempResponseObject();
+        Summoner summoner = new Summoner();
+        summoner.setRegion("euw1");
+
+        String accountQuery = getAccountByRiotId(userName, tagLine);
+        User user = null;
+
+        if (Objects.equals(accountQuery, "Error while fetching data from API")) {
+            // Display error in UI
+            System.out.println("Oops!"); // temp
+        } else {
+            getTempResponseObjectFromJson(accountQuery, tempResponseObject);
+            user = new User(tempResponseObject.getPuuid(), "Agurin#EUW", "GamerGod", "ag@euw.com");
+        }
+
+        String summonerQuery = getSummonerByPuuid(summoner.getRegion(), user.getUserId());
+        if (Objects.equals(accountQuery, "Error while fetching data from API")) {
+            // Display error in UI
+            System.out.println("Oops!"); // temp
+        } else {
+            getSummonerFromJson(summonerQuery, summoner);
+        }
+
+        String leagueQuery = "leagueQuery";
+        // if (responseHasTwoLeagues) {
+        // String[] leagues = splitLeagues(leagueQuery);
+        // getLeagueFromJson(leagues[0], firstLeague);
+        // getLeagueFromJson(leagues[1], secondLeague;
+        // }
+        // else {
+        //
+        // }
+        //
+
+        System.out.println(user.getUserId());
+        System.out.println(summoner.getSummonerId());
 
         // Validate the input fields
         if (email.isEmpty() || password.isEmpty() || riotID.isEmpty()) {
@@ -128,7 +179,7 @@ public class HelloController {
         }
 
         // Create a new User object
-        User newUser = new User(riotID, password, email);
+        User newUser = new User(userId, riotID, password, email);
 
         // Check if the UserManager is initialized
         if (userManager == null) {

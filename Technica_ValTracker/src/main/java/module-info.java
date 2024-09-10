@@ -13,6 +13,7 @@ module com.example.technica_valtracker {
     exports com.example.technica_valtracker.api to javafx.fxml;
     exports com.example.technica_valtracker.db.model;
     exports com.example.technica_valtracker.api.error;
+    exports com.example.technica_valtracker.api.temp;
 
     opens com.example.technica_valtracker.db.model to javafx.fxml;
     exports com.example.technica_valtracker.utils to javafx.fxml;

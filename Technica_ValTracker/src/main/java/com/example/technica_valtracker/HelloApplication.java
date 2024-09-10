@@ -20,11 +20,11 @@ public class HelloApplication extends Application {
         // Powerful but might make debugging hard
         UserManager userManager = UserManager.getInstance();
         // Define and add static test users
-        userManager.addUser(new User("RiotID1", "password1", "user1@example.com"));
-        userManager.addUser(new User("RiotID2", "password2", "user2@example.com"));
-        userManager.addUser(new User("RiotID3", "password3", "user3@example.com"));
-        userManager.addUser(new User("RiotID4", "password4", "user4@example.com"));
-        userManager.addUser(new User("RiotID5", "password5", "user5@example.com"));
+//        userManager.addUser(new User("RiotID1", "password1", "user1@example.com"));
+//        userManager.addUser(new User("RiotID2", "password2", "user2@example.com"));
+//        userManager.addUser(new User("RiotID3", "password3", "user3@example.com"));
+//        userManager.addUser(new User("RiotID4", "password4", "user4@example.com"));
+//        userManager.addUser(new User("RiotID5", "password5", "user5@example.com"));
 
 
         // Load FXML

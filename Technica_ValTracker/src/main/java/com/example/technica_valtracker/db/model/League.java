@@ -2,12 +2,13 @@ package com.example.technica_valtracker.db.model;
 
 public class League {
     private int userId;
+    private String leagueId;
     private String tier;
     private String rank;
     private int leaguePoints;
     private int wins;
     private int losses;
-    private int queueId;
+    private String queueType;
 
     public int getUserId() {
         return userId;
@@ -48,10 +49,12 @@ public class League {
         this.losses = losses;
     }
 
-    public int getQueueId() {
-        return queueId;
+    public String getQueueType() {
+        return queueType;
     }
-    public void setQueueId(int queueId) {
-        this.queueId = queueId;
+    public void setQueueType(String queueType) {
+        this.queueType = queueType;
     }
+
+    // public void setQueueId() { if queueType=... }
 }

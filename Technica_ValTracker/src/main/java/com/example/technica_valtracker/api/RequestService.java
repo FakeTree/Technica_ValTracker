@@ -29,7 +29,7 @@ public class RequestService {
 
         // Build GET request
         Request request = new Request.Builder()
-                .header("X-Riot-Token", Constants.AL_RIOT_KEY)
+                .header("X-Riot-Token", Constants.RIOT_API_KEY)
                 .url(requestLink)
                 .build();
 
@@ -49,4 +49,38 @@ public class RequestService {
         }
         return json;
     }
+
+    /**
+     * Gets a user's game account information based on their Riot username and tag.
+     * @param userName The player's Riot username.
+     * @param tagLine The player's Riot tag.
+     * @return The response body parsed as a string.
+     */
+    public static String getAccountByRiotId(String userName, String tagLine) throws IOException {
+        String url = Constants.ACCOUNTV1_BASE_LINK + userName + "/" + tagLine;
+        return sendGetRequest(url);
+    }
+
+    /**
+     * Gets a user's Summoner information based on their encrypted PUUID.
+     * @param region Server region of the player to send the request to.
+     * @param puuid The user's encrypted PUUID.
+     * @return The response body parsed as a string.
+     */
+    public static String getSummonerByPuuid(String region, String puuid) throws IOException {
+        String url = "https://" + region + ".api.riotgames.com/lol/summoner/v4/summoners/by-puuid/" + puuid;
+        return sendGetRequest(url);
+    }
+
+    /**
+     * Get a user's League information based on their encrypted summoner ID.
+     * @param region Server region of the player to send the request to.
+     * @param summonerId The user's summoner ID.
+     * @return The response body parsed as a string.
+     */
+    public static String getLeagueBySummonerId(String region, String summonerId) throws IOException {
+        String url = "https://" + region + ".api.riotgames.com/lol/league/v4/entries/by-summoner/" + summonerId;
+        return sendGetRequest(url);
+    }
+
 }

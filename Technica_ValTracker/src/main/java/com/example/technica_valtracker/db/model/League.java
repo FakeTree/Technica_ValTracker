@@ -1,7 +1,6 @@
 package com.example.technica_valtracker.db.model;
 
 public class League {
-    private int userId;
     private String leagueId;
     private String tier;
     private String rank;
@@ -9,10 +8,6 @@ public class League {
     private int wins;
     private int losses;
     private String queueType;
-
-    public int getUserId() {
-        return userId;
-    }
 
     public String getTier() {
         return tier;

@@ -1,7 +1,6 @@
 package com.example.technica_valtracker.db.model;
 
 public class Match {
-    private int userId;
     private String matchId;
     private long date;
     private String gameMode;
@@ -19,8 +18,6 @@ public class Match {
 
     private float creepScore;
     private boolean win;
-
-    public int getUserId() { return userId; }
 
     public String getMatchId() {
         return matchId;

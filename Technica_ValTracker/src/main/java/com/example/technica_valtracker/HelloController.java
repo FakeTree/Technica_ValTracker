@@ -1,7 +1,6 @@
 package com.example.technica_valtracker;
 
 import com.example.technica_valtracker.api.temp.TempResponseObject;
-import com.example.technica_valtracker.api.RequestService;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import javafx.fxml.FXML;
@@ -121,12 +120,15 @@ public class HelloController {
 
         // TODO: TESTING ONLY - MAY NEED TO REFACTOR OR REMOVE LATER
         // This should be done after all fields have been successfully validated
+
+        // Placeholder data, get from user input later
         String userName = "Agurin";
         String tagLine = "EUW";
         TempResponseObject tempResponseObject = new TempResponseObject();
         Summoner summoner = new Summoner();
         summoner.setRegion("euw1");
 
+        // Queries for PUUID based on Riot Id (gameName+tagLine)
         String accountQuery = getAccountByRiotId(userName, tagLine);
         User user = null;
 
@@ -138,6 +140,7 @@ public class HelloController {
             user = new User(tempResponseObject.getPuuid(), "Agurin#EUW", "GamerGod", "ag@euw.com");
         }
 
+        // Queries for Summoner info based on PUUID retrieved from previous request
         String summonerQuery = getSummonerByPuuid(summoner.getRegion(), user.getUserId());
         if (Objects.equals(accountQuery, "Error while fetching data from API")) {
             // Display error in UI
@@ -146,19 +149,11 @@ public class HelloController {
             getSummonerFromJson(summonerQuery, summoner);
         }
 
-        String leagueQuery = "leagueQuery";
-        // if (responseHasTwoLeagues) {
-        // String[] leagues = splitLeagues(leagueQuery);
-        // getLeagueFromJson(leagues[0], firstLeague);
-        // getLeagueFromJson(leagues[1], secondLeague;
-        // }
-        // else {
-        //
-        // }
-        //
-
+        // Print out to console to confirm
         System.out.println(user.getUserId());
         System.out.println(summoner.getSummonerId());
+
+        // END OF PLACEHOLDER BLOCK //
 
         // Validate the input fields
         if (email.isEmpty() || password.isEmpty() || riotID.isEmpty()) {

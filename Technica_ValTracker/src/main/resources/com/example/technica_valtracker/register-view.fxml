@@ -5,8 +5,8 @@
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
-
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.technica_valtracker.HelloController">
@@ -35,8 +35,33 @@
         <TextField fx:id="riotIDTextField" promptText="Enter your Riot ID" maxWidth="175"/>
     </VBox>
 
+    <!-- Region ComboBox Section -->
+    <ComboBox fx:id="regionComboBox" promptText="Select region">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Select region"/>
+                <String fx:value="BR1"/>
+                <String fx:value="EUN1"/>
+                <String fx:value="EUW1"/>
+                <String fx:value="JP1"/>
+                <String fx:value="KR"/>
+                <String fx:value="LA1"/>
+                <String fx:value="LA2"/>
+                <String fx:value="ME1"/>
+                <String fx:value="NA1"/>
+                <String fx:value="OC1"/>
+                <String fx:value="PH2"/>
+                <String fx:value="RU"/>
+                <String fx:value="SG2"/>
+                <String fx:value="TH2"/>
+                <String fx:value="TR1"/>
+                <String fx:value="TW2"/>
+                <String fx:value="VN2"/>
+            </FXCollections>
+        </items>
+    </ComboBox>
 
-    <!-- Login Button Section -->
+    <!-- Registration Button Section -->
     <Button text="Register" onAction="#RegButtonClick" minWidth="100"/>
 
     <!-- Back Button Section -->

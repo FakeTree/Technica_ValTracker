@@ -2,8 +2,6 @@ package com.example.technica_valtracker.db.model;
 import com.fasterxml.jackson.annotation.*;
 
 public class Summoner {
-    @JsonIgnore
-    private int userId;
     private String puuid;
     private String accountId;
     @JsonAlias("id")
@@ -20,10 +18,6 @@ public class Summoner {
     private long revisionDate;
 
     public Summoner() {}
-
-    public int getUserId() {
-        return userId;
-    }
 
     public String getPuuid() {
         return puuid;

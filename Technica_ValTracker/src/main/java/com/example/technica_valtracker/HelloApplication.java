@@ -43,13 +43,9 @@ public class HelloApplication extends Application {
         // Probably need to move all the DAO activation stuff to
         // another function at some point
         IUserDAO userDAO;
-        ISummonerDAO summonerDAO;
-        IMatchHistoryDAO matchHistoryDAO;
 
         Connection connection = DbConnection.getInstance(); // Connect to db
         userDAO = new UserDAO();
-        summonerDAO = new SummonerDAO();
-        matchHistoryDAO = new MatchHistoryDAO();
         launch();                                           // Launch javaFX app
     }
 }

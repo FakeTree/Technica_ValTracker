@@ -2,6 +2,7 @@ package com.example.technica_valtracker;
 
 import com.example.technica_valtracker.db.DbConnection;
 import com.example.technica_valtracker.db.dao.*;
+import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +12,10 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class HelloApplication extends Application {
+    Connection connection;
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -27,7 +30,6 @@ public class HelloApplication extends Application {
         userManager.addUser(new User("Yu0Y0EGEUgkB90Nurly8f9dyUQNzOdDxyntp0zF9RBgfUq1DR5qhbqF9R622H9f0zHy4JkEG12XjR7", "user4@example.com", "password4", "Riot#ID4"));
         userManager.addUser(new User("MHBzH1hDGwyJOojAUYMv3lmlnlOLt5OHmzak_R5nBGD1z1L6hiQpUoSOjoInEbzgWttIcO7qrqoBcL", "user5@example.com", "password5", "Riot#ID5"));
 
-
         // Load FXML
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         // Create Scene
@@ -38,12 +40,27 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
+    /*
+    Executed when program is closed.
+     */
+    @Override
+    public void stop() {
+        if (connection != null) {
+            try {
+                connection.close();
+                System.out.println("\nConnection closed."); // DEBUGGING REMOVE LATER
+            } catch (SQLException e) {
+                // TODO: handle error
+            }
+        }
+    }
+
     public static void main(String[] args) {
         // Probably need to move all the DAO activation stuff to
         // another function at some point
 //        IUserDAO userDAO;
 //
-//        Connection connection = DbConnection.getInstance(); // Connect to db
+        Connection connection = DbConnection.getInstance(); // Connect to db
 //        userDAO = new UserDAO();
         launch();                                           // Launch javaFX app
     }

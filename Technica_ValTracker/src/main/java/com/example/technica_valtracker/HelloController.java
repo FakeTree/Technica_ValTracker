@@ -1,6 +1,8 @@
 package com.example.technica_valtracker;
 
+import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.api.temp.TempResponseObject;
+import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import javafx.fxml.FXML;
@@ -19,12 +21,13 @@ import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 import static com.example.technica_valtracker.api.RequestService.getAccountByRiotId;
 import static com.example.technica_valtracker.api.RequestService.getSummonerByPuuid;
-import static com.example.technica_valtracker.utils.Deserialiser.getSummonerFromJson;
-import static com.example.technica_valtracker.utils.Deserialiser.getTempResponseObjectFromJson;
+import static com.example.technica_valtracker.utils.Deserialiser.*;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -76,6 +79,41 @@ public class HelloController {
 
     // Buttons
     @FXML
+    private void onAPIMagicButtonClick(ActionEvent event) throws IOException {
+        // Other instantiations:
+        // new summoner
+        // new match_history
+        // new champion mastery
+        League baseLeague = new League();
+        League soloLeague = null;
+        League flexLeague = null;
+
+        String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
+        String region = "na1";
+
+        String json = baseLeague.getLeagueData(sumId, region);
+        League[] leagues = getLeagueArrayFromJson(json);
+
+        if (leagues.length == 0) {
+            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
+            System.out.println(error.getDetail());
+        }
+        else {
+            for (League league : leagues) {
+                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
+                    flexLeague = league;
+                }
+                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
+                    soloLeague = league;
+                }
+            }
+        }
+
+        soloLeague.setWinrate();
+        System.out.println(soloLeague.getWinrate());
+    }
+
+    @FXML
     private void onBackButtonClick(ActionEvent event) {
         goToPreviousScene(event);
     }
@@ -115,48 +153,11 @@ public class HelloController {
     @FXML
     private void RegButtonClick(ActionEvent event) throws IOException {
         // Get the current text from all fields
-        String userId = "blah";
+        String userId = "ASDASIF@((@#(";
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String riotID = riotIDTextField.getText();
         String selectedRegion = regionComboBox.getValue();
-
-        // TODO: TESTING ONLY - MAY NEED TO REFACTOR OR REMOVE LATER
-        // This should be done after all fields have been successfully validated
-
-        // Placeholder data, get from user input later
-        String userName = "Agurin";
-        String tagLine = "EUW";
-        TempResponseObject tempResponseObject = new TempResponseObject();
-        Summoner summoner = new Summoner();
-        summoner.setRegion("euw1");
-
-        // Queries for PUUID based on Riot Id (gameName+tagLine)
-        String accountQuery = getAccountByRiotId(userName, tagLine);
-        User user = null;
-
-        if (Objects.equals(accountQuery, "Error while fetching data from API")) {
-            // Display error in UI
-            System.out.println("Oops!"); // temp
-        } else {
-            getTempResponseObjectFromJson(accountQuery, tempResponseObject);
-            user = new User(tempResponseObject.getPuuid(), "Agurin#EUW", "GamerGod", "ag@euw.com");
-        }
-
-        // Queries for Summoner info based on PUUID retrieved from previous request
-        String summonerQuery = getSummonerByPuuid(summoner.getRegion(), user.getUserId());
-        if (Objects.equals(accountQuery, "Error while fetching data from API")) {
-            // Display error in UI
-            System.out.println("Oops!"); // temp
-        } else {
-            getSummonerFromJson(summonerQuery, summoner);
-        }
-
-        // Print out to console to confirm
-        System.out.println(user.getUserId());
-        System.out.println(summoner.getSummonerId());
-
-        // END OF PLACEHOLDER BLOCK //
 
         // Validate the input fields
         // Note: this is supposed to validate that an option has been used in the combobox
@@ -289,4 +290,5 @@ public class HelloController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }

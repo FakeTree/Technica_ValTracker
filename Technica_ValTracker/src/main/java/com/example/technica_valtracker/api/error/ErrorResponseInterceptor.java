@@ -25,7 +25,7 @@ public class ErrorResponseInterceptor implements Interceptor {
         // If response is not successful, replace with ErrorMessage with status code and reason
         if (!response.isSuccessful()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            String message = "\nAPI fetch error: " + ErrorMessage.getErrorReason(response.code());
+            String message = "API fetch error: " + ErrorMessage.getErrorReason(response.code());
             ErrorMessage error = new ErrorMessage(response.code(), message);
 
             String body = objectMapper.writeValueAsString(error);

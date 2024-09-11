@@ -38,9 +38,8 @@ public class Summoner {
      * @return ResponseBody object with stringified JSON response and boolean indicating if an error occurred.
      * @throws IOException
      */
-    public ResponseBody getSummonerByPuuid(String puuid, String region) throws IOException {
+    public ResponseBody getSummonerByPuuid(String puuid, String region, String url, String[] headers) throws IOException {
         String json;
-        String requestUrl = "https://" + region + ".api.riotgames.com/lol/summoner/v4/summoners/by-puuid/" + puuid;
 
         // Set up HTTP client
         OkHttpClient client = new OkHttpClient.Builder()
@@ -49,8 +48,8 @@ public class Summoner {
 
         // Build GET request
         Request request = new Request.Builder()
-                .header("X-Riot-Token", Constants.RIOT_API_KEY)
-                .url(requestUrl)
+                .header(headers[0], headers[1])
+                .url(url)
                 .build();
 
         // Send request to client

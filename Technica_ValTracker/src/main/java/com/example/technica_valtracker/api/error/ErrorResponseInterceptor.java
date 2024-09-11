@@ -9,10 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 
 /**
- * Interceptor for all API request methods that returns a JSON object with
- * a status code and message, ensuring error responses are uniform across all requests.
- * Returns a Response object with an ErrorMessage if the request failed, or the original
- * request body if successful.
+ * Interceptor for all API request methods that returns a Response object with an ErrorMessage if the request failed,
+ * or the original request body if successful.
+ * TODO: Dynamic error message based on status code -- maybe done? needs testing.
  */
 public class ErrorResponseInterceptor implements Interceptor {
 
@@ -20,11 +19,14 @@ public class ErrorResponseInterceptor implements Interceptor {
 
     @Override
     public Response intercept(Chain chain) throws IOException {
+        // Get response body
         Response response = chain.proceed(chain.request());
 
+        // If response is not successful, replace with ErrorMessage with status code and reason
         if (!response.isSuccessful()) {
             ObjectMapper objectMapper = new ObjectMapper();
-            ErrorMessage error = new ErrorMessage(response.code(), "Error while fetching data from API");
+            String message = "\nAPI fetch error: " + ErrorMessage.getErrorReason(response.code());
+            ErrorMessage error = new ErrorMessage(response.code(), message);
 
             String body = objectMapper.writeValueAsString(error);
 
@@ -35,8 +37,11 @@ public class ErrorResponseInterceptor implements Interceptor {
                 originalBody.close();
             }
 
+            // Return new response body containing ErrorMessage
             return response.newBuilder().body(responseBody).build();
         }
+
+        // Otherwise, return original response body
         return response;
     }
 }

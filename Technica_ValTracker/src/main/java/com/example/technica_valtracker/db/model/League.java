@@ -30,6 +30,7 @@ public class League {
      * @param region The server region of the player.
      * @return A JSONArray string with the response body if successful, or an ErrorMessage if not.
      * @throws IOException
+     * TODO: Return ResponseBody instead? Have to do some extra parsing coz 200 response returns a JsonArray.
      */
     public String getLeagueData(String summonerId, String region) throws IOException {
         String json;

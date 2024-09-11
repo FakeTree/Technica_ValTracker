@@ -1,5 +1,6 @@
 package com.example.technica_valtracker;
 
+import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.api.temp.TempResponseObject;
 import com.example.technica_valtracker.db.model.League;
@@ -72,7 +73,6 @@ public class HelloController {
     @FXML
     private ComboBox<String> regionComboBox;
 
-
     // Text
     @FXML
     private Label welcomeText;
@@ -84,15 +84,32 @@ public class HelloController {
         // new summoner
         // new match_history
         // new champion mastery
+        Summoner summoner = new Summoner();
         League baseLeague = new League();
         League soloLeague = null;
         League flexLeague = null;
 
+        // Placeholder values for testing.
+//        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj7A";
+        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj"; // Broken PUUID
         String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
         String region = "na1";
 
-        String json = baseLeague.getLeagueData(sumId, region);
-        League[] leagues = getLeagueArrayFromJson(json);
+        // Get summoner data
+        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
+
+        // Update Summoner instance if no error received
+        if (summonerQuery.isError()) {
+            // Get error message
+            System.out.println(summonerQuery.getMessage().getDetail());
+        }
+        else {
+            getSummonerFromJson(summonerQuery.getJson(), summoner);
+            System.out.println(summoner.getSummonerId());
+        }
+
+        String leagueJson = baseLeague.getLeagueData(sumId, region);
+        League[] leagues = getLeagueArrayFromJson(leagueJson);
 
         if (leagues.length == 0) {
             ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");

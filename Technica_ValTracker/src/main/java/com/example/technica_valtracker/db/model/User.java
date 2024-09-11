@@ -1,16 +1,29 @@
 package com.example.technica_valtracker.db.model;
 
+import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.Validation;
 
 // For testing
+import java.io.IOException;
 import java.security.SecureRandom;
 
+import com.example.technica_valtracker.api.ResponseBody;
+import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
+import com.fasterxml.jackson.annotation.*;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
+import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private String riotId;
     private String password;
     private String email;
     private Boolean isLoggedIn;
+    @JsonAlias("puuid")
     private String userId;
 
     // Constructors
@@ -41,6 +54,34 @@ public class User {
         this.isLoggedIn = false;
         this.userId = userId;
 
+    }
+
+    public ResponseBody getAccountByRiotId(String userName, String tagLine) throws IOException {
+        String json;
+        String requestUrl = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + userName + "/" + tagLine;
+
+        // Set up HTTP client
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new ErrorResponseInterceptor())
+                .build();
+
+        // Build GET request
+        Request request = new Request.Builder()
+                .header("X-Riot-Token", Constants.RIOT_API_KEY)
+                .url(requestUrl)
+                .build();
+
+        // Send request to client
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                ErrorMessage error = getErrorMessageFromJson(response.body().string());
+                return new ResponseBody(error);
+            }
+            // Parse successful response as string
+            json = response.body().string();
+        }
+
+        return new ResponseBody(json, false);
     }
 
     // Getters and Setters

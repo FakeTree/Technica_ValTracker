@@ -90,18 +90,18 @@ public class HelloController {
         String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
         String region = "na1";
 
-        // Get summoner data
-        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
-
-        // Update Summoner instance if no error received
-        if (summonerQuery.isError()) {
-            // Get error message
-            System.out.println(summonerQuery.getMessage().getDetail());
-        }
-        else {
-            getSummonerFromJson(summonerQuery.getJson(), summoner);
-            System.out.println(summoner.getSummonerId());
-        }
+//        // Get summoner data
+//        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
+//
+//        // Update Summoner instance if no error received
+//        if (summonerQuery.isError()) {
+//            // Get error message
+//            System.out.println(summonerQuery.getMessage().getDetail());
+//        }
+//        else {
+//            getSummonerFromJson(summonerQuery.getJson(), summoner);
+//            System.out.println(summoner.getSummonerId());
+//        }
 
         String leagueJson = baseLeague.getLeagueData(sumId, region);
         League[] leagues = getLeagueArrayFromJson(leagueJson);

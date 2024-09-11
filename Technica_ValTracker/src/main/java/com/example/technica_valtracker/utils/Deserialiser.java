@@ -1,15 +1,10 @@
 package com.example.technica_valtracker.utils;
 
 import com.example.technica_valtracker.api.error.ErrorMessage;
-import com.example.technica_valtracker.api.temp.TempResponseObject;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * Collection of functions that convert JSON to objects.
@@ -36,15 +31,6 @@ public class Deserialiser {
      */
     public static String errorMessageToJson(ErrorMessage error) throws JsonProcessingException {
         return objectMapper.writeValueAsString(error);
-    }
-
-    /**
-     * Converts JSON to a TempResponseObject.
-     * @param json The JSON string to deserialise.
-     * @param tempObject The TempResponseObject to insert values to.
-     */
-    public static void getTempResponseObjectFromJson(String json, TempResponseObject tempObject) throws JsonProcessingException {
-        tempObject = objectMapper.readerForUpdating(tempObject).readValue(json);
     }
 
     /**

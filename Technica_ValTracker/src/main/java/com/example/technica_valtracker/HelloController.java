@@ -2,7 +2,6 @@ package com.example.technica_valtracker;
 
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
-import com.example.technica_valtracker.api.temp.TempResponseObject;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
@@ -22,12 +21,8 @@ import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
-import static com.example.technica_valtracker.api.RequestService.getAccountByRiotId;
-import static com.example.technica_valtracker.api.RequestService.getSummonerByPuuid;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
 
 // Note that this Controller currently handles three windows

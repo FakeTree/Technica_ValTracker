@@ -28,9 +28,6 @@ public class UserManager {
 
         // Placeholder to load users on launch
         loadUsersFromDB();
-        System.out.println("Reached");
-        // Have a looksies
-        printAllUsers();
     }
 
     // Public method to provide access to the single instance

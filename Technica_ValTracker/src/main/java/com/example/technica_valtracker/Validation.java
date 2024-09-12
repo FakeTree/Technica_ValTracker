@@ -1,5 +1,18 @@
 package com.example.technica_valtracker;
+import com.example.technica_valtracker.api.ResponseBody;
+import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Pattern;
+import org.json.JSONObject;
+
+import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
 
 /// Validates given strings / objects to ensure they are legal
 public class Validation {
@@ -68,6 +81,61 @@ public class Validation {
         }
         return result;
     }
+
+    // Riot account exists?
+    public static String puuidGet(String riotId) throws IOException {
+
+        // Split the Riot ID into username and tagline
+        String[] splitRiotID = Validation.splitRiotID(riotId);
+        String userName = splitRiotID[0];
+        String tagLine = splitRiotID[1]; // May be null if not provided
+
+        ResponseBody responseBody = getAccountByRiotId(userName,tagLine);
+
+        if (responseBody.isError()) {
+            // The RiotID doesnt exist or there is an API issue (Check your key!)
+            System.out.println("Error: " + responseBody.getMessage());
+            return null;
+        } else {
+            // The RiotID has been found!
+            JSONObject jsonObject = new JSONObject(responseBody.getJson());
+            // Extract the PUUID
+            return jsonObject.getString("puuid");
+
+        }
+
+    }
+
+    public static ResponseBody getAccountByRiotId(String userName, String tagLine) throws IOException {
+        String json;
+        String requestUrl = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + userName + "/" + tagLine;
+
+        // Set up HTTP client
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new ErrorResponseInterceptor())
+                .build();
+
+        // Build GET request
+        Request request = new Request.Builder()
+                .header("X-Riot-Token", Constants.ANNETTE_RIOT_KEY)
+                .url(requestUrl)
+                .build();
+
+        // Send request to client
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                ErrorMessage error = getErrorMessageFromJson(response.body().string());
+                return new ResponseBody(error);
+            }
+            // Parse successful response as string
+            json = response.body().string();
+        }
+
+        return new ResponseBody(json, false);
+
+    }
+
+
 
 }
 

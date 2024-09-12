@@ -32,24 +32,6 @@ public class User {
     private String region;
 
     // Constructors
-
-    // First time login Constructor. requires all details except for the PUUID which is retrieved with an
-    // API call
-    public User(String riotId, String password, String email, String region) {
-        this.riotId = riotId;
-        this.password = password;
-        this.email = email;
-        this.isLoggedIn = false;
-        this.region = region;
-
-        // The PUUID get happens here. This requires more API work atm (notes at the bottom)
-        // For the moment though, lets randomly generate a PUUID to make the program function correctly
-        this.userId = generateRandomString();
-
-
-
-    }
-
     // any other time login Constructor. Strings are in a SPECIFIC ORDER
     public User(String userId, String email, String password, String riotId, String region) {
         this.riotId = riotId;
@@ -117,67 +99,8 @@ public class User {
                 '}';
     }
 
-    // API STUFF
-    // splits the riotID into a username and a tag, for interpretation by API
-    public List<String> riotIDTagSplit() {
-        // Split the Riot ID into username and tagline
-        String[] splitRiotID = Validation.splitRiotID(riotId);
-        String userName = splitRiotID[0];
-        String tagLine = splitRiotID[1]; // May be null if not provided
-
-        // Return both values in a List
-        return Arrays.asList(userName, tagLine);
-
-    }
-
-    // Returns an API response given username and tagline
-    public ResponseBody getAccountByRiotId(String userName, String tagLine) throws IOException {
-        String json;
-        String requestUrl = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + userName + "/" + tagLine;
-
-        // Set up HTTP client
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new ErrorResponseInterceptor())
-                .build();
-
-        // Build GET request
-        Request request = new Request.Builder()
-                .header("X-Riot-Token", Constants.ANNETTE_RIOT_KEY)
-                .url(requestUrl)
-                .build();
-
-        // Send request to client
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                ErrorMessage error = getErrorMessageFromJson(response.body().string());
-                return new ResponseBody(error);
-            }
-            // Parse successful response as string
-            json = response.body().string();
-        }
-
-        return new ResponseBody(json, false);
-
-    }
-
-    // Returns the PUUID based on given details
-    // Note: This doesnt work yet, but does nicely join the two above methods for an easy call. This
-    // method should eventually return the PUUID as a string
-    private void puuidGet() throws IOException{
-
-        List<String> usernameTagSplit = riotIDTagSplit();
-
-        // Extract username and tag from the list
-        String username = usernameTagSplit.get(0);
-        String tagLine = usernameTagSplit.get(1);
-
-        ResponseBody responseBody = getAccountByRiotId(username,tagLine);
-
-        System.out.println("I made it!");
-        System.out.println(responseBody);
 
 
-    }
 
     // Random
     // This is just for testing!

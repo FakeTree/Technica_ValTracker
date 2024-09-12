@@ -6,6 +6,7 @@ module com.example.technica_valtracker {
     requires okhttp3;
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.databind;
+    requires org.json;
 
     opens com.example.technica_valtracker to javafx.fxml;
     exports com.example.technica_valtracker;

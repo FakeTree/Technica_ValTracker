@@ -206,8 +206,15 @@ public class HelloController {
         // Hash the password
         String hashedPassword = PasswordUtils.hashPassword(password);
 
+        // Check if the Riot ID corresponds to an existing PUUID
+        String puuid = Validation.puuidGet(riotID);
+        if (puuid == null) {
+            showAlert(AlertType.ERROR, "Invalid Riot ID", "Riot ID does not exist.");
+            return;
+        }
+
         // Create a new User object
-        User newUser = new User(riotID, hashedPassword, email, selectedRegion);
+        User newUser = new User(puuid, email, hashedPassword, riotID, selectedRegion);
 
         // Check if the UserManager is initialized
         if (userManager == null) {
@@ -297,10 +304,6 @@ public class HelloController {
         }
     }
 
-    /// Sanity check for class initialization
-    public HelloController() {
-        System.out.println("HelloController initialized");
-    }
 
     // Helper method to show alerts
     private void showAlert(AlertType alertType, String title, String message) {

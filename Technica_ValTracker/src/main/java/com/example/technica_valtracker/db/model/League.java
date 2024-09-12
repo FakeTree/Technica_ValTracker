@@ -43,7 +43,7 @@ public class League {
 
         // Build GET request
         Request request = new Request.Builder()
-                .header("X-Riot-Token", Constants.RIOT_API_KEY)
+                .header("X-Riot-Token", Constants.ANNETTE_RIOT_KEY)
                 .url(requestUrl)
                 .build();
 

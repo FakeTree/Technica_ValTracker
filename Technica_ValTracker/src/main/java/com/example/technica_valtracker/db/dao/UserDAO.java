@@ -53,7 +53,8 @@ public class UserDAO implements IUserDAO {
                     + "userId TEXT PRIMARY KEY UNIQUE, "
                     + "email TEXT NOT NULL, "
                     + "password TEXT NOT NULL, "
-                    + "riotId TEXT NOT NULL"
+                    + "riotId TEXT NOT NULL,"
+                    + "region TEXT"
                     + ")";
             statement.execute(query);
         } catch(SQLException e) {
@@ -63,12 +64,13 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public void addNewUser(User user) {
-        String insertQuery = "INSERT INTO user (userId, email, password, riotId) VALUES (?, ?, ?, ?)";
+        String insertQuery = "INSERT INTO user (userId, email, password, riotId, region) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(insertQuery)) {
             pstmt.setString(1, user.getUserId());
             pstmt.setString(2, user.getEmail());
             pstmt.setString(3, user.getPassword());
             pstmt.setString(4, user.getRiotID());
+            pstmt.setString(5, user.getRegion());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -77,12 +79,13 @@ public class UserDAO implements IUserDAO {
 
     @Override
     public void updateUser(User user) {
-        String updateQuery = "UPDATE user SET email = ?, password = ?, riotId = ? WHERE userId = ?";
+        String updateQuery = "UPDATE user SET email = ?, password = ?, riotId = ?, region = ? WHERE userId = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(updateQuery)) {
             pstmt.setString(1, user.getEmail());
             pstmt.setString(2, user.getPassword());
             pstmt.setString(3, user.getRiotID());
-            pstmt.setString(4, user.getUserId());
+            pstmt.setString(4, user.getRegion()); // Add this line for the new field
+            pstmt.setString(5, user.getUserId());
             pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -100,7 +103,8 @@ public class UserDAO implements IUserDAO {
                         rs.getString("userId"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getString("riotId")
+                        rs.getString("riotId"),
+                        rs.getString("region") // Add this line for the new field
                 );
             }
         } catch (SQLException e) {
@@ -120,7 +124,8 @@ public class UserDAO implements IUserDAO {
                         rs.getString("userId"),
                         rs.getString("email"),
                         rs.getString("password"),
-                        rs.getString("riotId")
+                        rs.getString("riotId"),
+                        rs.getString("region") // Add this line for the new field
                 );
                 users.add(user);
             }

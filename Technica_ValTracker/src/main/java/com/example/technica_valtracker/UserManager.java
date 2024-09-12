@@ -42,15 +42,19 @@ public class UserManager {
     }
 
     // Add a new user, ensuring unique RiotID
+    // Note: This originally checked both DB and Memory but after a bug and some consideration
+    // the DB check was removed. It makes more sense to do entire DB loads at meaningful times
+    // and check memory, then constant individual small DB checks.
+    // If constant DB checks are desired in the future again, then the RiotIDcheck in userDAO needs repairing
     public boolean addUser(User user) {
 
         // Check if a user with the same RiotID already exists both locally and in the DB
         for (User existingUser : userList) {
-            if (existingUser.getRiotID().equals(user.getRiotID()) || userDAO.isRiotIDTaken(user.getRiotID())) {
-                System.out.println("Error: RiotID has already been taken!");
+            if (existingUser.getRiotID().equals(user.getRiotID())) {
                 return false; // Don't add the user
             }
         }
+        // Add user to both DB and Memory
         userList.add(user);
         userDAO.addNewUser(user);
         return true; // User successfully added

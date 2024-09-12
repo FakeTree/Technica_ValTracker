@@ -1,10 +1,13 @@
 package com.example.technica_valtracker;
 
+
+
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
+import com.example.technica_valtracker.utils.PasswordUtils;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
@@ -137,6 +140,9 @@ public class HelloController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
+        // Hash the password
+        String hashedPassword = PasswordUtils.hashPassword(password);
+
         // Check if the userManager exists
         if (userManager == null) {
             showAlert(AlertType.ERROR, "Login Error", "UserManager not initialized.");
@@ -145,7 +151,7 @@ public class HelloController {
 
         // Find the user with the provided email and password
         // This will return null if details do not match exactly
-        User user = userManager.findUserByCredentials(email, password);
+        User user = userManager.findUserByCredentials(email, hashedPassword);
 
         // Check if user is found
         if (user != null) {
@@ -165,7 +171,6 @@ public class HelloController {
     @FXML
     private void RegButtonClick(ActionEvent event) throws IOException {
         // Get the current text from all fields
-        String userId = "ASDASIF@((@#(";
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String riotID = riotIDTextField.getText();
@@ -174,7 +179,7 @@ public class HelloController {
         // Validate the input fields
         // Note: this is supposed to validate that an option has been used in the combobox
         // but I couldnt get it to work, so at the moment users dont have to send a region
-        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty() || "Select region".equals(selectedRegion)) {
+        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty() || selectedRegion == null) {
             showAlert(AlertType.ERROR, "Registration Error", "Please fill in all fields and select a region.");
             return;
         }
@@ -198,8 +203,11 @@ public class HelloController {
             return;
         }
 
+        // Hash the password
+        String hashedPassword = PasswordUtils.hashPassword(password);
+
         // Create a new User object
-        User newUser = new User(userId, riotID, password, email);
+        User newUser = new User(riotID, hashedPassword, email, selectedRegion);
 
         // Check if the UserManager is initialized
         if (userManager == null) {

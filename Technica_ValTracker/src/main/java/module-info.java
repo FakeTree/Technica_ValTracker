@@ -18,4 +18,6 @@ module com.example.technica_valtracker {
     opens com.example.technica_valtracker.db.model to javafx.fxml;
     exports com.example.technica_valtracker.utils;
     opens com.example.technica_valtracker.utils to javafx.fxml;
+    exports com.example.technica_valtracker.controller;
+    opens com.example.technica_valtracker.controller to javafx.fxml;
 }

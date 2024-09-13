@@ -1,5 +1,8 @@
-package com.example.technica_valtracker;
+package com.example.technica_valtracker.controller;
 
+import com.example.technica_valtracker.Constants;
+import com.example.technica_valtracker.HelloApplication;
+import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
@@ -8,18 +11,14 @@ import com.example.technica_valtracker.db.model.User;
 import com.example.technica_valtracker.utils.PasswordUtils;
 import com.example.technica_valtracker.utils.Validation;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Node;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
@@ -75,6 +74,10 @@ public class HelloController {
     private Label welcomeText;
 
     // Buttons
+    @FXML
+    private Button signUpSubmitButton;
+
+    // Button events
     @FXML
     private void onAPIMagicButtonClick(ActionEvent event) throws IOException {
         // Other instantiations:
@@ -254,8 +257,12 @@ public class HelloController {
         // Print the result
         if (success) {
             showAlert(AlertType.INFORMATION, "Registration Success", "User successfully registered.");
-            // TODO: NAVIGATE TO DASHBOARD SCREEN FROM HERE
-            goToPreviousScene(event);
+            userManager.setCurrentUser(newUser);
+            Stage stage = (Stage) signUpSubmitButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+            stage.setScene(scene);
+//            goToPreviousScene(event);
         } else {
             // Note: May want a better error system then above. if this error is reached it almost certainly is a riotID conflict
             showAlert(AlertType.ERROR, "Registration Failed", "Registration failed. RiotID may already be taken.");

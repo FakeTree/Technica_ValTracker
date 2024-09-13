@@ -1,4 +1,4 @@
-package com.example.technica_valtracker;
+package com.example.technica_valtracker.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

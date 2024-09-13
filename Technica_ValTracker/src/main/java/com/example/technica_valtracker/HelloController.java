@@ -1,10 +1,12 @@
 package com.example.technica_valtracker;
 
 import com.example.technica_valtracker.api.ResponseBody;
-import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
+import com.example.technica_valtracker.utils.PasswordUtils;
+import com.example.technica_valtracker.utils.Validation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +23,9 @@ import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static com.example.technica_valtracker.utils.Deserialiser.*;
+import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequestUrl;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -84,45 +86,66 @@ public class HelloController {
         League soloLeague = null;
         League flexLeague = null;
 
+        Champion baseChampion = new Champion();
+        Champion firstChampion;
+        Champion secondChampion = new Champion();
+        Champion thirdChampion = new Champion();
+
         // Placeholder values for testing.
 //        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj7A";
-        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj"; // Broken PUUID
+        String puuid  = "B_BHDZwmQBwqszCtpjEHiTq1zZrcQZicLGyGhbA3M8jCk8WFRGGqoAA_uUc0vMzaVRBt7nZ_i_UMhA"; // Broken PUUID
         String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
-        String region = "na1";
+        String region = "euw1";
 
-        // Get summoner data
-        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
+        String url = buildChampionRequestUrl(puuid, region);
 
-        // Update Summoner instance if no error received
-        if (summonerQuery.isError()) {
-            // Get error message
-            System.out.println(summonerQuery.getMessage().getDetail());
+        ResponseBody championQuery = baseChampion.getChampionData(puuid, region, url, Constants.requestHeaders);
+
+        if (championQuery.isError()) {
+            System.out.print(championQuery.getMessage().getDetail());
         }
         else {
-            getSummonerFromJson(summonerQuery.getJson(), summoner);
-            System.out.println(summoner.getSummonerId());
+            Champion[] champions = getChampionArrayFromJson(championQuery.getJson());
+            // champions[0] = [ { championId, champion points } ]
+            firstChampion = champions[0];
+            firstChampion.setChampionInfo();
+            System.out.println(firstChampion.getChampionName() + "\n" +
+                    firstChampion.getChampionIconLink());
         }
 
-        String leagueJson = baseLeague.getLeagueData(sumId, region);
-        League[] leagues = getLeagueArrayFromJson(leagueJson);
-
-        if (leagues.length == 0) {
-            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
-            System.out.println(error.getDetail());
-        }
-        else {
-            for (League league : leagues) {
-                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
-                    flexLeague = league;
-                }
-                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
-                    soloLeague = league;
-                }
-            }
-        }
-
-        soloLeague.setWinrate();
-        System.out.println(soloLeague.getWinrate());
+//        // Get summoner data
+//        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
+//
+//        // Update Summoner instance if no error received
+//        if (summonerQuery.isError()) {
+//            // Get error message
+//            System.out.println(summonerQuery.getMessage().getDetail());
+//        }
+//        else {
+//            getSummonerFromJson(summonerQuery.getJson(), summoner);
+//            System.out.println(summoner.getSummonerId());
+//        }
+//
+//        String leagueJson = baseLeague.getLeagueData(sumId, region);
+//        League[] leagues = getLeagueArrayFromJson(leagueJson);
+//
+//        if (leagues.length == 0) {
+//            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
+//            System.out.println(error.getDetail());
+//        }
+//        else {
+//            for (League league : leagues) {
+//                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
+//                    flexLeague = league;
+//                }
+//                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
+//                    soloLeague = league;
+//                }
+//            }
+//        }
+//
+//        soloLeague.setWinrate();
+//        System.out.println(soloLeague.getWinrate());
     }
 
     @FXML
@@ -137,6 +160,9 @@ public class HelloController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
+        // Hash the password
+        String hashedPassword = PasswordUtils.hashPassword(password);
+
         // Check if the userManager exists
         if (userManager == null) {
             showAlert(AlertType.ERROR, "Login Error", "UserManager not initialized.");
@@ -145,7 +171,7 @@ public class HelloController {
 
         // Find the user with the provided email and password
         // This will return null if details do not match exactly
-        User user = userManager.findUserByCredentials(email, password);
+        User user = userManager.findUserByCredentials(email, hashedPassword);
 
         // Check if user is found
         if (user != null) {
@@ -165,7 +191,6 @@ public class HelloController {
     @FXML
     private void RegButtonClick(ActionEvent event) throws IOException {
         // Get the current text from all fields
-        String userId = "ASDASIF@((@#(";
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         String riotID = riotIDTextField.getText();
@@ -174,7 +199,7 @@ public class HelloController {
         // Validate the input fields
         // Note: this is supposed to validate that an option has been used in the combobox
         // but I couldnt get it to work, so at the moment users dont have to send a region
-        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty() || "Select region".equals(selectedRegion)) {
+        if (email.isEmpty() || password.isEmpty() || riotID.isEmpty() || selectedRegion == null) {
             showAlert(AlertType.ERROR, "Registration Error", "Please fill in all fields and select a region.");
             return;
         }
@@ -198,8 +223,18 @@ public class HelloController {
             return;
         }
 
+        // Hash the password
+        String hashedPassword = PasswordUtils.hashPassword(password);
+
+        // Check if the Riot ID corresponds to an existing PUUID
+        String puuid = Validation.puuidGet(riotID);
+        if (puuid == null) {
+            showAlert(AlertType.ERROR, "Invalid Riot ID", "Riot ID does not exist.");
+            return;
+        }
+
         // Create a new User object
-        User newUser = new User(userId, riotID, password, email);
+        User newUser = new User(puuid, email, hashedPassword, riotID, selectedRegion);
 
         // Check if the UserManager is initialized
         if (userManager == null) {
@@ -214,6 +249,7 @@ public class HelloController {
         // Print the result
         if (success) {
             showAlert(AlertType.INFORMATION, "Registration Success", "User successfully registered.");
+            // TODO: NAVIGATE TO DASHBOARD SCREEN FROM HERE
             goToPreviousScene(event);
         } else {
             // Note: May want a better error system then above. if this error is reached it almost certainly is a riotID conflict
@@ -289,10 +325,6 @@ public class HelloController {
         }
     }
 
-    /// Sanity check for class initialization
-    public HelloController() {
-        System.out.println("HelloController initialized");
-    }
 
     // Helper method to show alerts
     private void showAlert(AlertType alertType, String title, String message) {

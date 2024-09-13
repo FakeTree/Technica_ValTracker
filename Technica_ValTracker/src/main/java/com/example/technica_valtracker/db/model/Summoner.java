@@ -18,10 +18,6 @@ public class Summoner {
     @JsonAlias("id")
     private String summonerId;
 
-    private String region;
-    private String gameName;
-    private String tagLine;
-
     private int summonerLevel;
     private int profileIconId;
     @JsonIgnore
@@ -84,27 +80,6 @@ public class Summoner {
     }
     public void setSummonerId(String summonerId) {
         this.summonerId = summonerId;
-    }
-
-    public String getRegion() {
-        return region;
-    }
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getGameName() {
-        return gameName;
-    }
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
-
-    public String getTagLine() {
-        return tagLine;
-    }
-    public void setTagLine(String tagLine) {
-        this.tagLine = tagLine;
     }
 
     public int getSummonerLevel() {

@@ -1,87 +1,32 @@
 package com.example.technica_valtracker.db.model;
 
-import com.example.technica_valtracker.Constants;
-import com.example.technica_valtracker.Validation;
-
 // For testing
 import java.io.IOException;
 import java.security.SecureRandom;
-
-import com.example.technica_valtracker.api.ResponseBody;
-import com.example.technica_valtracker.api.error.ErrorMessage;
-import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
 import com.fasterxml.jackson.annotation.*;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private String riotId;
     private String password;
     private String email;
+
     private Boolean isLoggedIn;
     @JsonAlias("puuid")
     private String userId;
+    private String region;
 
     // Constructors
-
-    // First time login Constructor. requires all details except for the PUUID which is retrieved with an
-    // API call
-    public User(String riotId, String password, String email) {
-        this.riotId = riotId;
-        this.password = password;
-        this.email = email;
-        this.isLoggedIn = false;
-
-        // PUUID retrieval
-        //this.userID = PUUIDGet();
-        // Split RiotID into two and forward this onto the API classes
-        //sendRiotID();
-
-        // For the moment though, lets randomly generate a PUUID to make the program function correctly
-        this.userId = generateRandomString();
-
-    }
-
     // any other time login Constructor. Strings are in a SPECIFIC ORDER
-    public User(String userId, String email, String password, String riotId) {
+    public User(String userId, String email, String password, String riotId, String region) {
         this.riotId = riotId;
         this.password = password;
         this.email = email;
         this.isLoggedIn = false;
         this.userId = userId;
+        this.region = region;
 
-    }
-
-    public ResponseBody getAccountByRiotId(String userName, String tagLine) throws IOException {
-        String json;
-        String requestUrl = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + userName + "/" + tagLine;
-
-        // Set up HTTP client
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new ErrorResponseInterceptor())
-                .build();
-
-        // Build GET request
-        Request request = new Request.Builder()
-                .header("X-Riot-Token", Constants.RIOT_API_KEY)
-                .url(requestUrl)
-                .build();
-
-        // Send request to client
-        try (Response response = client.newCall(request).execute()) {
-            if (!response.isSuccessful()) {
-                ErrorMessage error = getErrorMessageFromJson(response.body().string());
-                return new ResponseBody(error);
-            }
-            // Parse successful response as string
-            json = response.body().string();
-        }
-
-        return new ResponseBody(json, false);
     }
 
     // Getters and Setters
@@ -113,6 +58,21 @@ public class User {
         this.userId = userid;
     }
 
+    public String getRegion() {
+        return region;
+    }
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public Boolean getLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(Boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
     /// Placeholder for a 'do something' after login
     public void IHaveBeenAccessed() {
         System.out.println("I have been accessed! My email is " + email);
@@ -128,27 +88,17 @@ public class User {
                 ", password='" + password + '\'' +
                 ", userID='" + userId + '\'' +
                 ", Is logged in ='" + isLoggedIn + '\'' +
+                ", Region ='" + region + '\'' +
                 '}';
     }
 
-    // API PLACERHOLDER: PUUID Get for UserID
-    // PUUIDGet();{}
-
-    // API PLACEHOLDER: Submit separated RiotID
-    public void sendRiotID() {
-        // Split the Riot ID into username and tagline
-        String[] splitRiotID = Validation.splitRiotID(riotId);
-        String userName = splitRiotID[0];
-        String tagLine = splitRiotID[1]; // May be null if not provided
-
-        System.out.println("Sending String! S1: " + userName + "  S2: " + tagLine);
-
-        // Call the method to get account info by Riot ID
-        //getAccountInfoByRiotID(userName, tagLine);
-    }
 
     // Random
-    // This is just for testing
+    // This is just for testing!
+    // When the user is constructed for the first time, the RiotID is known but the PUUID (userID) is not
+    // So the plan is to construct the user initially with what is know (email, region, riotID and password
+    // and make all the appropriate API calls to populate the userID a moment later
+    // However until this works, a random one is generated below instead to make the program work
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_-";
     private static final int STRING_LENGTH = 88; // Based on your pattern length
 

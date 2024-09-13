@@ -176,10 +176,15 @@ public class HelloController {
         // Check if user is found
         if (user != null) {
             // Login successful
+            // Store the user for its reference point
+            userManager.setCurrentUser(user);
+            // Alert the user of Login success
             showAlert(AlertType.INFORMATION, "Login Success", "Login successful.");
+            // Move to main page here
+            // Seems redundant but this proves that the userdata is now retrievable from the userManager
+            User testuser = userManager.getCurrentUser();
+            testuser.getUserId();
 
-            // Something happens
-            user.IHaveBeenAccessed();
 
         } else {
             // Login failed

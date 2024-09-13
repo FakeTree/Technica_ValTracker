@@ -23,7 +23,6 @@ public class User {
         this.riotId = riotId;
         this.password = password;
         this.email = email;
-        this.isLoggedIn = false;
         this.userId = userId;
         this.region = region;
 

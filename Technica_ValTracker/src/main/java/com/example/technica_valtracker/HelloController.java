@@ -1,13 +1,12 @@
 package com.example.technica_valtracker;
 
-
-
 import com.example.technica_valtracker.api.ResponseBody;
-import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import com.example.technica_valtracker.utils.PasswordUtils;
+import com.example.technica_valtracker.utils.Validation;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.fxml.FXMLLoader;
@@ -24,9 +23,9 @@ import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static com.example.technica_valtracker.utils.Deserialiser.*;
+import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequestUrl;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -87,11 +86,32 @@ public class HelloController {
         League soloLeague = null;
         League flexLeague = null;
 
+        Champion baseChampion = new Champion();
+        Champion firstChampion;
+        Champion secondChampion = new Champion();
+        Champion thirdChampion = new Champion();
+
         // Placeholder values for testing.
 //        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj7A";
-        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj"; // Broken PUUID
+        String puuid  = "B_BHDZwmQBwqszCtpjEHiTq1zZrcQZicLGyGhbA3M8jCk8WFRGGqoAA_uUc0vMzaVRBt7nZ_i_UMhA"; // Broken PUUID
         String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
-        String region = "na1";
+        String region = "euw1";
+
+        String url = buildChampionRequestUrl(puuid, region);
+
+        ResponseBody championQuery = baseChampion.getChampionData(puuid, region, url, Constants.requestHeaders);
+
+        if (championQuery.isError()) {
+            System.out.print(championQuery.getMessage().getDetail());
+        }
+        else {
+            Champion[] champions = getChampionArrayFromJson(championQuery.getJson());
+            // champions[0] = [ { championId, champion points } ]
+            firstChampion = champions[0];
+            firstChampion.setChampionInfo();
+            System.out.println(firstChampion.getChampionName() + "\n" +
+                    firstChampion.getChampionIconLink());
+        }
 
 //        // Get summoner data
 //        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
@@ -105,27 +125,27 @@ public class HelloController {
 //            getSummonerFromJson(summonerQuery.getJson(), summoner);
 //            System.out.println(summoner.getSummonerId());
 //        }
-
-        String leagueJson = baseLeague.getLeagueData(sumId, region);
-        League[] leagues = getLeagueArrayFromJson(leagueJson);
-
-        if (leagues.length == 0) {
-            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
-            System.out.println(error.getDetail());
-        }
-        else {
-            for (League league : leagues) {
-                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
-                    flexLeague = league;
-                }
-                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
-                    soloLeague = league;
-                }
-            }
-        }
-
-        soloLeague.setWinrate();
-        System.out.println(soloLeague.getWinrate());
+//
+//        String leagueJson = baseLeague.getLeagueData(sumId, region);
+//        League[] leagues = getLeagueArrayFromJson(leagueJson);
+//
+//        if (leagues.length == 0) {
+//            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
+//            System.out.println(error.getDetail());
+//        }
+//        else {
+//            for (League league : leagues) {
+//                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
+//                    flexLeague = league;
+//                }
+//                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
+//                    soloLeague = league;
+//                }
+//            }
+//        }
+//
+//        soloLeague.setWinrate();
+//        System.out.println(soloLeague.getWinrate());
     }
 
     @FXML
@@ -229,6 +249,7 @@ public class HelloController {
         // Print the result
         if (success) {
             showAlert(AlertType.INFORMATION, "Registration Success", "User successfully registered.");
+            // TODO: NAVIGATE TO DASHBOARD SCREEN FROM HERE
             goToPreviousScene(event);
         } else {
             // Note: May want a better error system then above. if this error is reached it almost certainly is a riotID conflict

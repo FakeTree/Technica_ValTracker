@@ -2,15 +2,10 @@ package com.example.technica_valtracker;
 
 
 import com.example.technica_valtracker.db.DbConnection;
-import com.example.technica_valtracker.db.dao.*;
-import com.example.technica_valtracker.db.model.League;
-import com.example.technica_valtracker.db.model.User;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import com.example.technica_valtracker.utils.PasswordUtils;
-import com.example.technica_valtracker.Validation;
 
 import java.io.IOException;
 

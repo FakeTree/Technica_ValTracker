@@ -1,4 +1,5 @@
-package com.example.technica_valtracker;
+package com.example.technica_valtracker.utils;
+import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
@@ -7,14 +8,14 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.regex.Pattern;
 import org.json.JSONObject;
 
 import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
 
-/// Validates given strings / objects to ensure they are legal
+/**
+ * Collection of functions that help to validate user input.
+ */
 public class Validation {
 
     /// REGEX ///
@@ -35,10 +36,6 @@ public class Validation {
     // Riot ID Split
     private static final String RIOT_ID_REGEX_SPLIT = "^(.*?)(#(.*))?$";
     private static final Pattern RIOT_ID_PATTERN_SPLIT = Pattern.compile(RIOT_ID_REGEX_SPLIT);
-
-
-
-
 
 
     /// VALIDATION METHODS ///
@@ -90,10 +87,12 @@ public class Validation {
         String userName = splitRiotID[0];
         String tagLine = splitRiotID[1]; // May be null if not provided
 
-        ResponseBody responseBody = getAccountByRiotId(userName,tagLine);
+        String url = URLBuilder.buildAccountRequestUrL(userName, tagLine);
+
+        ResponseBody responseBody = getAccountByRiotId(userName,tagLine, url, Constants.requestHeaders);
 
         if (responseBody.isError()) {
-            // The RiotID doesnt exist or there is an API issue (Check your key!)
+            // The RiotID doesn't exist or there is an API issue (Check your key!)
             System.out.println("Error: " + responseBody.getMessage());
             return null;
         } else {
@@ -106,9 +105,8 @@ public class Validation {
 
     }
 
-    public static ResponseBody getAccountByRiotId(String userName, String tagLine) throws IOException {
+    public static ResponseBody getAccountByRiotId(String userName, String tagLine, String url, String[] headers) throws IOException {
         String json;
-        String requestUrl = "https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/" + userName + "/" + tagLine;
 
         // Set up HTTP client
         OkHttpClient client = new OkHttpClient.Builder()
@@ -117,8 +115,8 @@ public class Validation {
 
         // Build GET request
         Request request = new Request.Builder()
-                .header("X-Riot-Token", Constants.ANNETTE_RIOT_KEY)
-                .url(requestUrl)
+                .header("X-Riot-Token", Constants.RIOT_API_KEY)
+                .url(url)
                 .build();
 
         // Send request to client

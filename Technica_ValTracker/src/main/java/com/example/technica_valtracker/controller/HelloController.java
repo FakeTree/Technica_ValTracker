@@ -273,7 +273,7 @@ public class HelloController {
     private void onLoginButtonClick(ActionEvent event) {
         try {
             // Load the new scene from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage using the event source
@@ -301,7 +301,7 @@ public class HelloController {
     private void onRegButtonClick(ActionEvent event) {
         try {
             // Load the new scene from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("register-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("register-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage using the event source

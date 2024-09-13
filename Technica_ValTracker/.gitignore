@@ -3,6 +3,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+### Project Files ###
+src/main/java/com/example/technica_valtracker/Constants.java
+
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
@@ -35,4 +38,8 @@ build/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Store!/src/main/test/ApiRequestTestInterceptor.java
+!/src/main/java/com/example/technica_valtracker/Constants.java
+!/src/main/java/com/example/technica_valtracker/Constants.java
+!/src/main/java/com/example/technica_valtracker/Constants.java
+!/src/main/java/com/example/technica_valtracker/Constants.java

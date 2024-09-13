@@ -26,7 +26,6 @@ public class User {
     private String riotId;
     private String password;
     private String email;
-    private Boolean isLoggedIn;
     @JsonAlias("puuid")
     private String userId;
     private String region;
@@ -37,7 +36,6 @@ public class User {
         this.riotId = riotId;
         this.password = password;
         this.email = email;
-        this.isLoggedIn = false;
         this.userId = userId;
         this.region = region;
 
@@ -83,7 +81,6 @@ public class User {
     /// Placeholder for a 'do something' after login
     public void IHaveBeenAccessed() {
         System.out.println("I have been accessed! My email is " + email);
-        this.isLoggedIn = true;
     }
 
     // Override toString() for easy debugging
@@ -94,7 +91,6 @@ public class User {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", userID='" + userId + '\'' +
-                ", Is logged in ='" + isLoggedIn + '\'' +
                 ", Region ='" + region + '\'' +
                 '}';
     }

@@ -16,6 +16,8 @@ public class UserManager {
     // The single instance of UserManager
     private static UserManager instance;
     private UserDAO userDAO;
+    // The currently logged in current user
+    private User currentUser;
 
     // Others
     private List<User> userList;
@@ -25,6 +27,7 @@ public class UserManager {
     private UserManager() {
         this.userList = new ArrayList<>();
         this.userDAO = new UserDAO();
+        this.currentUser = null;
 
         // Placeholder to load users on launch
         loadUsersFromDB();
@@ -56,6 +59,12 @@ public class UserManager {
         userDAO.addNewUser(user);
         return true; // User successfully added
     }
+
+    // Getter setter for currentUser
+    public User getCurrentUser() {
+        return currentUser;
+    }
+    public void setCurrentUser(User user) {this.currentUser = user; }
 
     // Remove a user by RiotID
     public void removeUserByRiotID(String riotID) {

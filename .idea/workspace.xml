@@ -4,16 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added">
+    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/UserManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Validation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/module-info.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,11 +43,20 @@
       <option name="project" value="LOCAL" />
       <updated>1726107738975</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)">
+      <option name="closed" value="true" />
+      <created>1726117623239</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1726117623239</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />
+    <MESSAGE value="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)" />
+    <option name="LAST_COMMIT_MESSAGE" value="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)" />
   </component>
 </project>

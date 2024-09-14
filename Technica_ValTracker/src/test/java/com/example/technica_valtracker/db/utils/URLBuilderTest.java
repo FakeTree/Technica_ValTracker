@@ -1,10 +1,9 @@
 package com.example.technica_valtracker.db.utils;
 
 import static com.example.technica_valtracker.utils.URLBuilder.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+import static org.junit.Assert.assertEquals;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 public class URLBuilderTest {
 

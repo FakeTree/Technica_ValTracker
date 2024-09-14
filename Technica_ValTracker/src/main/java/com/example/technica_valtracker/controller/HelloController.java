@@ -9,6 +9,7 @@ import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import com.example.technica_valtracker.utils.PasswordUtils;
+import com.example.technica_valtracker.utils.URLBuilder;
 import com.example.technica_valtracker.utils.Validation;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -22,7 +23,9 @@ import javafx.scene.control.Alert.AlertType;
 
 
 import java.io.IOException;
+import java.util.Objects;
 
+import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
 import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequestUrl;
 
@@ -82,75 +85,46 @@ public class HelloController {
     // Button events
     @FXML
     private void onAPIMagicButtonClick(ActionEvent event) throws IOException {
-        // Other instantiations:
-        // new summoner
-        // new match_history
-        // new champion mastery
+        // Only used to test API requests inside JavaFX.
+        User testUser = userManager.getUserByRiotID("Lunatown#EUNE");
+        String region = testUser.getRegion().toLowerCase();
         Summoner summoner = new Summoner();
-        League baseLeague = new League();
-        League soloLeague = null;
-        League flexLeague = null;
 
-        Champion baseChampion = new Champion();
-        Champion firstChampion;
-        Champion secondChampion = new Champion();
-        Champion thirdChampion = new Champion();
+        // Summoner test
+        String summonerRequestUrl = URLBuilder.buildSummonerRequestUrl(testUser.getUserId(), region);
 
-        // Placeholder values for testing.
-//        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj7A";
-        String puuid  = "B_BHDZwmQBwqszCtpjEHiTq1zZrcQZicLGyGhbA3M8jCk8WFRGGqoAA_uUc0vMzaVRBt7nZ_i_UMhA"; // Broken PUUID
-        String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
-        String region = "euw1";
+        ResponseBody summonerQuery = getQuery(summonerRequestUrl, Constants.requestHeaders);
 
-        String url = buildChampionRequestUrl(puuid, region);
+        if (summonerQuery.isError()) {
+            System.out.println(summonerQuery.getMessage().getDetail());
+        }
+        else {
+           getSummonerFromJson(summonerQuery.getJson(), summoner);
+        }
 
-        ResponseBody championQuery = baseChampion.getChampionData(puuid, region, url, Constants.requestHeaders);
+        // League test
+        String leagueRequestUrl = URLBuilder.buildLeagueRequestUrl(summoner.getSummonerId(), region);
+
+        ResponseBody leagueQuery = getQuery(leagueRequestUrl, Constants.requestHeaders);
+
+        if (leagueQuery.isError()) {
+            System.out.println(leagueQuery.getMessage().getDetail());
+        }
+        else {
+            League[] leagues = getLeagueArrayFromJson(leagueQuery.getJson());
+        }
+
+        // Champion test
+        String championRequestUrl = URLBuilder.buildChampionRequestUrl(testUser.getUserId(), region);
+
+        ResponseBody championQuery = getQuery(championRequestUrl, Constants.requestHeaders);
 
         if (championQuery.isError()) {
-            System.out.print(championQuery.getMessage().getDetail());
+            System.out.println(championQuery.getMessage().getDetail());
         }
         else {
             Champion[] champions = getChampionArrayFromJson(championQuery.getJson());
-            // champions[0] = [ { championId, champion points } ]
-            firstChampion = champions[0];
-            firstChampion.setChampionInfo();
-            System.out.println(firstChampion.getChampionName() + "\n" +
-                    firstChampion.getChampionIconLink());
         }
-
-//        // Get summoner data
-//        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
-//
-//        // Update Summoner instance if no error received
-//        if (summonerQuery.isError()) {
-//            // Get error message
-//            System.out.println(summonerQuery.getMessage().getDetail());
-//        }
-//        else {
-//            getSummonerFromJson(summonerQuery.getJson(), summoner);
-//            System.out.println(summoner.getSummonerId());
-//        }
-//
-//        String leagueJson = baseLeague.getLeagueData(sumId, region);
-//        League[] leagues = getLeagueArrayFromJson(leagueJson);
-//
-//        if (leagues.length == 0) {
-//            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
-//            System.out.println(error.getDetail());
-//        }
-//        else {
-//            for (League league : leagues) {
-//                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
-//                    flexLeague = league;
-//                }
-//                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
-//                    soloLeague = league;
-//                }
-//            }
-//        }
-//
-//        soloLeague.setWinrate();
-//        System.out.println(soloLeague.getWinrate());
     }
 
     @FXML

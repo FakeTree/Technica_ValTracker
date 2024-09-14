@@ -118,8 +118,9 @@ public class DashboardController {
     @FXML
     private Button flexModeButton;
 
-
-
+    // Boxes
+    @FXML
+    private VBox statVBox;
 
 
     //MenuBar Button Methods
@@ -161,6 +162,12 @@ public class DashboardController {
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
 
+    }
+
+    // Pre-load api data
+    @FXML
+    protected void initialize() {
+        statVBox.setVisible(false);
     }
 
     //replace values with those from solo mode

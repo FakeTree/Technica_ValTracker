@@ -18,7 +18,7 @@ public class MatchTest {
     MockWebServer server;
 
     @Test
-    public void getChampionByPuuid_whenResponseBodyHasErrorStatusCode_shouldReturnResponseBodyWithErrorCodeAndDetail() throws IOException {
+    public void getMatchsByPuuid_whenResponseBodyHasErrorStatusCode_shouldReturnResponseBodyWithErrorCodeAndDetail() throws IOException {
         server = new MockWebServer();
         server.start();
         HttpUrl requestUrl = server.url("/lol/league/v4/entries/by-summoner/");
@@ -40,7 +40,7 @@ public class MatchTest {
     }
 
     @Test
-    public void getChampionByPuuid_whenResponseIsValid_shouldReturnResponseBodyWithJSONStringAndErrorIsFalse() throws IOException {
+    public void getMatchsByPuuid_whenResponseIsValid_shouldReturnResponseBodyWithJSONStringAndErrorIsFalse() throws IOException {
         server = new MockWebServer();
         server.start();
         String url = String.format("/lol/match/v5/matches/by-puuid/%s/ids",

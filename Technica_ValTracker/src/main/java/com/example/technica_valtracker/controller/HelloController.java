@@ -23,11 +23,9 @@ import javafx.scene.control.Alert.AlertType;
 
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
-import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequestUrl;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -164,12 +162,6 @@ public class HelloController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboard-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
             stage.setScene(scene);
-
-            // Seems redundant but this proves that the userdata is now retrievable from the userManager
-            User testuser = userManager.getCurrentUser();
-            testuser.getUserId();
-
-
         } else {
             // Login failed
             // Note: Deliberately ambiguous
@@ -275,6 +267,7 @@ public class HelloController {
             stage.setScene(newScene);
             stage.show();
         } catch (IOException e) {
+            // TODO better error handling
             e.printStackTrace();
         }
     }
@@ -303,6 +296,7 @@ public class HelloController {
             stage.setScene(newScene);
             stage.show();
         } catch (IOException e) {
+            // TODO better error handling
             e.printStackTrace();
         }
 

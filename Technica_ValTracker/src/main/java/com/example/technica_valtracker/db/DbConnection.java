@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+// TODO better error handling
 public class DbConnection {
     private static Connection instance = null;
 

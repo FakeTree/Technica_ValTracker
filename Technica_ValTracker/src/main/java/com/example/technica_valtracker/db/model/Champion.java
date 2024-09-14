@@ -15,9 +15,6 @@ public class Champion {
     private int wins;
     private int losses;
 
-    // url template for displaying the champion's icon
-    private final String imgBaseUrl = "https://ddragon.leagueoflegends.com/cdn/14.18.1/img/champion/";
-
     public Champion() {}
 
     /**
@@ -28,6 +25,8 @@ public class Champion {
         String[] championInfo = getChampionById(championId);
 
         // Check if an alternate Icon link reference is provided in the returned array
+        // url template for displaying the champion's icon
+        String imgBaseUrl = "https://ddragon.leagueoflegends.com/cdn/14.18.1/img/champion/";
         if (championInfo.length > 1) {
             championName = championInfo[0];
             championIconLink = imgBaseUrl + championInfo[1] + ".png";

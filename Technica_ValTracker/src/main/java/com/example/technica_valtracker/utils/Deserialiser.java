@@ -41,8 +41,7 @@ public class Deserialiser {
      * @throws JsonProcessingException
      */
     public static League[] getLeagueArrayFromJson(String json) throws JsonProcessingException {
-        League[] leagues = objectMapper.readValue(json, League[].class);
-        return leagues;
+        return objectMapper.readValue(json, League[].class);
     }
 
     public static Champion[] getChampionArrayFromJson(String json) throws JsonProcessingException {

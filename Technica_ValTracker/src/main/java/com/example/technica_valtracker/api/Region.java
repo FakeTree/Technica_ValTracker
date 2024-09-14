@@ -1,5 +1,4 @@
 package com.example.technica_valtracker.api;
-import javafx.fxml.FXML;
 
 public enum Region
 {
@@ -21,7 +20,7 @@ public enum Region
     TW2("tw2"),
     VN2("vn2");
 
-    private String region;
+    private final String region;
 
     Region(String reg) {
         this.region = reg;

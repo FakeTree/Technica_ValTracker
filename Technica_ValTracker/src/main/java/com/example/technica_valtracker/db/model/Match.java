@@ -1,9 +1,23 @@
 package com.example.technica_valtracker.db.model;
 
+import com.example.technica_valtracker.api.ResponseBody;
+import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import java.util.concurrent.*;
+
+import java.io.IOException;
+
+import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
+
 public class Match {
     private String matchId;
+    private String[] matchIds;
     private long date;
     private String gameMode;
+    private String url;
 
     private int queueId;
     private long gameDuration;
@@ -19,9 +33,64 @@ public class Match {
     private float creepScore;
     private boolean win;
 
-    public String getMatchId() {
-        return matchId;
+    public Match(String puuid, String region, String url, String[] headers) throws IOException {
+        getMatchListByPUUID(puuid, region, url, headers).await();
+        foreach()
     }
+
+    private void getMatchListByPUUID(String puuid, String region, String url, String[] headers) throws IOException {
+        String json;
+
+        // Set up HTTP client
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new ErrorResponseInterceptor())
+                .build();
+
+        // Build GET request
+        Request request = new Request.Builder()
+                .header(headers[0], headers[1])
+                .url(url)
+                .build();
+
+        // Send request to client
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                ErrorMessage error = getErrorMessageFromJson(response.body().string());
+            }
+            // Parse successful response as string
+            this.setMatchIds(response.body().string().split(","));
+        }
+    }
+
+    private ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
+        String json;
+
+        // Set up HTTP client
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(new ErrorResponseInterceptor())
+                .build();
+
+        // Build GET request
+        Request request = new Request.Builder()
+                .header(headers[0], headers[1])
+                .url(url)
+                .build();
+
+        // Send request to client
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                ErrorMessage error = getErrorMessageFromJson(response.body().string());
+            }
+            // Parse successful response as string
+            this.setMatchIds(response.body().string().split(","));
+        }
+
+        return new ResponseBody("0", false);
+    }
+
+    public String[] getMatchIds(){ return matchIds; }
+    private void setMatchIds(String[] matchIds){ this.matchIds = matchIds; }
+
     public void setMatchId(String matchId) {
         this.matchId = matchId;
     }

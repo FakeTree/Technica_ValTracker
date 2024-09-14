@@ -50,9 +50,7 @@ public class User {
         this.email = email;
     }
 
-    public String getUserId() {
-        return userId;
-    }
+    public String getUserId() { return userId; }
     public void setUserId(String userid) {
         this.userId = userid;
     }

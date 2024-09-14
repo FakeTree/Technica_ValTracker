@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -15,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="parentVBox" prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.DashboardController">
+<VBox fx:id="parentVBox" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.DashboardController">
    <children>
       <MenuBar fx:id="menuBar">
         <menus>
@@ -41,7 +40,7 @@
             </Menu>
         </menus>
       </MenuBar>
-      <VBox fx:id="pageBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1024.0">
+      <VBox fx:id="pageBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0">
          <children>
             <HBox fx:id="pageHeaderHBox" prefHeight="70.0" prefWidth="200.0">
                <children>
@@ -61,40 +60,76 @@
                   <Insets left="30.0" />
                </padding>
             </HBox>
-            <StackPane fx:id="stackPane" prefHeight="500.0" prefWidth="100.0">
+            <StackPane fx:id="stackPane" prefHeight="650.0" prefWidth="100.0">
                <VBox.margin>
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
                <children>
-                  <Pane fx:id="statLoadPane" prefHeight="200.0" prefWidth="200.0">
+                  <Pane fx:id="statLoadPane" prefHeight="200.0" prefWidth="200.0" visible="false">
                      <children>
                         <Label fx:id="statLoadingLabel" layoutX="32.0" layoutY="34.0" text="Loading data">
                            <font>
                               <Font name="System Italic" size="24.0" />
                            </font>
                         </Label>
-                        <ProgressBar fx:id="statLoadProgressBar" layoutX="32.0" layoutY="78.0" prefHeight="20.0" prefWidth="200.0" progress="0.0" />
+                        <ProgressBar fx:id="statLoadProgressBar" layoutX="32.0" layoutY="78.0" prefHeight="20.0" prefWidth="200.0" />
                      </children>
                   </Pane>
-                  <VBox fx:id="statVBox" prefHeight="500.0" prefWidth="100.0" visible="false">
+                  <VBox fx:id="statVBox" visible="false" prefHeight="500.0" prefWidth="100.0">
                      <children>
-                        <ButtonBar fx:id="statButtonBar" buttonMinWidth="50.0" prefHeight="20.0" prefWidth="1048.0">
-                          <buttons>
-                              <Label fx:id="buttonBarLabel" text="Display stats for:">
+                        <HBox fx:id="modeButtonGroupHBox" alignment="BASELINE_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                           <children>
+                                <ToggleButton fx:id="soloToggleButton" toggleGroup="$modeToggle" minHeight="30.0" minWidth="0.0" text="Ranked Solo">
                                  <font>
-                                    <Font size="18.0" />
+                                    <Font size="14.0" />
+                                 </font>
+                                </ToggleButton>
+                                <ToggleButton fx:id="flexToggleButton" toggleGroup="$modeToggle" minHeight="30.0" text="Ranked Flex">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                </ToggleButton>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="30.0" right="30.0" top="20.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <HBox fx:id="accountHBox" prefHeight="35.0" prefWidth="200.0">
+                           <VBox.margin>
+                              <Insets left="30.0" right="30.0" top="15.0" />
+                           </VBox.margin>
+                           <children>
+                              <Pane fx:id="accountIconImagePane" maxHeight="35.0" maxWidth="35.0" minHeight="35.0" minWidth="35.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black;">
+                                 <children>
+                                    <ImageView fx:id="accountIconImageView" fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <Label fx:id="accountNameText" maxWidth="240.0" minWidth="240.0" prefHeight="30.0" prefWidth="240.0" text="PlayerName#Tag">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="10.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="accountLevelLabel" text="Level">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets top="6.0" />
+                                 </padding>
+                              </Label>
+                              <Label fx:id="accountLevelValue" text="0000">
+                                 <padding>
+                                    <Insets left="5.0" />
+                                 </padding>
+                                 <font>
+                                    <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Button fx:id="soloModeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#onSoloModeButtonClick" text="Solo Ranked" />
-                            <Button fx:id="flexModeButton" mnemonicParsing="false" onAction="#onFlexModeButtonClick" text="Flex Ranked" />
-                          </buttons>
-                           <padding>
-                              <Insets right="10.0" top="5.0" />
-                           </padding>
-                           <VBox.margin>
-                              <Insets left="30.0" right="30.0" />
-                           </VBox.margin>
-                        </ButtonBar>
+                           </children>
+                        </HBox>
                         <HBox fx:id="generalStatHBox" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                            <children>
                               <ImageView fx:id="rankBadgeImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
@@ -197,7 +232,7 @@
                               </HBox>
                            </children>
                            <VBox.margin>
-                              <Insets left="30.0" right="30.0" top="25.0" />
+                              <Insets left="30.0" right="30.0" top="5.0" />
                            </VBox.margin>
                         </HBox>
                         <HBox fx:id="detailedStatHBox" prefHeight="450.0" prefWidth="200.0">

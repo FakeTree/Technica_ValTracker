@@ -8,6 +8,7 @@ module com.example.technica_valtracker {
     requires com.fasterxml.jackson.databind;
     requires org.json;
     requires atlantafx.base;
+    requires annotations;
 
     opens com.example.technica_valtracker to javafx.fxml;
     exports com.example.technica_valtracker;

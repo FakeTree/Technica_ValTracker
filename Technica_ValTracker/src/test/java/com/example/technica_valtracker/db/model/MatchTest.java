@@ -21,7 +21,7 @@ public class MatchTest {
     public void getChampionByPuuid_whenResponseBodyHasErrorStatusCode_shouldReturnResponseBodyWithErrorCodeAndDetail() throws IOException {
         server = new MockWebServer();
         server.start();
-        HttpUrl requestUrl = server.url("/lol/match/v5/matches/by-puuid/%d/ids");
+        HttpUrl requestUrl = server.url("/lol/league/v4/entries/by-summoner/");
         server.enqueue(new MockResponse().setResponseCode(404)
                 .setBody("{\"status\": {\"message\":\"Data not found\",\"status_code\":404}"));
 
@@ -31,10 +31,10 @@ public class MatchTest {
 
         String[] reqHeaders = new String[] {"X-Riot-Token", "API_KEY"};
 
-        // ResponseBody responseBody = match.getChampionData("puuid", "region", String.valueOf(requestUrl), reqHeaders);
+        ResponseBody responseBody = match.getMatchListByPUUID("summonerId", "region", String.valueOf(requestUrl), reqHeaders);
 
-        // assertEquals(responseBody.getMessage().getStatus(), body.getMessage().getStatus());
-        // assertEquals(responseBody.getMessage().getDetail(), body.getMessage().getDetail());
+        assertEquals(responseBody.getMessage().getStatus(), body.getMessage().getStatus());
+        assertEquals(responseBody.getMessage().getDetail(), body.getMessage().getDetail());
 
         server.shutdown();
     }
@@ -43,19 +43,25 @@ public class MatchTest {
     public void getChampionByPuuid_whenResponseIsValid_shouldReturnResponseBodyWithJSONStringAndErrorIsFalse() throws IOException {
         server = new MockWebServer();
         server.start();
-        HttpUrl requestUrl = server.url("/lol/champion-mastery/v4/champion-masteries/by-puuid/");
+        String url = String.format("/lol/match/v5/matches/by-puuid/%s/ids",
+                RandomStringUtils.randomAlphanumeric(40));
+        HttpUrl requestUrl = server.url(url);
 
-        final String body = String.format("{\"puuid\":\"%s\",\"championId\":\"%s\",\"championLevel\": \"%s\"}",
-                RandomStringUtils.randomAlphanumeric(40), RandomStringUtils.randomNumeric(3),
-                RandomStringUtils.randomNumeric(4));
+        final String body = String.format("[\n" +
+                        "\"OC1_%s\",\n" +
+                        "\"OC1_%s\",\n" +
+                        "\"OC1_%s\"\n]",
+                RandomStringUtils.randomNumeric(9),
+                RandomStringUtils.randomNumeric(9),
+                RandomStringUtils.randomNumeric(9));
         String[] reqHeaders = new String [] {"X-Riot-Token", "API-KEY"};
 
-        Summoner summoner = new Summoner();
+        Match match = new Match();
         ResponseBody testResponse = new ResponseBody(body, false);
 
         server.enqueue(new MockResponse().setResponseCode(200).setBody(body));
 
-        ResponseBody responseBody = summoner.getSummonerByPuuid("puuid", "region", String.valueOf(requestUrl), reqHeaders);
+        ResponseBody responseBody = match.getMatchListByPUUID("summonerId", "region", String.valueOf(requestUrl), reqHeaders);
         assertEquals(responseBody.getJson().getClass(), testResponse.getJson().getClass());
         assertFalse(responseBody.isError());
         server.shutdown();

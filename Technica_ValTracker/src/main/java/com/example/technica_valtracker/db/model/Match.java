@@ -15,9 +15,11 @@ import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessage
 public class Match {
     private String matchId;
     private String[] matchIds;
+    private boolean completeQuery;
     private long date;
     private String gameMode;
     private String url;
+    private ErrorMessage errorMessage;
 
     private int queueId;
     private long gameDuration;
@@ -33,12 +35,9 @@ public class Match {
     private float creepScore;
     private boolean win;
 
-    public Match(String puuid, String region, String url, String[] headers) throws IOException {
-        getMatchListByPUUID(puuid, region, url, headers).await();
-        foreach()
-    }
+    // --------------------------------------------------------------------------------
 
-    private void getMatchListByPUUID(String puuid, String region, String url, String[] headers) throws IOException {
+    public ResponseBody getMatchListByPUUID(String puuid, String region, String url, String[] headers) throws IOException {
         String json;
 
         // Set up HTTP client
@@ -54,15 +53,19 @@ public class Match {
 
         // Send request to client
         try (Response response = client.newCall(request).execute()) {
+            // If response returned status code other than 200, return array with error message JSON
             if (!response.isSuccessful()) {
                 ErrorMessage error = getErrorMessageFromJson(response.body().string());
+                return new ResponseBody(error);
             }
             // Parse successful response as string
-            this.setMatchIds(response.body().string().split(","));
+            json = response.body().string();
         }
+        setMatchIds(json.trim().split(","));
+        return new ResponseBody(json, false);
     }
 
-    private ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
+    public ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
         String json;
 
         // Set up HTTP client
@@ -78,15 +81,18 @@ public class Match {
 
         // Send request to client
         try (Response response = client.newCall(request).execute()) {
+            // If response returned status code other than 200, return array with error message JSON
             if (!response.isSuccessful()) {
                 ErrorMessage error = getErrorMessageFromJson(response.body().string());
+                return new ResponseBody(error);
             }
             // Parse successful response as string
-            this.setMatchIds(response.body().string().split(","));
+            json = response.body().string();
         }
-
-        return new ResponseBody("0", false);
+        return new ResponseBody(json, false);
     }
+
+    // --------------------------------------------------------------------------------
 
     public String[] getMatchIds(){ return matchIds; }
     private void setMatchIds(String[] matchIds){ this.matchIds = matchIds; }
@@ -178,4 +184,7 @@ public class Match {
     public void setWin(boolean win) {
         this.win = win;
     }
+
+    public ErrorMessage getMatchErrorMessage(){ return errorMessage; }
+    public void setErrorMessage(ErrorMessage error) { errorMessage = error; }
 }

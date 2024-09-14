@@ -1,0 +1,538 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="parentVBox" prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.Match_HistoryController">
+    <children>
+        <MenuBar fx:id="menuBar">
+            <menus>
+                <Menu mnemonicParsing="false" text="Home">
+                    <items>
+                        <MenuItem fx:id="Home_Menu" mnemonicParsing="false" text="Home" onAction="#OnHomeMenuClick" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Match History">
+                    <items>
+                        <MenuItem fx:id="Match_History_Menu" mnemonicParsing="false" onAction="#OnMatchHistoryMenu" text="Match History" />
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Friends">
+                    <items>
+                        <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" text="Friends" onAction="#OnFriendsMenuClick"/>
+                    </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Account">
+                    <items>
+                        <MenuItem fx:id="Account_Menu" mnemonicParsing="false" text="Account" onAction="#OnAccountMenuClick"/>
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+        <VBox fx:id="pageBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1024.0">
+            <children>
+                <HBox fx:id="pageHeaderHBox" prefHeight="70.0" prefWidth="200.0">
+                    <children>
+                        <Label fx:id="HistoryPageHeaderLabel" prefHeight="48.0" prefWidth="902.0" text="Match History">
+                            <font>
+                                <Font name="Arial Bold" size="42.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets top="20.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="30.0" right="30.0" top="20.0" />
+                    </VBox.margin>
+                    <padding>
+                        <Insets left="30.0" />
+                    </padding>
+                </HBox>
+                <VBox fx:id="statVBox" prefHeight="500.0" prefWidth="100.0">
+                    <children>
+                        <ButtonBar fx:id="statButtonBar" buttonMinWidth="50.0" prefHeight="20.0" prefWidth="1048.0">
+                            <buttons>
+                                <Label fx:id="buttonBarLabel" text="Display stats for:">
+                                    <font>
+                                        <Font size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button fx:id="soloModeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Solo Ranked" />
+                                <Button fx:id="flexModeButton" mnemonicParsing="false" text="Flex Ranked" />
+                            </buttons>
+                            <padding>
+                                <Insets bottom="10.0" right="10.0" top="5.0" />
+                            </padding>
+                            <VBox.margin>
+                                <Insets left="30.0" right="30.0" />
+                            </VBox.margin>
+                        </ButtonBar>
+                  <VBox prefHeight="411.0" prefWidth="967.0">
+                     <children>
+                        <Pane prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue; -fx-border-color: black;">
+                           <children>
+                              <Label fx:id="HistoryMatch1_Win" layoutX="80.0" layoutY="10.0" text="RESULT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_Mode" layoutX="89.0" layoutY="38.0" text="MODE">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane  layoutX="174.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                 <children>
+                                    <ImageView fx:id="HistoryMatch1_ChampImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <Label  layoutX="293.0" layoutY="7.0" text="KDA">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_KDA" layoutX="268.0" layoutY="34.0" text="00/00/00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="381.0" layoutY="7.0" text="KD">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_KD" layoutX="373.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="424.0" layoutY="7.0" text="CS/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_CSpermin" layoutX="435.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="23.0" layoutY="10.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_Date" layoutX="11.0" layoutY="38.0" text="1/1/2024">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="608.0" layoutY="7.0" text="Building Damage">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_Goldpermin" layoutX="527.0" layoutY="35.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="507.0" layoutY="7.0" text="Gold/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_BuildingDamage" layoutX="660.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="779.0" layoutY="7.0" text="Vision Score">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch1_VisionScore" layoutX="810.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane  prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue; -fx-border-color: black;">
+                           <children>
+                              <Label fx:id="HistoryMatch2_Win" layoutX="80.0" layoutY="10.0" text="RESULT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_Mode" layoutX="89.0" layoutY="38.0" text="MODE">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="174.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                 <children>
+                                    <ImageView fx:id="HistoryMatch2_ChampImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <Label layoutX="293.0" layoutY="7.0" text="KDA">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_KDA" layoutX="268.0" layoutY="34.0" text="00/00/00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="381.0" layoutY="7.0" text="KD">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_KD" layoutX="373.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="424.0" layoutY="7.0" text="CS/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_CSpermin" layoutX="435.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="23.0" layoutY="10.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_Date" layoutX="11.0" layoutY="38.0" text="1/1/2024">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="608.0" layoutY="7.0" text="Building Damage">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_Goldpermin" layoutX="527.0" layoutY="35.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="507.0" layoutY="7.0" text="Gold/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_BuildingDamage" layoutX="660.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="779.0" layoutY="7.0" text="Vision Score">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch2_VisionScore" layoutX="810.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue; -fx-border-color: black;">
+                           <children>
+                              <Label fx:id="HistoryMatch3_Win" layoutX="80.0" layoutY="10.0" text="RESULT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_Mode" layoutX="89.0" layoutY="38.0" text="MODE">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="174.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                 <children>
+                                    <ImageView fx:id="HistoryMatch3_ChampImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <Label layoutX="293.0" layoutY="7.0" text="KDA">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_KDA" layoutX="268.0" layoutY="34.0" text="00/00/00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="381.0" layoutY="7.0" text="KD">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_KD" layoutX="373.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="424.0" layoutY="7.0" text="CS/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_CSpermin" layoutX="435.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="23.0" layoutY="10.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_Date" layoutX="11.0" layoutY="38.0" text="1/1/2024">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="608.0" layoutY="7.0" text="Building Damage">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_Goldpermin" layoutX="527.0" layoutY="35.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="507.0" layoutY="7.0" text="Gold/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_BuildingDamage" layoutX="660.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="779.0" layoutY="7.0" text="Vision Score">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch3_VisionScore" layoutX="810.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue; -fx-border-color: black;">
+                           <children>
+                              <Label fx:id="HistoryMatch4_Win" layoutX="80.0" layoutY="10.0" text="RESULT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_Mode" layoutX="89.0" layoutY="38.0" text="MODE">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="174.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                 <children>
+                                    <ImageView fx:id="HistoryMatch4_ChampImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <Label layoutX="293.0" layoutY="7.0" text="KDA">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_KDA" layoutX="268.0" layoutY="34.0" text="00/00/00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="381.0" layoutY="7.0" text="KD">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_KD" layoutX="373.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="424.0" layoutY="7.0" text="CS/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_CSpermin" layoutX="435.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="23.0" layoutY="10.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_Date" layoutX="11.0" layoutY="38.0" text="1/1/2024">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label  layoutX="608.0" layoutY="7.0" text="Building Damage">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_Goldpermin" layoutX="527.0" layoutY="35.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="507.0" layoutY="7.0" text="Gold/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_BuildingDamage" layoutX="660.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="779.0" layoutY="7.0" text="Vision Score">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch4_VisionScore" layoutX="810.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue;">
+                           <children>
+                              <Label fx:id="HistoryMatch5_Win" layoutX="80.0" layoutY="10.0" text="RESULT">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_Mode" layoutX="89.0" layoutY="38.0" text="MODE">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Pane layoutX="174.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                 <children>
+                                    <ImageView fx:id="HistoryMatch5_ChampImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </Pane>
+                              <Label layoutX="293.0" layoutY="7.0" text="KDA">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_KDA" layoutX="268.0" layoutY="34.0" text="00/00/00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="381.0" layoutY="7.0" text="KD">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_KD" layoutX="373.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="424.0" layoutY="7.0" text="CS/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_CSpermin" layoutX="435.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="23.0" layoutY="10.0" text="Date">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_Date" layoutX="11.0" layoutY="38.0" text="1/1/2024">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="608.0" layoutY="7.0" text="Building Damage">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_Goldpermin" layoutX="527.0" layoutY="35.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="507.0" layoutY="7.0" text="Gold/min">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_BuildingDamage" layoutX="660.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="matchOneCSMinLabel114" layoutX="779.0" layoutY="7.0" text="Vision Score">
+                                 <font>
+                                    <Font name="System Bold" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="HistoryMatch5_VisionScore" layoutX="810.0" layoutY="34.0" text="0.00">
+                                 <font>
+                                    <Font size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+                    </children>
+                    <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                    </VBox.margin>
+                </VBox>
+            </children>
+        </VBox>
+    </children>
+</VBox>

@@ -4,16 +4,15 @@ import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 import static com.example.technica_valtracker.utils.Deserialiser.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
 
 public class DeserialiserTest {
     Random rand = new Random();

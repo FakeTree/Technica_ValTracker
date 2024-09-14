@@ -35,11 +35,14 @@ import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequ
 
 public class HelloController {
 
+
+    ;
     // Access UserManager
     private UserManager userManager = UserManager.getInstance();
 
     // Field for remembering the previous scene
     private Scene previousScene;
+
 
 
 
@@ -76,6 +79,8 @@ public class HelloController {
     // Buttons
     @FXML
     private Button signUpSubmitButton;
+    @FXML
+    private Button LoginsubmitButton;
 
     // Button events
     @FXML
@@ -158,7 +163,7 @@ public class HelloController {
 
 
     @FXML
-    private void LoginButtonClick(ActionEvent event) {
+    private void LoginButtonClick(ActionEvent event) throws IOException {
         // Get the current text from both text fields
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
@@ -184,6 +189,11 @@ public class HelloController {
             // Alert the user of Login success
             showAlert(AlertType.INFORMATION, "Login Success", "Login successful.");
             // Move to main page here
+            Stage stage = (Stage) LoginsubmitButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboard-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+            stage.setScene(scene);
+
             // Seems redundant but this proves that the userdata is now retrievable from the userManager
             User testuser = userManager.getCurrentUser();
             testuser.getUserId();
@@ -259,7 +269,7 @@ public class HelloController {
             showAlert(AlertType.INFORMATION, "Registration Success", "User successfully registered.");
             userManager.setCurrentUser(newUser);
             Stage stage = (Stage) signUpSubmitButton.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("menu-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboard-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
             stage.setScene(scene);
 //            goToPreviousScene(event);

@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -121,6 +122,8 @@ public class DashboardController {
     // Boxes
     @FXML
     private VBox statVBox;
+    @FXML
+    private Pane statLoadPane;
 
 
     //MenuBar Button Methods
@@ -167,7 +170,8 @@ public class DashboardController {
     // Pre-load api data
     @FXML
     protected void initialize() {
-        statVBox.setVisible(false);
+        statLoadPane.setVisible(false);
+        statVBox.setVisible(true);
     }
 
     //replace values with those from solo mode

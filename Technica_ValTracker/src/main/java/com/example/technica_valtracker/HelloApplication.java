@@ -1,6 +1,7 @@
 package com.example.technica_valtracker;
 
 
+import atlantafx.base.theme.PrimerLight;
 import com.example.technica_valtracker.db.DbConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,6 +18,8 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
+        // set theme
+        Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());
         // A singleton UserManager has been used and is therefore self initialized and accessible anywhere.
         // Powerful but might make debugging hard
         UserManager userManager = UserManager.getInstance();

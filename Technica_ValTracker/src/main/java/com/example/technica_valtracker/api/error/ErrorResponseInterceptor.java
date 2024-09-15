@@ -10,9 +10,8 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 
 /**
- * Interceptor for all API request methods that returns a Response object with an ErrorMessage if the request failed,
- * or the original request body if successful.
- * TODO: Dynamic error message based on status code -- maybe done? needs testing.
+ * Intercepts HTTP responses and returns a response body with an ErrorMessage if an error status code was
+ * sent back by the client. Ensures uniformity in the format of error responses.
  */
 public class ErrorResponseInterceptor implements Interceptor {
 

@@ -1,7 +1,7 @@
 package com.example.technica_valtracker.db.model;
 import com.fasterxml.jackson.annotation.*;
 
-import static com.example.technica_valtracker.assets.Champions.getChampionById;
+import static com.example.technica_valtracker.api.constants.Champions.getChampionById;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Champion {

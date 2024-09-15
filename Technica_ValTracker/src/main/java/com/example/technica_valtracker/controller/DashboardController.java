@@ -5,13 +5,13 @@ import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
+import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import com.example.technica_valtracker.utils.URLBuilder;
 import static com.example.technica_valtracker.api.Query.getQuery;
-import static com.example.technica_valtracker.utils.Deserialiser.getLeagueArrayFromJson;
-import static com.example.technica_valtracker.utils.Deserialiser.getSummonerFromJson;
+import static com.example.technica_valtracker.utils.Deserialiser.*;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
@@ -41,22 +41,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Controller for the Dashboard view which displays the player's in-game stats.
+ */
 public class DashboardController {
 
-    // Access UserManager
-    private UserManager userManager = UserManager.getInstance();
-
-    // Thread pool for executing tasks in the background
-    ThreadFactory threadFactory = Executors.defaultThreadFactory();
-    ExecutorService singleThreadExec = Executors.newSingleThreadExecutor(threadFactory);
-    // TODO Consider adding a fixedThreadPool as well to execute multiple queries at once if needed
-    // https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executors.html#newFixedThreadPool-int-java.util.concurrent.ThreadFactory-
-
-    // Object instances
-    League soloLeague;      // Stores the user's Solo mode stats
-    League flexLeague;      // Stores the user's Flex mode stats
-
-    //FXML ELEMENTS
+    /* FXML properties */
 
     //Menu Bar
     @FXML
@@ -173,6 +163,19 @@ public class DashboardController {
     @FXML
     private ProgressBar statLoadProgressBar;
 
+    /* Internal controller properties */
+
+    private UserManager userManager = UserManager.getInstance();
+
+    // Create thread pools for executing API query tasks in background threads
+    int MAX_THREADS = 3;
+    ThreadFactory threadFactory = Executors.defaultThreadFactory();
+    ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
+    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(MAX_THREADS);
+
+    League soloLeague;      // Stores the user's Solo mode stats
+    League flexLeague;      // Stores the user's Flex mode stats
+
     //MenuBar Button Methods
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
@@ -214,6 +217,9 @@ public class DashboardController {
 
     }
 
+    /**
+     * Declares an initialise method that is called just before the scene UI is fully loaded
+     */
     @FXML
     protected void initialize() {
         Platform.runLater(new Runnable() {
@@ -234,7 +240,7 @@ public class DashboardController {
      * and executes the tasks which perform the API requests and injections into the FXML file.
      */
     protected void init() throws IOException {
-        // Show scene
+        // Show loading screen with progress bar
         statLoadPane.setVisible(true);
         statLoadProgressBar.isIndeterminate();
 
@@ -254,9 +260,12 @@ public class DashboardController {
         String puuid = currentUser.getUserId();
         String region = currentUser.getRegion().toLowerCase();
 
-        // Execute the first API query task
+        // Execute the API query Tasks
+        Task<Champion[]> ChampionTask = getChampionTask(puuid, region);
+        fixedThreadPool.submit(ChampionTask);
+
         Task<String> SummonerTask = getSummonerTask(puuid, region, riotId);
-        singleThreadExec.submit(SummonerTask);
+        singleThreadPool.submit(SummonerTask);
     }
 
     /**
@@ -267,11 +276,12 @@ public class DashboardController {
      * @param puuid The user's puuid (same as their userId).
      * @param region The user's region.
      * @param riotId The user's RiotId, with the username and tagLine formatted together.
-     * @return A Task that returns a JSON string.
+     * @return The SummonerTask and its setonSucceeded handler.
      */
     private @NotNull Task<String> getSummonerTask(String puuid, String region, String riotId) {
         Summoner summoner = new Summoner();
 
+        // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<String> SummonerTask = new Task<String>() {
             @Override
             protected String call() throws Exception {
@@ -280,20 +290,23 @@ public class DashboardController {
 
                 if (summonerQuery.isError()) {
                     // TODO: Handle API fetch error inside Task. -- Cancel? Try again?
-                    System.out.println(summonerQuery.getMessage().getDetail());
+                    failed();
                 }
                 return summonerQuery.getJson();
             }
         };
 
+        /*
+         * Event handler that runs when the SummonerTasks succeeds; deserialises the JSON output to a Summoner object
+         * and sets the corresponding FXML properties.
+         */
         SummonerTask.setOnSucceeded(new EventHandler() {
-            @Override
-            public void handle(Event event) {
+            @Override public void handle(Event event) {
+                // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
-
                     @Override public void run() {
                         String json = SummonerTask.getValue();
-                        // Deserialise the JSON into a summoner object and inject the values into the corresponding FXML
+
                         try {
                             getSummonerFromJson(json, summoner);
 
@@ -304,7 +317,7 @@ public class DashboardController {
 
                             // Start next API call to get league data using the summonerId retrieved from this task
                             Task<League[]> LeagueTask = getLeagueTask(summoner.getSummonerId(), region);
-                            singleThreadExec.submit(LeagueTask);
+                            singleThreadPool.submit(LeagueTask);
 
                         } catch (JsonProcessingException e) {
                             throw new RuntimeException(e);
@@ -317,17 +330,69 @@ public class DashboardController {
     }
 
     /**
+     * Gets a Task which queries the API for the user's Champion Mastery data, returned as an array of Champion objects.
+     * If the Task is successful, injects the retrieved data into the corresponding FXML fields.
+     * @param puuid The user's puuid (same as their userId)
+     * @param region The user's region.
+     * @return The ChampionTask and its setOnSucceeded handler.
+     */
+    private @NotNull Task<Champion[]> getChampionTask(String puuid, String region) {
+        Task<Champion[]> ChampionTask = new Task<Champion[]>() {
+            @Override protected Champion[] call() throws Exception {
+                String champReqUrl = URLBuilder.buildChampionRequestUrl(puuid, region);
+                ResponseBody champQuery = getQuery(champReqUrl, Constants.requestHeaders);
+
+                // Deal with any errors, otherwise return the array.
+                if (champQuery.isError()) {
+                    // TODO handle error properly
+                    System.out.println(champQuery.getMessage().getDetail());
+                }
+                return getChampionArrayFromJson(champQuery.getJson());
+            }
+        };
+
+        ChampionTask.setOnSucceeded(new EventHandler() {
+            @Override public void handle(Event event) {
+                Champion[] champions = ChampionTask.getValue();
+
+                // Set each champion's name and image link based on its champion ID
+                for (Champion champion : champions) {
+                    champion.setChampionInfo();
+                }
+
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        // Set icon, name, and points for each champion.
+                        championOneImage.setImage(new Image(champions[0].getChampionIconLink()));
+                        championOneName.setText(champions[0].getChampionName());
+                        championOnePointsValue.setText(String.valueOf(champions[0].getChampionPoints()));
+
+                        championTwoImage.setImage(new Image(champions[1].getChampionIconLink()));
+                        championTwoName.setText(champions[1].getChampionName());
+                        championTwoPointsValue.setText(String.valueOf(champions[1].getChampionPoints()));
+
+                        championThreeImage.setImage(new Image(champions[2].getChampionIconLink()));
+                        championThreeName.setText(champions[2].getChampionName());
+                        championThreePointsValue.setText(String.valueOf(champions[2].getChampionPoints()));
+                    }
+                });
+            }
+        });
+        return ChampionTask;
+     }
+
+    /**
      * Gets a Task which queries the API for the user's League data returned as an array of League objects.
      * If the Task succeeds, parse the array and update the dashboard view accordingly.
      * TODO Task failure implementation, better error handling in general
+     * TODO implement runLater into setonSucceed handler method if needed
      * @param summonerId The user's summonerID.
      * @param region The user's region
-     * @return A Task that returns a League array.
+     * @return The LeagueTask and its setonSucceeded handler.
      */
     private @NotNull Task<League[]> getLeagueTask(String summonerId, String region) {
         Task<League[]> LeagueTask = new Task<League[]>() {
-            @Override
-            protected League[] call() throws Exception {
+            @Override protected League[] call() throws Exception {
                 String leagueReqUrl = URLBuilder.buildLeagueRequestUrl(summonerId, region);
                 ResponseBody leagueQuery = getQuery(leagueReqUrl, Constants.requestHeaders);
 
@@ -342,8 +407,7 @@ public class DashboardController {
         };
 
         LeagueTask.setOnSucceeded(new EventHandler() {
-            @Override
-            public void handle(Event event) {
+            @Override public void handle(Event event) {
                 // Retrieve array returned by task and convert to LinkedList to process the elements
                 League[] leagues = LeagueTask.getValue();
                 List<League> leaguesList = new LinkedList<League>(Arrays.asList(leagues));
@@ -399,18 +463,15 @@ public class DashboardController {
                             }
                         }
                     });
-                }
 
-                // Hide loading pane and display dashboard
-                statLoadPane.setVisible(false);
-                statVBox.setVisible(true);
+                    // Hide loading pane and display dashboard
+                    statLoadPane.setVisible(false);
+                    statVBox.setVisible(true);
+                }
             }
         });
-
         return LeagueTask;
     }
-
-
 
     private void setLeagueValues(League league) {
         tierText.setText(league.getTier());

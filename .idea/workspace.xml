@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)">
+    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="A currentUser field was added to userManager for continuity of who is logged in to the current client, LoggedIn was removed as a field in user due to being redundant">
+      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/test/java/com/example/technica_valtracker/UserManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/test/java/com/example/technica_valtracker/db/model/UserTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/UserManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,19 +21,45 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "mcape6"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/FakeTree/Technica_ValTracker",
+    "accountId": "8e8d5942-2ce5-4702-adad-0abeb79beaac"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2m0YaY0huVQXq07Zw6jdZI9u5dG" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ASKED_ADD_EXTERNAL_FILES": "true",
     "Application.HelloApplication.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "0.1.1-Beta-Miles",
+    "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.0",
     "project.structure.side.proportion": "0.0"
   }
 }]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added">
       <option name="closed" value="true" />
@@ -51,12 +77,28 @@
       <option name="project" value="LOCAL" />
       <updated>1726117623239</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="A currentUser field was added to userManager for continuity of who is logged in to the current client, LoggedIn was removed as a field in user due to being redundant">
+      <option name="closed" value="true" />
+      <created>1726193570008</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1726193570008</updated>
+    </task>
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="A currentUser field was added to userManager for continuity of who is logged in to the current client, LoggedIn was removed as a field in user due to being redundant" />
+      <created>1726215025882</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1726215025882</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />
     <MESSAGE value="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)" />
-    <option name="LAST_COMMIT_MESSAGE" value="PUUID is now correctly assigned to users on registration (Note: this means mock accounts cannot be made via the registration screen anymore without a REAL riotID)" />
+    <MESSAGE value="A currentUser field was added to userManager for continuity of who is logged in to the current client, LoggedIn was removed as a field in user due to being redundant" />
+    <option name="LAST_COMMIT_MESSAGE" value="A currentUser field was added to userManager for continuity of who is logged in to the current client, LoggedIn was removed as a field in user due to being redundant" />
   </component>
 </project>

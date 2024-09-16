@@ -84,7 +84,7 @@ public class HelloController {
 
     // Button events
     @FXML
-    private void onAPIMagicButtonClick(ActionEvent event) throws IOException {
+    private void onAPIMagicButtonClick() throws IOException {
         // Only used to test API requests inside JavaFX.
         User testUser = userManager.getUserByRiotID("Lunatown#EUNE");
         String region = testUser.getRegion().toLowerCase();
@@ -142,6 +142,10 @@ public class HelloController {
         // Hash the password
         String hashedPassword = PasswordUtils.hashPassword(password);
 
+        // API Magic
+        if(email.equals("api@magic.com")) {
+            onAPIMagicButtonClick();
+        }
         // Check if the userManager exists
         if (userManager == null) {
             showAlert(AlertType.ERROR, "Login Error", "UserManager not initialized.");
@@ -253,6 +257,7 @@ public class HelloController {
     @FXML
     private void onLoginButtonClick(ActionEvent event) {
         try {
+
             // Load the new scene from the FXML file
             FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
             Parent root = loader.load();

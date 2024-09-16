@@ -1,18 +1,31 @@
 package com.example.technica_valtracker.controller;
 
+import atlantafx.base.theme.Styles;
+import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.HelloApplication;
+import com.example.technica_valtracker.UserManager;
+import com.example.technica_valtracker.api.ResponseBody;
+import com.example.technica_valtracker.db.model.Champion;
+import com.example.technica_valtracker.db.model.Match;
+import com.example.technica_valtracker.db.model.User;
+import com.example.technica_valtracker.utils.URLBuilder;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Match_HistoryController extends HelloApplication{
+import static com.example.technica_valtracker.api.Query.getQuery;
+
+public class Match_HistoryController extends HelloApplication {
 
     //FXML ELEMENTS
 
@@ -80,14 +93,54 @@ public class Match_HistoryController extends HelloApplication{
     @FXML private ImageView HistoryMatch5_ChampImage;
 
 
+    /* Internal controller properties */
 
-
-
-
+    private UserManager userManager = UserManager.getInstance();
 
 //METHODS
 
-//MenuBar Button Methods
+    /**
+     * Declares an initialise method that is called just before the scene UI is fully loaded
+     */
+    @FXML
+    protected void initialize() {
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                try {
+                    init();
+                }
+                catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    /**
+     * Initialise the dashboard view with data retrieved from the API.
+     * Sets up the view's UI elements (loading, header, mode toggle), gets the current User instance,
+     * and executes the tasks which perform the API requests and injections into the FXML file.
+     */
+    public void init() throws IOException {
+        // Get the currently logged in user's details
+        User currentUser = userManager.getCurrentUser();
+
+        String riotId = currentUser.getRiotID();
+        String puuid = currentUser.getUserId();
+        String region = currentUser.getRegion().toLowerCase();
+
+        Match m = new Match();
+
+        ResponseBody Matches = getQuery(URLBuilder.buildMatchRequestUrl(puuid, region), Constants.requestHeaders);
+        System.out.println(URLBuilder.buildMatchRequestUrl(puuid, region));
+        // Execute the API query Tasks
+        m.getMatchListByPUUID(Matches);
+
+        System.out.println(m.getMatchIds());
+    }
+
+
+    //MenuBar Button Methods
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
 

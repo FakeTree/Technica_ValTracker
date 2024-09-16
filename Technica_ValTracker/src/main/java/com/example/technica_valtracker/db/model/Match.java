@@ -24,6 +24,8 @@ public class Match {
 
     private int queueId;
     private long gameDuration;
+    private long date;
+    private String gameMode;
 
     private int championId;
     private int championName;
@@ -38,38 +40,18 @@ public class Match {
 
     // --------------------------------------------------------------------------------
 
-    public ResponseBody getMatchListByPUUID(String puuid, String region, String url, String[] headers) throws IOException {
-        String json;
-
-        // Set up HTTP client
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new ErrorResponseInterceptor())
-                .build();
-
-        // Build GET request
-        Request request = new Request.Builder()
-                .header(headers[0], headers[1])
-                .url(url)
-                .build();
-
-        // Send request to client
-        try (Response response = client.newCall(request).execute()) {
-            // If response returned status code other than 200, return array with error message JSON
-            if (!response.isSuccessful()) {
-                ErrorMessage error = getErrorMessageFromJson(response.body().string());
-                return new ResponseBody(error);
-            }
-            // Parse successful response as string
-            json = response.body().string();
-        }
+    public void getMatchListByPUUID(ResponseBody res) throws IOException {
         emptyMatchId();
-        Matcher m = Pattern.compile("[A-Z0-9_]+").matcher(json);
+        System.out.println(res.getJson().toString());
+        Matcher m = Pattern.compile("[A-Z0-9_]+").matcher(res.getJson().toString());
         while(m.find()){
             addMatchIds(m.group());
         }
-        return new ResponseBody(json, false);
     }
 
+    /**
+     * @todo Need to utlise the Query class to manage this query.
+     */
     public ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
         String json;
 
@@ -98,11 +80,6 @@ public class Match {
     }
 
     // --------------------------------------------------------------------------------
-
-    public Match(String puuid, String region, String url, String[] headers) throws IOException {
-        ResponseBody res = getMatchListByPUUID(puuid, region, url, headers);
-
-    }
 
     public List<String> getMatchIds(){ return matchIds; }
     public void setMatchIds (List<String> param){ this.matchIds = param; }

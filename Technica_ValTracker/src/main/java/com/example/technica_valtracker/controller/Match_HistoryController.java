@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Match_HistoryController {
+public class Match_HistoryController extends HelloApplication{
 
     //FXML ELEMENTS
 
@@ -86,9 +86,6 @@ public class Match_HistoryController {
 
 
 //METHODS
-
-
-
 
 //MenuBar Button Methods
     @FXML

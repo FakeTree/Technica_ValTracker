@@ -6,18 +6,19 @@ import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import java.util.concurrent.*;
 
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.regex.*;
 
 import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
 
 public class Match {
     private String matchId;
-    private String[] matchIds;
-    private boolean completeQuery;
-    private long date;
-    private String gameMode;
+    private List<String> matchIds = new ArrayList<String>();
     private String url;
     private ErrorMessage errorMessage;
 
@@ -61,7 +62,11 @@ public class Match {
             // Parse successful response as string
             json = response.body().string();
         }
-        setMatchIds(json.trim().split(","));
+        emptyMatchId();
+        Matcher m = Pattern.compile("[A-Z0-9_]+").matcher(json);
+        while(m.find()){
+            addMatchIds(m.group());
+        }
         return new ResponseBody(json, false);
     }
 
@@ -94,8 +99,15 @@ public class Match {
 
     // --------------------------------------------------------------------------------
 
-    public String[] getMatchIds(){ return matchIds; }
-    private void setMatchIds(String[] matchIds){ this.matchIds = matchIds; }
+    public Match(String puuid, String region, String url, String[] headers) throws IOException {
+        ResponseBody res = getMatchListByPUUID(puuid, region, url, headers);
+
+    }
+
+    public List<String> getMatchIds(){ return matchIds; }
+    public void setMatchIds (List<String> param){ this.matchIds = param; }
+    private void addMatchIds (String param){ this.matchIds.add(param); }
+    private void emptyMatchId(){ this.matchIds = new ArrayList<String>(); }
 
     public void setMatchId(String matchId) {
         this.matchId = matchId;

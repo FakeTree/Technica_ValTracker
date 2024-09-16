@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -269,9 +270,6 @@ public class DashboardController {
         singleThreadPool.submit(SummonerTask);
         singleThreadPool.submit(ChampionTask);
         // when all tasks are done, make the thingy visible
-        // Hide loading pane and display dashboard
-        statLoadPane.setVisible(false);
-        statVBox.setVisible(true);
     }
 
     /**
@@ -425,6 +423,10 @@ public class DashboardController {
                         // Check how many League objects were returned from the response and parse them accordingly
                         if (leaguesList.size() == 1) {
                             League league = leaguesList.getFirst();
+
+                            // Set ranked emblem image reference based on tier
+                            league.setRankedEmblem();
+
                             // Focus the correct toggle button depending on queue type (solo or flexed)
                             if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
                                 soloToggleButton.setSelected(true);
@@ -440,6 +442,7 @@ public class DashboardController {
                         else {
                             for (League league : leaguesList) {
                                 league.setWinrate();
+                                league.setRankedEmblem();
                             }
 
                             League leagueOne = leaguesList.get(0);
@@ -470,6 +473,10 @@ public class DashboardController {
                                     }
                                 }
                             });
+
+                            // Hide loading pane and display dashboard
+                            statLoadPane.setVisible(false);
+                            statVBox.setVisible(true);
                         }
                     }
                 });
@@ -479,6 +486,8 @@ public class DashboardController {
     }
 
     private void setLeagueValues(League league) {
+        InputStream inputStream = this.getClass().getResourceAsStream(league.getRankedEmblem());
+        rankBadgeImage.setImage(new Image(inputStream));
         tierText.setText(league.getTier());
         rankText.setText(league.getRank());
         leaguePointsValue.setText(String.valueOf(league.getLeaguePoints()));

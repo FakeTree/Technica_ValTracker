@@ -138,9 +138,6 @@
                         <HBox fx:id="generalStatHBox" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
                            <children>
                               <ImageView fx:id="rankBadgeImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
-<!--                           <image>-->
-<!--                              <Image url="@ranked-emblems-latest/Ranked%20Emblems%20Latest/Rank=Challenger.png" />-->
-<!--                           </image>-->
                         </ImageView>
                               <Label fx:id="tierText" minHeight="-Infinity" prefHeight="50.0" text="TIER" textAlignment="CENTER">
                                  <padding>

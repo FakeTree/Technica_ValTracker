@@ -14,6 +14,8 @@ public class League {
     private String queueType;
     @JsonIgnore
     private int winrate;
+    @JsonIgnore
+    private String rankedEmblem;
 
     public League() {}
 
@@ -71,6 +73,11 @@ public class League {
     public void setWinrate() {
         int totalGames = wins + losses;
         winrate = round(((float) wins / totalGames) * 100);
+    }
+
+    public String getRankedEmblem() { return rankedEmblem; }
+    public void setRankedEmblem() {
+        rankedEmblem = String.format("/ranked-emblems/%s.png", tier);
     }
 
     @Override public String toString() {

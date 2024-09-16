@@ -52,7 +52,9 @@ public class Summoner {
     }
 
     public String getProfileImageLink() { return profileImageLink; }
-    public void setProfileImageLink(String profileImageLink) { this.profileImageLink = profileImageLink; }
+    public void setProfileImageLink() {
+        String imageBaseLink = "https://ddragon.leagueoflegends.com/cdn/14.18.1/img/profileicon/";
+        profileImageLink = imageBaseLink + profileIconId + ".png";  }
 
     public long getRevisionDate() {
         return revisionDate;

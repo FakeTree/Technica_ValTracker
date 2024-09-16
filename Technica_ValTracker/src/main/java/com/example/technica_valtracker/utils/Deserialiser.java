@@ -35,16 +35,20 @@ public class Deserialiser {
     }
 
     /**
-     * Converts JSON Array response body to a JSON array and returns it.
+     * Converts JSON Array containing the League entries to an array of League objects and returns it.
      * @param json The Json string to deserialise, must represent a response body array.
-     * @return Array of object type League
+     * @return Array of League objects.
      * @throws JsonProcessingException
      */
     public static League[] getLeagueArrayFromJson(String json) throws JsonProcessingException {
-        League[] leagues = objectMapper.readValue(json, League[].class);
-        return leagues;
+        return objectMapper.readValue(json, League[].class);
     }
 
+    /** Converts JSON array containing the Champion Mastery response and returns an array of Champion objects.
+     * @param json The JSON array string to deserialise.
+     * @return Array of Champion objects.
+     * @throws JsonProcessingException
+     */
     public static Champion[] getChampionArrayFromJson(String json) throws JsonProcessingException {
         return objectMapper.readValue(json, Champion[].class);
     }

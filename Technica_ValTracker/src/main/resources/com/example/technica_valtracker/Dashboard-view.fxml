@@ -17,34 +17,34 @@
 <VBox fx:id="parentVBox" prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.DashboardController" >
    <children>
       <MenuBar fx:id="menuBar">
-        <menus>
-          <Menu mnemonicParsing="false" text="Home">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Home" fx:id="Home_Menu"/>
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Match History">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Match History" fx:id="Match_History_Menu" onAction="#OnMatchHistoryMenu"/>
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Friends">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Friends" fx:id="Friends_Menu"/>
-            </items>
-          </Menu>
-            <Menu mnemonicParsing="false" text="Account">
+         <menus>
+            <Menu mnemonicParsing="false" text="Home">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Account" fx:id="Account_Menu"/>
+                  <MenuItem fx:id="Home_Menu" mnemonicParsing="false" text="Home" onAction="#OnHomeMenuClick" />
                </items>
             </Menu>
-        </menus>
+            <Menu mnemonicParsing="false" text="Match History">
+               <items>
+                  <MenuItem fx:id="Match_History_Menu" mnemonicParsing="false" onAction="#OnMatchHistoryMenu" text="Match History" />
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Friends">
+               <items>
+                  <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" text="Friends" onAction="#OnFriendsMenuClick"/>
+               </items>
+            </Menu>
+            <Menu mnemonicParsing="false" text="Account">
+               <items>
+                  <MenuItem fx:id="Account_Menu" mnemonicParsing="false" text="Account" onAction="#OnAccountMenuClick"/>
+               </items>
+            </Menu>
+         </menus>
       </MenuBar>
       <VBox fx:id="pageBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1024.0">
          <children>
             <HBox fx:id="pageHeaderHBox" prefHeight="70.0" prefWidth="200.0">
                <children>
-                  <Label fx:id="statPageHeaderLabel" prefHeight="48.0" prefWidth="902.0" text="PageTitle">
+                  <Label fx:id="statPageHeaderLabel" prefHeight="48.0" prefWidth="902.0" text="Dashboard">
                      <font>
                         <Font name="Arial Bold" size="42.0" />
                      </font>

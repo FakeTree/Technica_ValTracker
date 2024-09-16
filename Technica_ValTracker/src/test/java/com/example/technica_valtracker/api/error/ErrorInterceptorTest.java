@@ -1,19 +1,16 @@
-package com.example.technica_valtracker.api;
+package com.example.technica_valtracker.api.error;
 
-import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.assertEquals;
+
 
 public class ErrorInterceptorTest {
 

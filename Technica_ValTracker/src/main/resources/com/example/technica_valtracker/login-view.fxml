@@ -31,7 +31,7 @@
     </VBox>
 
     <!-- Login Button Section -->
-    <Button text="Login" onAction="#LoginButtonClick" minWidth="100"/>
+    <Button fx:id = "LoginsubmitButton" text="Login" onAction="#LoginButtonClick" minWidth="100"/>
 
     <!-- Back Button Section -->
     <Button text="Back" onAction="#onBackButtonClick" minWidth="100"/>

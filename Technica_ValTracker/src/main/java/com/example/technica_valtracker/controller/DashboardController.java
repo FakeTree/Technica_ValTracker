@@ -5,6 +5,7 @@ import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
+import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
@@ -18,6 +19,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -32,13 +34,9 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
+import java.util.*;
+import java.util.concurrent.*;
+
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -162,19 +160,8 @@ public class DashboardController {
     private Pane statLoadPane;
     @FXML
     private ProgressBar statLoadProgressBar;
-
-    /* Internal controller properties */
-
-    private UserManager userManager = UserManager.getInstance();
-
-    // Create thread pools for executing API query tasks in background threads
-    int MAX_THREADS = 3;
-    ThreadFactory threadFactory = Executors.defaultThreadFactory();
-    ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
-    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(MAX_THREADS);
-
-    League soloLeague;      // Stores the user's Solo mode stats
-    League flexLeague;      // Stores the user's Flex mode stats
+    @FXML
+    private Label statLoadStatusText;
 
     //MenuBar Button Methods
     @FXML
@@ -216,6 +203,18 @@ public class DashboardController {
         stage.setScene(scene);
 
     }
+
+    /* Internal controller properties */
+
+    private UserManager userManager = UserManager.getInstance();
+
+    // Create thread pools for executing API query tasks in background threads
+    ThreadFactory threadFactory = Executors.defaultThreadFactory();
+    ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
+
+    League soloLeague;      // Stores the user's Solo mode stats
+    League flexLeague;      // Stores the user's Flex mode stats
+
 
     /**
      * Declares an initialise method that is called just before the scene UI is fully loaded
@@ -261,38 +260,38 @@ public class DashboardController {
         String region = currentUser.getRegion().toLowerCase();
 
         // Execute the API query Tasks
+        Task<ResponseBody> SummonerTask = getSummonerTask(puuid, region, riotId);
         Task<Champion[]> ChampionTask = getChampionTask(puuid, region);
-        fixedThreadPool.submit(ChampionTask);
 
-        Task<String> SummonerTask = getSummonerTask(puuid, region, riotId);
+        // Task<> QueryStatusTask = get....
+        // task.start() ;
+
         singleThreadPool.submit(SummonerTask);
+        singleThreadPool.submit(ChampionTask);
+        // when all tasks are done, make the thingy visible
+        // Hide loading pane and display dashboard
+        statLoadPane.setVisible(false);
+        statVBox.setVisible(true);
     }
 
     /**
-     * Gets a Task which queries the API for the user's Summoner data, returned as a (json) string.
+     * Gets a Task which queries the API for the user's Summoner data and returns the ResponseBody.
      * If the Task is successful, injects the retrieved data into the corresponding FXML fields and
-     * submits the retrieved summonerId to a LeagueTask.
-     * TODO Task failure implementation, better error handling in general
+     * submits the retrieved summonerId to a LeagueTask; otherwise displays an error message.
      * @param puuid The user's puuid (same as their userId).
      * @param region The user's region.
      * @param riotId The user's RiotId, with the username and tagLine formatted together.
      * @return The SummonerTask and its setonSucceeded handler.
      */
-    private @NotNull Task<String> getSummonerTask(String puuid, String region, String riotId) {
+    private @NotNull Task<ResponseBody> getSummonerTask(String puuid, String region, String riotId) {
         Summoner summoner = new Summoner();
 
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
-        Task<String> SummonerTask = new Task<String>() {
+        Task<ResponseBody> SummonerTask = new Task<ResponseBody>() {
             @Override
-            protected String call() throws Exception {
+            protected ResponseBody call() throws Exception {
                 String summonerReqUrl = URLBuilder.buildSummonerRequestUrl(puuid, region);
-                ResponseBody summonerQuery = getQuery(summonerReqUrl, Constants.requestHeaders);
-
-                if (summonerQuery.isError()) {
-                    // TODO: Handle API fetch error inside Task. -- Cancel? Try again?
-                    failed();
-                }
-                return summonerQuery.getJson();
+                return getQuery(summonerReqUrl, Constants.requestHeaders);
             }
         };
 
@@ -305,22 +304,36 @@ public class DashboardController {
                 // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
-                        String json = SummonerTask.getValue();
+                        ResponseBody summonerQuery = SummonerTask.getValue();
+                        statLoadStatusText.setText("Loading summoner data...");
 
-                        try {
-                            getSummonerFromJson(json, summoner);
+                        if (summonerQuery.isError()) {
+                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            ErrorMessage error = summonerQuery.getMessage();
+                            showAlert(error.getStatus(), error.getDetail());
 
-                            summoner.setProfileImageLink();
-                            accountIconImageView.setImage(new Image(summoner.getProfileImageLink()));
-                            accountNameText.setText(riotId);
-                            accountLevelValue.setText(String.valueOf(summoner.getSummonerLevel()));
+                            // Hide loading pane and display dashboard
+                            statLoadPane.setVisible(false);
+                            statVBox.setVisible(true);
+                        }
+                        else {
+                            String json = SummonerTask.getValue().getJson();
 
-                            // Start next API call to get league data using the summonerId retrieved from this task
-                            Task<League[]> LeagueTask = getLeagueTask(summoner.getSummonerId(), region);
-                            singleThreadPool.submit(LeagueTask);
+                            try {
+                                getSummonerFromJson(json, summoner);
 
-                        } catch (JsonProcessingException e) {
-                            throw new RuntimeException(e);
+                                summoner.setProfileImageLink();
+                                accountIconImageView.setImage(new Image(summoner.getProfileImageLink()));
+                                accountNameText.setText(riotId);
+                                accountLevelValue.setText(String.valueOf(summoner.getSummonerLevel()));
+
+                                // Start next API call to get league data using the summonerId retrieved from this task
+                                Task<League[]> LeagueTask = getLeagueTask(summoner.getSummonerId(), region);
+                                singleThreadPool.submit(LeagueTask);
+
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 });
@@ -342,11 +355,6 @@ public class DashboardController {
                 String champReqUrl = URLBuilder.buildChampionRequestUrl(puuid, region);
                 ResponseBody champQuery = getQuery(champReqUrl, Constants.requestHeaders);
 
-                // Deal with any errors, otherwise return the array.
-                if (champQuery.isError()) {
-                    // TODO handle error properly
-                    System.out.println(champQuery.getMessage().getDetail());
-                }
                 return getChampionArrayFromJson(champQuery.getJson());
             }
         };
@@ -362,6 +370,7 @@ public class DashboardController {
 
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
+                        statLoadStatusText.setText("Loading champion mastery...");
                         // Set icon, name, and points for each champion.
                         championOneImage.setImage(new Image(champions[0].getChampionIconLink()));
                         championOneName.setText(champions[0].getChampionName());
@@ -396,12 +405,6 @@ public class DashboardController {
                 String leagueReqUrl = URLBuilder.buildLeagueRequestUrl(summonerId, region);
                 ResponseBody leagueQuery = getQuery(leagueReqUrl, Constants.requestHeaders);
 
-                // Deal with any errors, otherwise return the array.
-                if (leagueQuery.isError()) {
-                    // TODO: Handle API fetch error. -- Cancel the task?
-                    System.out.println(leagueQuery.getMessage().getDetail());
-                }
-
                 return getLeagueArrayFromJson(leagueQuery.getJson());
             }
         };
@@ -412,62 +415,64 @@ public class DashboardController {
                 League[] leagues = LeagueTask.getValue();
                 List<League> leaguesList = new LinkedList<League>(Arrays.asList(leagues));
 
-                // Remove any league entries that aren't of the Ranked Solo or Ranked Flex mode
-                leaguesList.removeIf(league -> (Objects.equals(league.getQueueType(), "CHERRY")));
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        statLoadStatusText.setText("Loading league data...");
 
-                // Check how many League objects were returned from the response and parse them accordingly
-                if (leaguesList.size() == 1) {
-                    League league = leaguesList.getFirst();
-                    // Focus the correct toggle button depending on queue type (solo or flexed)
-                    if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
-                        soloToggleButton.setSelected(true);
-                        flexToggleButton.setDisable(true);
-                    }
-                    else {
-                        flexToggleButton.setSelected(true);
-                        soloToggleButton.setDisable(true);
-                    }
-                    // Inject values retrieved from API into application
-                    setLeagueValues(league);
-                }
-                else {
-                    for (League league : leaguesList) {
-                        league.setWinrate();
-                    }
+                        // Remove any league entries that aren't of the Ranked Solo or Ranked Flex mode
+                        leaguesList.removeIf(league -> (Objects.equals(league.getQueueType(), "CHERRY")));
 
-                    League leagueOne = leaguesList.get(0);
-                    League leagueTwo = leaguesList.get(1);
-
-                    // Check the queue value of the first League object in the response array
-                    if (Objects.equals(leagueOne.getQueueType(), "RANKED_SOLO_5x5")) {
-                        soloToggleButton.setSelected(true);
-                        soloLeague = leagueOne;
-                        flexLeague = leagueTwo;
-                        setLeagueValues(soloLeague);        // Inject retrieved values into FXML
-                    }
-                    else {
-                        flexToggleButton.setSelected(true);
-                        flexLeague = leagueOne;
-                        soloLeague = leagueTwo;
-                        setLeagueValues(flexLeague);
-                    }
-                    // Create Listener to detect when the selected mode changes and update the displayed values
-                    modeToggle.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-                        public void changed(ObservableValue<? extends Toggle> ov,
-                                            Toggle oldToggle, Toggle newToggle) {
-                            if (modeToggle.getSelectedToggle() == soloToggleButton) {
-                                setLeagueValues(soloLeague);
+                        // Check how many League objects were returned from the response and parse them accordingly
+                        if (leaguesList.size() == 1) {
+                            League league = leaguesList.getFirst();
+                            // Focus the correct toggle button depending on queue type (solo or flexed)
+                            if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
+                                soloToggleButton.setSelected(true);
+                                flexToggleButton.setDisable(true);
                             }
                             else {
+                                flexToggleButton.setSelected(true);
+                                soloToggleButton.setDisable(true);
+                            }
+                            // Inject values retrieved from API into application
+                            setLeagueValues(league);
+                        }
+                        else {
+                            for (League league : leaguesList) {
+                                league.setWinrate();
+                            }
+
+                            League leagueOne = leaguesList.get(0);
+                            League leagueTwo = leaguesList.get(1);
+
+                            // Check the queue value of the first League object in the response array
+                            if (Objects.equals(leagueOne.getQueueType(), "RANKED_SOLO_5x5")) {
+                                soloToggleButton.setSelected(true);
+                                soloLeague = leagueOne;
+                                flexLeague = leagueTwo;
+                                setLeagueValues(soloLeague);        // Inject retrieved values into FXML
+                            }
+                            else {
+                                flexToggleButton.setSelected(true);
+                                flexLeague = leagueOne;
+                                soloLeague = leagueTwo;
                                 setLeagueValues(flexLeague);
                             }
+                            // Create Listener to detect when the selected mode changes and update the displayed values
+                            modeToggle.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+                                public void changed(ObservableValue<? extends Toggle> ov,
+                                                    Toggle oldToggle, Toggle newToggle) {
+                                    if (modeToggle.getSelectedToggle() == soloToggleButton) {
+                                        setLeagueValues(soloLeague);
+                                    }
+                                    else {
+                                        setLeagueValues(flexLeague);
+                                    }
+                                }
+                            });
                         }
-                    });
-
-                    // Hide loading pane and display dashboard
-                    statLoadPane.setVisible(false);
-                    statVBox.setVisible(true);
-                }
+                    }
+                });
             }
         });
         return LeagueTask;
@@ -479,4 +484,17 @@ public class DashboardController {
         leaguePointsValue.setText(String.valueOf(league.getLeaguePoints()));
         winrateValue.setText(String.valueOf(league.getWinrate()));
     }
+
+    private void showAlert(int status, String detail) {
+        var alert = new Alert(Alert.AlertType.ERROR);
+
+        alert.setTitle("Error");
+        alert.setHeaderText("There was a problem while loading the dashboard data");
+        alert.setContentText(String.format("%d\n%s", status, detail));
+        alert.initOwner(pageBox.getScene().getWindow());
+
+        alert.show();
+    }
+
+
 }

@@ -7,6 +7,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -65,7 +66,7 @@
                   <Insets left="30.0" right="30.0" />
                </VBox.margin>
                <children>
-                  <Pane fx:id="statLoadPane" prefHeight="200.0" prefWidth="200.0" visible="false">
+                  <Pane fx:id="statLoadPane" prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="statLoadingLabel" layoutX="32.0" layoutY="34.0" text="Loading data">
                            <font>
@@ -73,18 +74,22 @@
                            </font>
                         </Label>
                         <ProgressBar fx:id="statLoadProgressBar" layoutX="32.0" layoutY="78.0" prefHeight="20.0" prefWidth="200.0" />
+                        <Label fx:id="statLoadStatusText" layoutX="32.0" layoutY="107.0" prefHeight="17.0" prefWidth="200.0" />
                      </children>
                   </Pane>
-                  <VBox fx:id="statVBox" visible="false" prefHeight="500.0" prefWidth="100.0">
+                  <VBox fx:id="statVBox" prefHeight="500.0" prefWidth="100.0" visible="false">
                      <children>
                         <HBox fx:id="modeButtonGroupHBox" alignment="BASELINE_RIGHT" prefHeight="40.0" prefWidth="200.0">
                            <children>
-                                <ToggleButton fx:id="soloToggleButton" toggleGroup="$modeToggle" minHeight="30.0" minWidth="0.0" text="Ranked Solo">
+                                <ToggleButton fx:id="soloToggleButton" minHeight="30.0" minWidth="0.0" text="Ranked Solo">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="modeToggle" />
+                                 </toggleGroup>
                                 </ToggleButton>
-                                <ToggleButton fx:id="flexToggleButton" toggleGroup="$modeToggle" minHeight="30.0" text="Ranked Flex">
+                                <ToggleButton fx:id="flexToggleButton" minHeight="30.0" text="Ranked Flex" toggleGroup="$modeToggle">
                                  <font>
                                     <Font size="14.0" />
                                  </font>

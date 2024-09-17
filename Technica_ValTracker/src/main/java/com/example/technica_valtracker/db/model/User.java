@@ -1,31 +1,18 @@
 package com.example.technica_valtracker.db.model;
 
-import com.example.technica_valtracker.Constants;
-import com.example.technica_valtracker.Validation;
-
 // For testing
 import java.io.IOException;
 import java.security.SecureRandom;
-
-import com.example.technica_valtracker.api.ResponseBody;
-import com.example.technica_valtracker.api.error.ErrorMessage;
-import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
 import com.fasterxml.jackson.annotation.*;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Arrays;
-
-import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
     private String riotId;
     private String password;
     private String email;
+
+    private Boolean isLoggedIn;
     @JsonAlias("puuid")
     private String userId;
     private String region;
@@ -40,7 +27,6 @@ public class User {
         this.region = region;
 
     }
-
 
     // Getters and Setters
     public String getRiotID() {
@@ -78,6 +64,14 @@ public class User {
         this.region = region;
     }
 
+    public Boolean getLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setLoggedIn(Boolean loggedIn) {
+        isLoggedIn = loggedIn;
+    }
+
     /// Placeholder for a 'do something' after login
     public void IHaveBeenAccessed() {
         System.out.println("I have been accessed! My email is " + email);
@@ -94,8 +88,6 @@ public class User {
                 ", Region ='" + region + '\'' +
                 '}';
     }
-
-
 
 
     // Random

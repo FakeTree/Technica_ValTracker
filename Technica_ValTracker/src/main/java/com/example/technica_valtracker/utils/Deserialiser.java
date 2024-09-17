@@ -1,6 +1,7 @@
 package com.example.technica_valtracker.utils;
 
 import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,15 +26,6 @@ public class Deserialiser {
     }
 
     /**
-     * Converts ErrorMessage object to JSON.
-     * @param error The ErrorMessage to convert.
-     * @return The converted ErrorMessage JSON string.
-     */
-    public static String errorMessageToJson(ErrorMessage error) throws JsonProcessingException {
-        return objectMapper.writeValueAsString(error);
-    }
-
-    /**
      * Converts JSON response body to a Summoner object.
      * @param json The JSON string to deserialise.
      * @param summoner The Summoner object to insert values into.
@@ -43,9 +35,9 @@ public class Deserialiser {
     }
 
     /**
-     * Converts JSON Array response body to a JSON list and returns it.
+     * Converts JSON Array response body to a JSON array and returns it.
      * @param json The Json string to deserialise, must represent a response body array.
-     * @return List of object type League
+     * @return Array of object type League
      * @throws JsonProcessingException
      */
     public static League[] getLeagueArrayFromJson(String json) throws JsonProcessingException {
@@ -53,4 +45,7 @@ public class Deserialiser {
         return leagues;
     }
 
+    public static Champion[] getChampionArrayFromJson(String json) throws JsonProcessingException {
+        return objectMapper.readValue(json, Champion[].class);
+    }
 }

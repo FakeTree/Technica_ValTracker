@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="parentVBox" prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.DashboardController" >
+   <children>
+      <MenuBar fx:id="menuBar">
+        <menus>
+          <Menu mnemonicParsing="false" text="Home">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Home" fx:id="Home_Menu"/>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Match History">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Match History" fx:id="Match_History_Menu" onAction="#OnMatchHistoryMenu"/>
+            </items>
+          </Menu>
+          <Menu mnemonicParsing="false" text="Friends">
+            <items>
+              <MenuItem mnemonicParsing="false" text="Friends" fx:id="Friends_Menu"/>
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Account">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Account" fx:id="Account_Menu"/>
+               </items>
+            </Menu>
+        </menus>
+      </MenuBar>
+      <VBox fx:id="pageBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="628.0" prefWidth="1024.0">
+         <children>
+            <HBox fx:id="pageHeaderHBox" prefHeight="70.0" prefWidth="200.0">
+               <children>
+                  <Label fx:id="statPageHeaderLabel" prefHeight="48.0" prefWidth="902.0" text="PageTitle">
+                     <font>
+                        <Font name="Arial Bold" size="42.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets top="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" top="20.0" />
+               </VBox.margin>
+               <padding>
+                  <Insets left="30.0" />
+               </padding>
+            </HBox>
+            <VBox fx:id="statVBox" prefHeight="500.0" prefWidth="100.0">
+               <children>
+                  <ButtonBar fx:id="statButtonBar" buttonMinWidth="50.0" prefHeight="20.0" prefWidth="1048.0">
+                    <buttons>
+                        <Label fx:id="buttonBarLabel" text="Display stats for:">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="soloModeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Solo Ranked" onAction="#onSoloModeButtonClick" />
+                      <Button fx:id="flexModeButton" mnemonicParsing="false" text="Flex Ranked" onAction="#onFlexModeButtonClick"/>
+                    </buttons>
+                     <padding>
+                        <Insets right="10.0" top="5.0" />
+                     </padding>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" />
+                     </VBox.margin>
+                  </ButtonBar>
+                  <HBox fx:id="generalStatHBox" prefHeight="50.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <ImageView fx:id="rankBadgeImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+<!--                           <image>-->
+<!--                              <Image url="@ranked-emblems-latest/Ranked%20Emblems%20Latest/Rank=Challenger.png" />-->
+<!--                           </image>-->
+                        </ImageView>
+                        <Label fx:id="tierText" minHeight="-Infinity" prefHeight="50.0" text="TIER" textAlignment="CENTER">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Bold Italic" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="rankText" minHeight="-Infinity" prefHeight="50.0" text="RANK" textAlignment="CENTER">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Bold Italic" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="leaguePointsValue" prefHeight="50.0" text="VAL">
+                           <padding>
+                              <Insets left="20.0" top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="leaguePointsLabel" prefHeight="50.0" text="LP">
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <HBox fx:id="averageStatsHBox" alignment="TOP_RIGHT" nodeOrientation="LEFT_TO_RIGHT" prefHeight="100.0" prefWidth="300.0" spacing="25.0">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <HBox.margin>
+                              <Insets left="70.0" />
+                           </HBox.margin>
+                           <children>
+                              <VBox fx:id="winRateVBox" prefWidth="150.0">
+                                 <children>
+                                    <Label fx:id="winrateLabel" text="Winrate">
+                                       <font>
+                                          <Font name="Arial Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox fx:id="winrateHbox" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label fx:id="winrateValue" text="00">
+                                             <font>
+                                                <Font name="Arial" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="winratePercentLabel" text="\%">
+                                             <font>
+                                                <Font name="Arial" size="20.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="kdVBox" prefHeight="60.0" prefWidth="150.0">
+                                 <children>
+                                    <Label fx:id="kdLabel" text="KD">
+                                       <font>
+                                          <Font name="Arial Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="kdValue" prefHeight="23.0" prefWidth="148.0" text="0.00">
+                                       <font>
+                                          <Font name="Arial" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="csMinVBox" prefHeight="60.0" prefWidth="150.0">
+                                 <children>
+                                    <Label fx:id="csMinLabel" text="CS/min">
+                                       <font>
+                                          <Font name="Arial Bold" size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="csMinValue" prefHeight="23.0" prefWidth="148.0" text="0.00">
+                                       <font>
+                                          <Font name="Arial" size="20.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets left="30.0" right="30.0" top="25.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox fx:id="detailedStatHBox" prefHeight="450.0" prefWidth="200.0">
+                     <children>
+                        <VBox fx:id="matchesVBox" prefHeight="88.0" prefWidth="500.0">
+                           <children>
+                              <Label fx:id="matchesLabel" text="Recent Matches">
+                                 <font>
+                                    <Font name="Arial Italic" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane fx:id="matchOnePane" prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue;">
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </VBox.margin>
+                                 <children>
+                                    <Label fx:id="matchOneResultText" layoutX="15.0" layoutY="10.0" text="RESULT">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchOneModeText" layoutX="15.0" layoutY="35.0" text="MODE">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Pane fx:id="matchOneImagePane" layoutX="125.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                       <children>
+                                          <ImageView fx:id="matchOneChampionImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="matchOneKDALabel" layoutX="207.0" layoutY="7.0" text="KDA">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchOneKDAValue" layoutX="207.0" layoutY="34.0" text="00/00/00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchOneKDLabel" layoutX="320.0" layoutY="7.0" text="KD">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchOneKDValue" layoutX="320.0" layoutY="34.0" text="0.00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchOneCSMinLabel" layoutX="385.0" layoutY="7.0" text="CS/min">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchOneCSMinValue" layoutX="385.0" layoutY="34.0" text="0.00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="matchTwoPane" prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue;">
+                                 <children>
+                                    <Label fx:id="matchTwoResultText" layoutX="15.0" layoutY="10.0" text="RESULT">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchTwoModeText" layoutX="15.0" layoutY="35.0" text="MODE">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Pane fx:id="matchTwoImagePane" layoutX="125.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                       <children>
+                                          <ImageView fx:id="matchTwoChampionImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="matchTwoKDALabel" layoutX="207.0" layoutY="7.0" text="KDA">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchTwoKDAValue" layoutX="207.0" layoutY="34.0" text="00/00/00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchTwoKDLabel" layoutX="320.0" layoutY="7.0" text="KD">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchTwoKDValue" layoutX="320.0" layoutY="34.0" text="0.00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchTwoCSMinLabel" layoutX="385.0" layoutY="7.0" text="CS/min">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchTwoCSMinValue" layoutX="385.0" layoutY="34.0" text="0.00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Pane>
+                              <Pane fx:id="matchThreePane" prefHeight="80.0" prefWidth="441.0" style="-fx-background-color: lightsteelblue;">
+                                 <children>
+                                    <Label fx:id="matchThreeResultText" layoutX="15.0" layoutY="10.0" text="RESULT">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchThreeModeText" layoutX="15.0" layoutY="35.0" text="MODE">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Pane fx:id="matchThreeImagePane" layoutX="125.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                       <children>
+                                          <ImageView fx:id="matchThreeChampionImage" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="matchThreeKDALabel" layoutX="207.0" layoutY="7.0" text="KDA">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchThreeKDAValue" layoutX="209.0" layoutY="34.0" text="00/00/00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchThreeKDLabel" layoutX="320.0" layoutY="7.0" text="KD">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchThreeKDValue" layoutX="320.0" layoutY="34.0" text="0.00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchThreeCSMinValue" layoutX="385.0" layoutY="34.0" text="0.00">
+                                       <font>
+                                          <Font size="22.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="matchThreeCSMinLabel" layoutX="385.0" layoutY="7.0" text="CS/min">
+                                       <font>
+                                          <Font name="System Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets left="35.0" />
+                           </padding>
+                        </VBox>
+                        <VBox fx:id="championMasteryVBox" prefWidth="465.0">
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <children>
+                              <Label fx:id="championMasteryLabel" text="Top Champions">
+                                 <font>
+                                    <Font name="Arial Italic" size="21.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="5.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <Pane fx:id="championOnePane" prefHeight="80.0" prefWidth="441.0">
+                                 <children>
+                                    <Pane fx:id="championOneImagePane" layoutY="10.0" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                       <children>
+                                          <ImageView fx:id="championOneImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="championOneName" layoutX="72.0" layoutY="2.0" minHeight="35.0" minWidth="190.0" text="Name">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="championOnePointsValue" layoutX="72.0" layoutY="40.0" text="0 000 000">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="championOnePointsLabel" layoutX="148.0" layoutY="40.0" text="points">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="championTwoPane" prefHeight="80.0" prefWidth="441.0">
+                                 <children>
+                                    <Pane fx:id="championTwoImagePane" layoutY="10.0" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                       <children>
+                                          <ImageView fx:id="championTwoImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="championTwoName" layoutX="72.0" layoutY="2.0" minHeight="35.0" minWidth="190.0" prefHeight="35.0" prefWidth="190.0" text="Name">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="championTwoPointsValue" layoutX="72.0" layoutY="40.0" text="0 000 000">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="championTwoPointsLabel" layoutX="148.0" layoutY="40.0" text="points">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Pane fx:id="championThreePane" prefHeight="80.0" prefWidth="441.0">
+                                 <children>
+                                    <Pane fx:id="championThreeImagePane" layoutY="10.0" maxHeight="60.0" maxWidth="60.0" minHeight="60.0" minWidth="60.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+                                       <children>
+                                          <ImageView fx:id="championThreeImage" fitHeight="60.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </Pane>
+                                    <Label fx:id="championThreeName" layoutX="72.0" layoutY="2.0" minHeight="35.0" minWidth="190.0" text="Name">
+                                       <font>
+                                          <Font size="25.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="championThreePointsValue" layoutX="72.0" layoutY="40.0" text="0 000 000">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="championThreePointsLabel" layoutX="148.0" layoutY="40.0" text="points">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets left="55.0" right="10.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+               <VBox.margin>
+                  <Insets left="30.0" right="30.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</VBox>

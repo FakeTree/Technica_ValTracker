@@ -3,13 +3,15 @@ package com.example.technica_valtracker;
 
 
 import com.example.technica_valtracker.api.ResponseBody;
-import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
 import com.example.technica_valtracker.db.model.User;
 import com.example.technica_valtracker.utils.PasswordUtils;
+import com.example.technica_valtracker.utils.URLBuilder;
+import com.example.technica_valtracker.utils.Validation;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -26,7 +28,9 @@ import javafx.scene.control.ComboBox;
 import java.io.IOException;
 import java.util.Objects;
 
+import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
+import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequestUrl;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -42,6 +46,7 @@ public class HelloController {
 
     // Field for remembering the previous scene
     private Scene previousScene;
+
 
 
 
@@ -77,55 +82,56 @@ public class HelloController {
 
     // Buttons
     @FXML
+    private Button signUpSubmitButton;
+    @FXML
+    private Button LoginsubmitButton;
+
+    // Button events
+    @FXML
     private void onAPIMagicButtonClick(ActionEvent event) throws IOException {
-        // Other instantiations:
-        // new summoner
-        // new match_history
-        // new champion mastery
+        // Only used to test API requests inside JavaFX.
+        User testUser = userManager.getUserByRiotID("Lunatown#EUNE");
+        String region = testUser.getRegion().toLowerCase();
         Summoner summoner = new Summoner();
         League baseLeague = new League();
         League soloLeague = null;
         League flexLeague = null;
 
-        // Placeholder values for testing.
-//        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj7A";
-        String puuid  = "gw7Zs5-eGgkE2qR0T3x-NIoH4zTSlAbBSWSUQQZJW-I413r3XVcZspF8ZfGwbBnRbToRQpW1tulj"; // Broken PUUID
-        String sumId = "R4vyzEe6PM7NKFtjzwrMQeUkGMQkUEguo2DXW67vJlYjIBA";
-        String region = "na1";
+        // Summoner test
+        String summonerRequestUrl = URLBuilder.buildSummonerRequestUrl(testUser.getUserId(), region);
 
-//        // Get summoner data
-//        ResponseBody summonerQuery = summoner.getSummonerByPuuid(puuid, region);
-//
-//        // Update Summoner instance if no error received
-//        if (summonerQuery.isError()) {
-//            // Get error message
-//            System.out.println(summonerQuery.getMessage().getDetail());
-//        }
-//        else {
-//            getSummonerFromJson(summonerQuery.getJson(), summoner);
-//            System.out.println(summoner.getSummonerId());
-//        }
+        ResponseBody summonerQuery = getQuery(summonerRequestUrl, Constants.requestHeaders);
 
-        String leagueJson = baseLeague.getLeagueData(sumId, region);
-        League[] leagues = getLeagueArrayFromJson(leagueJson);
-
-        if (leagues.length == 0) {
-            ErrorMessage error = new ErrorMessage(404, "Error while fetching data from API");
-            System.out.println(error.getDetail());
+        if (summonerQuery.isError()) {
+            System.out.println(summonerQuery.getMessage().getDetail());
         }
         else {
-            for (League league : leagues) {
-                if (Objects.equals(league.getQueueType(), "RANKED_FLEX_SR")) {
-                    flexLeague = league;
-                }
-                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
-                    soloLeague = league;
-                }
-            }
+           getSummonerFromJson(summonerQuery.getJson(), summoner);
         }
 
-        soloLeague.setWinrate();
-        System.out.println(soloLeague.getWinrate());
+        // League test
+        String leagueRequestUrl = URLBuilder.buildLeagueRequestUrl(summoner.getSummonerId(), region);
+
+        ResponseBody leagueQuery = getQuery(leagueRequestUrl, Constants.requestHeaders);
+
+        if (leagueQuery.isError()) {
+            System.out.println(leagueQuery.getMessage().getDetail());
+        }
+        else {
+            League[] leagues = getLeagueArrayFromJson(leagueQuery.getJson());
+        }
+
+        // Champion test
+        String championRequestUrl = URLBuilder.buildChampionRequestUrl(testUser.getUserId(), region);
+
+        ResponseBody championQuery = getQuery(championRequestUrl, Constants.requestHeaders);
+
+        if (championQuery.isError()) {
+            System.out.println(championQuery.getMessage().getDetail());
+        }
+        else {
+            Champion[] champions = getChampionArrayFromJson(championQuery.getJson());
+        }
     }
 
     @FXML
@@ -135,7 +141,7 @@ public class HelloController {
 
 
     @FXML
-    private void LoginButtonClick(ActionEvent event) {
+    private void LoginButtonClick(ActionEvent event) throws IOException {
         // Get the current text from both text fields
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
@@ -161,6 +167,15 @@ public class HelloController {
             // Alert the user of Login success
             showAlert(AlertType.INFORMATION, "Login Success", "Login successful.");
             // Move to main page here
+            Stage stage = (Stage) LoginsubmitButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboard-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+            stage.setScene(scene);
+            // Move to main page here
+            // Seems redundant but this proves that the userdata is now retrievable from the userManager
+            User testuser = userManager.getCurrentUser();
+            testuser.getUserId();
+
             // Seems redundant but this proves that the userdata is now retrievable from the userManager
             User testuser = userManager.getCurrentUser();
             testuser.getUserId();
@@ -234,7 +249,12 @@ public class HelloController {
         // Print the result
         if (success) {
             showAlert(AlertType.INFORMATION, "Registration Success", "User successfully registered.");
-            goToPreviousScene(event);
+            userManager.setCurrentUser(newUser);
+            Stage stage = (Stage) signUpSubmitButton.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboard-view.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+            stage.setScene(scene);
+//            goToPreviousScene(event);
         } else {
             // Note: May want a better error system then above. if this error is reached it almost certainly is a riotID conflict
             showAlert(AlertType.ERROR, "Registration Failed", "Registration failed. RiotID may already be taken.");
@@ -245,7 +265,7 @@ public class HelloController {
     private void onLoginButtonClick(ActionEvent event) {
         try {
             // Load the new scene from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage using the event source
@@ -273,7 +293,7 @@ public class HelloController {
     private void onRegButtonClick(ActionEvent event) {
         try {
             // Load the new scene from the FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("register-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(HelloApplication.class.getResource("register-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage using the event source

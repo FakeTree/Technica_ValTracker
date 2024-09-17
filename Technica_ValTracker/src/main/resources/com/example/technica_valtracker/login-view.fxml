@@ -9,7 +9,7 @@
 
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.technica_valtracker.HelloController">
+      fx:controller="com.example.technica_valtracker.controller.HelloController">
 
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -31,7 +31,7 @@
     </VBox>
 
     <!-- Login Button Section -->
-    <Button text="Login" onAction="#LoginButtonClick" minWidth="100"/>
+    <Button fx:id = "LoginsubmitButton" text="Login" onAction="#LoginButtonClick" minWidth="100"/>
 
     <!-- Back Button Section -->
     <Button text="Back" onAction="#onBackButtonClick" minWidth="100"/>

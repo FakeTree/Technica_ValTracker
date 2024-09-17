@@ -19,12 +19,33 @@ import java.io.IOException;
 public class FriendsController {
 
     //FXML ELEMENTS
-    @FXML
-    private Label friendPageHeaderLabel;
+
+    //MENUITEMS
+    @FXML private MenuItem Home_Menu;
+    @FXML private MenuItem Match_History_Menu;
+    @FXML private MenuItem Friends_Menu;
+    @FXML private MenuItem Account_Menu;
+    //TEXTFIELD
+    @FXML private TextField compareFriendSearchBox;
+    //BUTTONS
+    @FXML private Button compareFriendSearchButton;
+    @FXML private Button soloModeButton;
+    @FXML private Button flexModeButton;
+    //LABELS
+    @FXML private Label comparePlayerWinrate;
+    @FXML private Label comparePlayerKDA;
+    @FXML private Label comparePlayerCS;
+    @FXML private Label comparePlayerLP;
+    @FXML private Label compareFriendHeadingLabel;
+    @FXML private Label compareFriendWinrate;
+    @FXML private Label compareFriendKDA;
+    @FXML private Label CompareFriendCS;
+    @FXML private Label compareFriendLP;
+    @FXML private Label friendPageHeaderLabel;
 
 
 
-    //MenuBar Button Methods
+
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
 
@@ -67,42 +88,22 @@ public class FriendsController {
 
     //replace values with those from solo mode
     @FXML
-    private void onSoloModeButtonClick(ActionEvent actionEvent) {
-
-
+    public void onSoloModeClick(ActionEvent actionEvent) {
 
     }
+
 
     //replace values with those from flex mode
     @FXML
-    public void onFlexModeButtonClick(ActionEvent actionEvent) {
+    public void onFlexModeClick(ActionEvent actionEvent) {
+    }
 
+    //Method to search for a friends stats and add to the friend menu
+    @FXML
+    public void onFriendSearchClick(ActionEvent actionEvent) {
 
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
 

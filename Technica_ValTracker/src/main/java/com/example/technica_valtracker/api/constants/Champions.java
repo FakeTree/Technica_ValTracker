@@ -1,5 +1,9 @@
-package com.example.technica_valtracker.assets;
+package com.example.technica_valtracker.api.constants;
 
+/**
+ * Handles the retrieval of a champion's name by their ID. A String array is returned because occasionally, the
+ * champion's displayed name and the one used for obtaining their Icon are different.
+ */
 public class Champions {
     public static String[] getChampionById(long id) {
         return switch ((int) id) {

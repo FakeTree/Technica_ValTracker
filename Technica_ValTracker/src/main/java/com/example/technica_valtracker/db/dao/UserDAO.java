@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 
-
-// Need to restructure the interface
+// TODO restructure the interface
+// TODO replace printStackTrace with better error handling protocol
 public class UserDAO implements IUserDAO {
     private Connection connection;
 

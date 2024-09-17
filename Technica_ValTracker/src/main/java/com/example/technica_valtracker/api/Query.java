@@ -10,6 +10,10 @@ import java.io.IOException;
 
 import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
 
+/**
+ * Handles all aspects of sending a GET request, including client and request setup, and checking for errors in the
+ * response.
+ */
 public class Query {
     /**
      * Send a GET request to the Riot API to a specific endpoint and provide the

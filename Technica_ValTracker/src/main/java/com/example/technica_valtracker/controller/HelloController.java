@@ -1,7 +1,8 @@
-package com.example.technica_valtracker;
+package com.example.technica_valtracker.controller;
 
-
-
+import com.example.technica_valtracker.Constants;
+import com.example.technica_valtracker.HelloApplication;
+import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
@@ -18,19 +19,13 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Node;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ComboBox;
 
 
 import java.io.IOException;
-import java.util.Objects;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
-import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequestUrl;
 
 // Note that this Controller currently handles three windows
 // 1. Hello Window
@@ -40,7 +35,6 @@ import static com.example.technica_valtracker.utils.URLBuilder.buildChampionRequ
 
 
 public class HelloController {
-
     // Access UserManager
     private UserManager userManager = UserManager.getInstance();
 
@@ -93,9 +87,6 @@ public class HelloController {
         User testUser = userManager.getUserByRiotID("Lunatown#EUNE");
         String region = testUser.getRegion().toLowerCase();
         Summoner summoner = new Summoner();
-        League baseLeague = new League();
-        League soloLeague = null;
-        League flexLeague = null;
 
         // Summoner test
         String summonerRequestUrl = URLBuilder.buildSummonerRequestUrl(testUser.getUserId(), region);
@@ -171,16 +162,6 @@ public class HelloController {
             FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("dashboard-view.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
             stage.setScene(scene);
-            // Move to main page here
-            // Seems redundant but this proves that the userdata is now retrievable from the userManager
-            User testuser = userManager.getCurrentUser();
-            testuser.getUserId();
-
-            // Seems redundant but this proves that the userdata is now retrievable from the userManager
-            User testuser = userManager.getCurrentUser();
-            testuser.getUserId();
-
-
         } else {
             // Login failed
             // Note: Deliberately ambiguous
@@ -286,6 +267,7 @@ public class HelloController {
             stage.setScene(newScene);
             stage.show();
         } catch (IOException e) {
+            // TODO better error handling
             e.printStackTrace();
         }
     }
@@ -314,6 +296,7 @@ public class HelloController {
             stage.setScene(newScene);
             stage.show();
         } catch (IOException e) {
+            // TODO better error handling
             e.printStackTrace();
         }
 

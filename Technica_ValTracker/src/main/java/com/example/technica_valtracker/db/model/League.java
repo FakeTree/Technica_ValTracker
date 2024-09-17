@@ -14,13 +14,15 @@ public class League {
     private String queueType;
     @JsonIgnore
     private int winrate;
+    @JsonIgnore
+    private String rankedEmblem;
 
     public League() {}
 
     // Getters and setters
 
     public String getLeagueId() { return leagueId; }
-    public void setLeagueId(String leagueId) { this.leagueId = leagueId; };
+    public void setLeagueId(String leagueId) { this.leagueId = leagueId; }
 
     public String getTier() {
         return tier;
@@ -71,5 +73,16 @@ public class League {
     public void setWinrate() {
         int totalGames = wins + losses;
         winrate = round(((float) wins / totalGames) * 100);
+    }
+
+    public String getRankedEmblem() { return rankedEmblem; }
+    public void setRankedEmblem() {
+        rankedEmblem = String.format("/ranked-emblems/%s.png", tier);
+    }
+
+    @Override public String toString() {
+        return "\nQueue - " + queueType +
+                "\nTier - " + tier +
+                "\nLP - " + leaguePoints;
     }
 }

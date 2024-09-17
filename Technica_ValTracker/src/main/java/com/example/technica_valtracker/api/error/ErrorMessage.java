@@ -1,16 +1,6 @@
 package com.example.technica_valtracker.api.error;
 
-/**
- * Holds HTTP error message and response.
- */
-
 public class ErrorMessage {
-    /* // TODO REMOVE LATER
-    {
-        "status": 404,
-        "detail: "Data not found"
-    }
-     */
     private int status;
     private String detail;
 

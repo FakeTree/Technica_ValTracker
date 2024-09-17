@@ -1,7 +1,6 @@
 package com.example.technica_valtracker.db.model;
 
-// For testing
-import java.io.IOException;
+// TODO TESTING ONLY REMOVE LATER
 import java.security.SecureRandom;
 import com.fasterxml.jackson.annotation.*;
 

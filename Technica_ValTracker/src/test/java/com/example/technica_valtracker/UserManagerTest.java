@@ -32,12 +32,12 @@ class UserManagerTest {
         userManager.setCurrentUser(null);
 
         // Mock some users -currently error'ing-
-        //user1 = new User("user1@example.com", "password1", "RiotID1", "region1");
-        //user2 = new User("user2@example.com", "password2", "RiotID2", "region2");
+        user1 = new User("1", "user1@example.com", "password1", "RiotID1", "region1");
+        user2 = new User("2", "user2@example.com", "password2", "RiotID2", "region2");
 
         // Mock behavior for UserDAO methods
         when(mockUserDAO.getAllUsers()).thenReturn(new ArrayList<>());
-        //when(mockUserDAO.addNewUser(any(User.class))).thenReturn(true); -currently error'ing-
+        doNothing().when(mockUserDAO).addNewUser(any(User.class));
     }
 
     @Test

@@ -140,6 +140,11 @@ public class HelloController {
         // Hash the password
         String hashedPassword = PasswordUtils.hashPassword(password);
 
+//        // API Magic
+//        if(email.equals("api@magic.com")) {
+//            onAPIMagicButtonClick();
+//        }
+
         // Check if the userManager exists
         if (userManager == null) {
             showAlert(AlertType.ERROR, "Login Error", "UserManager not initialized.");

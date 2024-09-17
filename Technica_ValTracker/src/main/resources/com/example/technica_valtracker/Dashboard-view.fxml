@@ -37,6 +37,7 @@
             <Menu mnemonicParsing="false" text="Account">
                <items>
                   <MenuItem fx:id="Account_Menu" mnemonicParsing="false" text="Account" />
+                  <MenuItem fx:id="Logout" mnemonicParsing="false" text="Log out" onAction="#onLogOutMenuClick" />
                </items>
             </Menu>
         </menus>

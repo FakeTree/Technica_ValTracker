@@ -54,7 +54,7 @@ public class UserDAO implements IUserDAO {
                     + "email TEXT NOT NULL, "
                     + "password TEXT NOT NULL, "
                     + "riotId TEXT NOT NULL,"
-                    + "region TEXT"
+                    + "region TEXT NOT NULL"
                     + ")";
             statement.execute(query);
         } catch(SQLException e) {

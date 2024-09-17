@@ -176,8 +176,6 @@ public class DashboardController {
     }
     @FXML
     public void OnHomeMenuClick(ActionEvent actionEvent) throws IOException {
-
-
         //switch to the dashboard scene
         Stage stage = (Stage) statPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Dashboard-view.fxml"));
@@ -189,7 +187,7 @@ public class DashboardController {
     private void OnFriendsMenuClick(ActionEvent actionEvent) throws IOException {
         //switch to the Friends scene
         Stage stage = (Stage) statPageHeaderLabel.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Friends-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Friends-View.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
 
@@ -203,6 +201,15 @@ public class DashboardController {
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
 
+    }
+
+    @FXML
+    public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
+        //switch to the login/signup screen
+        Stage stage = (Stage) statPageHeaderLabel.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        stage.setScene(scene);
     }
 
     /* Internal controller properties */
@@ -473,11 +480,10 @@ public class DashboardController {
                                     }
                                 }
                             });
-
-                            // Hide loading pane and display dashboard
-                            statLoadPane.setVisible(false);
-                            statVBox.setVisible(true);
                         }
+                        // Hide loading pane and display dashboard
+                        statLoadPane.setVisible(false);
+                        statVBox.setVisible(true);
                     }
                 });
             }
@@ -504,6 +510,4 @@ public class DashboardController {
 
         alert.show();
     }
-
-
 }

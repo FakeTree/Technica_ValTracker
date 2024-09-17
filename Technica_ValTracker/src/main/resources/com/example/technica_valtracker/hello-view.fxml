@@ -16,5 +16,4 @@
     <Label fx:id="welcomeText"/>
     <Button text="Login" onAction="#onLoginButtonClick"/>
     <Button text="Register" onAction="#onRegButtonClick"/>
-    <Button text="API Magic!" onAction="#onAPIMagicButtonClick"/>
 </VBox>

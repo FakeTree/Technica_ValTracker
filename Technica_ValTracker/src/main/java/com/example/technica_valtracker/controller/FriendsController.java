@@ -86,6 +86,16 @@ public class FriendsController {
 
     }
 
+    @FXML
+    public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
+
+        //switch to the login/signup screen
+        Stage stage = (Stage) friendPageHeaderLabel.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        stage.setScene(scene);
+    }
+
     //replace values with those from solo mode
     @FXML
     public void onSoloModeClick(ActionEvent actionEvent) {
@@ -104,6 +114,7 @@ public class FriendsController {
 
 
     }
+
 }
 
 

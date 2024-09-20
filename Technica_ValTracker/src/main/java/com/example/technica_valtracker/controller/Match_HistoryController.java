@@ -180,4 +180,12 @@ public class Match_HistoryController extends HelloApplication {
         stage.setScene(scene);
 
     }
+    @FXML
+    public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
+        //switch to the login/signup screen
+        Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        stage.setScene(scene);
+    }
 }

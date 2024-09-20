@@ -40,7 +40,7 @@ public class Match {
 
     // --------------------------------------------------------------------------------
 
-    public void getMatchListByPUUID(ResponseBody res) throws IOException {
+    public void setMatchListByPUUID(ResponseBody res) throws IOException {
         emptyMatchId();
         System.out.println(res.getJson().toString());
         Matcher m = Pattern.compile("[A-Z0-9_]+").matcher(res.getJson().toString());
@@ -50,7 +50,7 @@ public class Match {
     }
 
     /**
-     * @todo Need to utlise the Query class to manage this query.
+     * @todo Need to utilise the Query class to manage this query.
      */
     public ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
         String json;

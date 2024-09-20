@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
 
@@ -28,8 +29,12 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
 
         // Create Scene
-        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+
         stage.setTitle("Technica Tracker");
+        // Logo
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+
         stage.setScene(scene);
 
         stage.show();

@@ -7,6 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.ImageView?>
 
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.technica_valtracker.controller.HelloController">
@@ -14,8 +15,13 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <!-- Title Label -->
-    <Label text="Register Window"/>
+    <!-- Title -->
+    <Label text="Technica Tracker"
+           style="-fx-font-size: 72px; -fx-font-weight: bold;"/>
+
+    <!-- Slogan Label -->
+    <Label text="Turn Stats into Strategies"
+           style="-fx-font-size: 35px; -fx-font-style: italic;"/>
 
     <!-- Email Section -->
     <VBox alignment="CENTER" spacing="10.0">
@@ -61,9 +67,13 @@
         </items>
     </ComboBox>
 
+
+
     <!-- Registration Button Section -->
     <Button text="Register" fx:id="signUpSubmitButton" onAction="#RegButtonClick" minWidth="100"/>
 
     <!-- Back Button Section -->
     <Button text="Back" onAction="#onBackButtonClick" minWidth="100"/>
+
+    <ImageView fx:id="logoImage" fitWidth="150" fitHeight="150" preserveRatio="true" opacity="0"/>
 </VBox>

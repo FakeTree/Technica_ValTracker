@@ -20,6 +20,8 @@ import javafx.event.ActionEvent;
 import javafx.scene.Parent;
 import javafx.scene.Node;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 import java.io.IOException;
@@ -74,11 +76,21 @@ public class HelloController {
     @FXML
     private Label welcomeText;
 
+    // Images
+    @FXML
+    private ImageView logoImage;
+
     // Buttons
     @FXML
     private Button signUpSubmitButton;
     @FXML
     private Button LoginsubmitButton;
+
+    @FXML
+    public void initialize() {
+        Image logo = new Image(getClass().getResourceAsStream("/images/logo.png"));
+        logoImage.setImage(logo);
+    }
 
     // Button events
     @FXML

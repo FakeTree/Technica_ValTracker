@@ -29,7 +29,7 @@ jobs:
         distribution: 'corretto'
         cache: maven
     - name: Build with Maven
-      run: mvn -B package --file Technica_ValTracker/pom.xml 
+      run: mvn -B package --file https://github.com/FakeTree/Technica_ValTracker/blob/86001081bbe7200da22771d603baa18563cb83eb/Technica_ValTracker/pom.xml 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph

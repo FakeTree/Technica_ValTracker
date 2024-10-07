@@ -4,6 +4,7 @@ import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.db.model.Champion;
 import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.Summoner;
+import com.example.technica_valtracker.db.model.Match;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -42,6 +43,15 @@ public class Deserialiser {
      */
     public static League[] getLeagueArrayFromJson(String json) throws JsonProcessingException {
         return objectMapper.readValue(json, League[].class);
+    }
+
+    /**
+     * Converts JSON response body to a Summoner object.
+     * @param json The JSON string to deserialise.
+     * @param match The Summoner object to insert values into.
+     */
+    public static void getMatchFromJson(String json, Match match) throws JsonProcessingException {
+        match = objectMapper.readerForUpdating(match).readValue(json);
     }
 
     /** Converts JSON array containing the Champion Mastery response and returns an array of Champion objects.

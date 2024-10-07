@@ -5,25 +5,37 @@ import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
-import com.example.technica_valtracker.db.model.Champion;
-import com.example.technica_valtracker.db.model.Match;
-import com.example.technica_valtracker.db.model.User;
+import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.db.model.*;
 import com.example.technica_valtracker.utils.URLBuilder;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
+import static com.example.technica_valtracker.utils.Deserialiser.getMatchFromJson;
+import static com.example.technica_valtracker.utils.Deserialiser.getSummonerFromJson;
 
 public class Match_HistoryController extends HelloApplication {
 
@@ -85,6 +97,12 @@ public class Match_HistoryController extends HelloApplication {
     @FXML private Label matchOneCSMinLabel114;
     @FXML private Label HistoryMatch5_VisionScore;
 
+    // Boxes
+    @FXML
+    private VBox pageBox;
+    @FXML
+    private VBox statVBox;
+
     //ImageViews
     @FXML private ImageView HistoryMatch1_ChampImage;
     @FXML private ImageView HistoryMatch2_ChampImage;
@@ -94,7 +112,8 @@ public class Match_HistoryController extends HelloApplication {
 
 
     /* Internal controller properties */
-
+    ThreadFactory threadFactory = Executors.defaultThreadFactory();
+    ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     private UserManager userManager = UserManager.getInstance();
 
 //METHODS
@@ -122,23 +141,134 @@ public class Match_HistoryController extends HelloApplication {
      * and executes the tasks which perform the API requests and injections into the FXML file.
      */
     public void init() throws IOException {
-        // Get the currently logged in user's details
         User currentUser = userManager.getCurrentUser();
-
+        System.out.println("INIT!"); // TODO REMOVE TESTING ONLY
         String riotId = currentUser.getRiotID();
         String puuid = currentUser.getUserId();
         String region = currentUser.getRegion().toLowerCase();
 
-        Match m = new Match();
+        Task<ResponseBody> AllMatchIdsTask = getAllMatchIdsTask(puuid, region, riotId);
 
-        ResponseBody Matches = getQuery(URLBuilder.buildMatchRequestUrl(puuid, region), Constants.requestHeaders);
-        System.out.println(URLBuilder.buildMatchRequestUrl(puuid, region));
-        // Execute the API query Tasks
-        m.setMatchListByPUUID(Matches);
-
-        System.out.println(m.getMatchIds());
+        singleThreadPool.submit(AllMatchIdsTask);
     }
 
+    private @NotNull Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
+
+        // Declare a Task which performs the API query and returns the JSON string or error if failed.
+        Task<ResponseBody> AllMatchIdsTask = new Task<ResponseBody>() {
+
+            @Override
+            protected ResponseBody call() throws Exception {
+                String matchReqUrl = URLBuilder.buildMatchIDsRequestUrl(puuid, region);
+                return getQuery(matchReqUrl, Constants.requestHeaders);
+            }
+        };
+
+        /*
+         * Event handler that runs when the SummonerTasks succeeds; deserialises the JSON output to a Summoner object
+         * and sets the corresponding FXML properties.
+         */
+        AllMatchIdsTask.setOnSucceeded(new EventHandler() {
+
+            @Override public void handle(Event event) {
+                // Switch from the background thread to the application thread to update UI
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+
+                        ResponseBody allMatchIdsQuery = AllMatchIdsTask.getValue();
+                        //statLoadStatusText.setText("Loading summoner data...");
+
+                        if (allMatchIdsQuery.isError()) {
+                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            ErrorMessage error = allMatchIdsQuery.getMessage();
+                            showAlert(error.getStatus(), error.getDetail());
+
+                            // Hide loading pane and display dashboard
+                            //statLoadPane.setVisible(false);
+                            //statVBox.setVisible(true);
+                        }
+                        else {
+                            System.out.println("Success!"); // TODO REMOVE TESTING ONLY
+
+
+                            try {
+                                MatchBucket matchBucket = new MatchBucket();
+                                String json = AllMatchIdsTask.getValue().getJson();
+                                matchBucket.setMatchListByPUUID(json);
+                                List<String> matches = matchBucket.getMatchIds();
+                                for(String matchID : matches){
+                                    Task<ResponseBody> MatchTask = getMatchTask(matchID);
+                                    singleThreadPool.submit(MatchTask);
+                                }
+
+
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        return AllMatchIdsTask;
+    }
+
+    private @NotNull Task<ResponseBody> getMatchTask(String matchID) throws IOException {
+        System.out.println("Called getMatchTask!");
+        // Declare a Task which performs the API query and returns the JSON string or error if failed.
+        Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
+            @Override
+            protected ResponseBody call() throws Exception {
+                System.out.println("MatchTask Success!");
+                String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchID);
+                System.out.println(matchReqUrl);
+                return getQuery(matchReqUrl, Constants.requestHeaders);
+            }
+        };
+
+        /*
+         * Event handler that runs when the SummonerTasks succeeds; deserialises the JSON output to a Summoner object
+         * and sets the corresponding FXML properties.
+         */
+        MatchTask.setOnSucceeded(new EventHandler() {
+
+            @Override public void handle(Event event) {
+                System.out.println("MatchTask Success!"); // TODO REMOVE TESTING ONLY
+                // Switch from the background thread to the application thread to update UI
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+
+                        ResponseBody matchQuery = MatchTask.getValue();
+                        //statLoadStatusText.setText("Loading summoner data...");
+
+                        if (matchQuery.isError()) {
+                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            ErrorMessage error = matchQuery.getMessage();
+                            showAlert(error.getStatus(), error.getDetail());
+
+                            // Hide loading pane and display dashboard
+                            //statLoadPane.setVisible(false);
+                            //statVBox.setVisible(true);
+                        }
+                        else {
+                            System.out.println("Retreieved Match!"); // TODO REMOVE TESTING ONLY
+                            System.out.println("Match ID: " + matchID);
+                            System.out.println("Match Query: " + matchQuery.getJson());
+
+                            String json = MatchTask.getValue().getJson();
+                            Match match = new Match(matchID, json);
+
+                            singleThreadPool.submit(MatchTask);
+                        }
+                    }
+                });
+            }
+        });
+
+        return MatchTask;
+    }
 
     //MenuBar Button Methods
     @FXML
@@ -187,5 +317,15 @@ public class Match_HistoryController extends HelloApplication {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 450, 450);
         stage.setScene(scene);
+    }
+    private void showAlert(int status, String detail) {
+        var alert = new Alert(Alert.AlertType.ERROR);
+
+        alert.setTitle("Error");
+        alert.setHeaderText("There was a problem while loading the dashboard data");
+        alert.setContentText(String.format("%d\n%s", status, detail));
+        alert.initOwner(pageBox.getScene().getWindow());
+
+        alert.show();
     }
 }

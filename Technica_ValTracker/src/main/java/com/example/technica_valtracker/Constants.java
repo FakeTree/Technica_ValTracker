@@ -6,7 +6,7 @@
 package com.example.technica_valtracker;
 
 public class Constants {
-    public static String RIOT_API_KEY = "RGAPI-cb368d4d-1578-4198-ac9d-af1c78d08d94";
+    public static String RIOT_API_KEY = "RGAPI-5f85c867-bda8-41c2-82ed-4530e2b84116";
     public static String[] requestHeaders;
 
     public Constants() {

@@ -24,8 +24,13 @@ public class URLBuilder {
         return "https://" + region + baseUrl + puuid + "/top?count=3";
     }
 
-    public static String buildMatchRequestUrl(String puuid, String region) {
+    public static String buildMatchIDsRequestUrl(String puuid, String region) {
         final String baseUrl = "api.riotgames.com/lol/match/v5/matches/by-puuid";
         return String.format("https://sea.%s/%s/ids?start=0&count=20", baseUrl, puuid);
+    }
+
+    public static String buildMatchRequestUrl(String matchID) {
+        final String baseUrl = "api.riotgames.com/lol/match/v5/matches";
+        return String.format("https://sea.%s/%s", baseUrl, matchID);
     }
 }

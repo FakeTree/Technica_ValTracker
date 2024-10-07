@@ -18,9 +18,10 @@ import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessage
 
 public class Match {
     private String matchId;
-    private List<String> matchIds = new ArrayList<String>();
+
     private String url;
     private ErrorMessage errorMessage;
+    private String matchDataStringify;
 
     private int queueId;
     private long gameDuration;
@@ -40,21 +41,15 @@ public class Match {
 
     // --------------------------------------------------------------------------------
 
-    public void setMatchListByPUUID(ResponseBody res) throws IOException {
-        emptyMatchId();
-        System.out.println(res.getJson().toString());
-        Matcher m = Pattern.compile("[A-Z0-9_]+").matcher(res.getJson().toString());
-        while(m.find()){
-            addMatchIds(m.group());
-        }
-    }
+
 
     // --------------------------------------------------------------------------------
 
-    public List<String> getMatchIds(){ return matchIds; }
-    public void setMatchIds (List<String> param){ this.matchIds = param; }
-    private void addMatchIds (String param){ this.matchIds.add(param); }
-    private void emptyMatchId(){ this.matchIds = new ArrayList<String>(); }
+    public Match(String id, String matchdata){
+        this.matchId = id;
+        this.matchDataStringify = matchdata;
+        matchdata.
+    }
 
     public void setMatchId(String matchId) {
         this.matchId = matchId;

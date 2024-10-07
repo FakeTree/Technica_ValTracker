@@ -49,36 +49,6 @@ public class Match {
         }
     }
 
-    /**
-     * @todo Need to utilise the Query class to manage this query.
-     */
-    public ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
-        String json;
-
-        // Set up HTTP client
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(new ErrorResponseInterceptor())
-                .build();
-
-        // Build GET request
-        Request request = new Request.Builder()
-                .header(headers[0], headers[1])
-                .url(url)
-                .build();
-
-        // Send request to client
-        try (Response response = client.newCall(request).execute()) {
-            // If response returned status code other than 200, return array with error message JSON
-            if (!response.isSuccessful()) {
-                ErrorMessage error = getErrorMessageFromJson(response.body().string());
-                return new ResponseBody(error);
-            }
-            // Parse successful response as string
-            json = response.body().string();
-        }
-        return new ResponseBody(json, false);
-    }
-
     // --------------------------------------------------------------------------------
 
     public List<String> getMatchIds(){ return matchIds; }

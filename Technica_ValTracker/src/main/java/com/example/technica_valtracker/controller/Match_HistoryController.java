@@ -130,7 +130,6 @@ public class Match_HistoryController extends HelloApplication {
         String region = currentUser.getRegion().toLowerCase();
 
         Match m = new Match();
-        System.out.println(puuid + " test " + region);
 
         ResponseBody Matches = getQuery(URLBuilder.buildMatchRequestUrl(puuid, region), Constants.requestHeaders);
         System.out.println(URLBuilder.buildMatchRequestUrl(puuid, region));

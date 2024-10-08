@@ -46,12 +46,16 @@ public class Deserialiser {
     }
 
     /**
-     * Converts JSON response body to a Summoner object.
-     * @param json The JSON string to deserialise.
-     * @param match The Summoner object to insert values into.
+     * Converts JSON Array containing the League entries to an array of League objects and returns it.
+     *
+     * @param json The Json string to deserialise, must represent a response body array.
+     * @return Array of League objects.
+     * @throws JsonProcessingException
      */
-    public static void getMatchFromJson(String json, Match match) throws JsonProcessingException {
-        match = objectMapper.readerForUpdating(match).readValue(json);
+    public static Match getMatchArrayFromJson(String json) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Match matchQuery = objectMapper.readValue(json, Match.class);
+        return matchQuery;
     }
 
     /** Converts JSON array containing the Champion Mastery response and returns an array of Champion objects.

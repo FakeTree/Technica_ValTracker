@@ -28,14 +28,15 @@ import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
-import static com.example.technica_valtracker.utils.Deserialiser.getMatchFromJson;
-import static com.example.technica_valtracker.utils.Deserialiser.getSummonerFromJson;
+import static com.example.technica_valtracker.utils.Deserialiser.*;
 
 public class Match_HistoryController extends HelloApplication {
 
@@ -115,6 +116,8 @@ public class Match_HistoryController extends HelloApplication {
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     private UserManager userManager = UserManager.getInstance();
+    MatchBucket matchBucket = new MatchBucket();
+    User currentUser = userManager.getCurrentUser();
 
 //METHODS
 
@@ -141,7 +144,7 @@ public class Match_HistoryController extends HelloApplication {
      * and executes the tasks which perform the API requests and injections into the FXML file.
      */
     public void init() throws IOException {
-        User currentUser = userManager.getCurrentUser();
+
         System.out.println("INIT!"); // TODO REMOVE TESTING ONLY
         String riotId = currentUser.getRiotID();
         String puuid = currentUser.getUserId();
@@ -192,7 +195,6 @@ public class Match_HistoryController extends HelloApplication {
 
 
                             try {
-                                MatchBucket matchBucket = new MatchBucket();
                                 String json = AllMatchIdsTask.getValue().getJson();
                                 matchBucket.setMatchListByPUUID(json);
                                 List<String> matches = matchBucket.getMatchIds();
@@ -216,14 +218,12 @@ public class Match_HistoryController extends HelloApplication {
     }
 
     private @NotNull Task<ResponseBody> getMatchTask(String matchID) throws IOException {
-        System.out.println("Called getMatchTask!");
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override
             protected ResponseBody call() throws Exception {
-                System.out.println("MatchTask Success!");
                 String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchID);
-                System.out.println(matchReqUrl);
+                System.out.println(matchReqUrl+"?api_key="+Constants.RIOT_API_KEY);
                 return getQuery(matchReqUrl, Constants.requestHeaders);
             }
         };
@@ -235,7 +235,6 @@ public class Match_HistoryController extends HelloApplication {
         MatchTask.setOnSucceeded(new EventHandler() {
 
             @Override public void handle(Event event) {
-                System.out.println("MatchTask Success!"); // TODO REMOVE TESTING ONLY
                 // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
@@ -253,12 +252,20 @@ public class Match_HistoryController extends HelloApplication {
                             //statVBox.setVisible(true);
                         }
                         else {
-                            System.out.println("Retreieved Match!"); // TODO REMOVE TESTING ONLY
-                            System.out.println("Match ID: " + matchID);
-                            System.out.println("Match Query: " + matchQuery.getJson());
 
                             String json = MatchTask.getValue().getJson();
-                            Match match = new Match(matchID, json);
+                            Match match = null;
+                            try {
+                                match = getMatchArrayFromJson(json);
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                            matchBucket.addMatch(match.getMetadata().getMatchId(), match);
+                            // Get Player Number
+                            int usrIdx = getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
+                            matchBucket.addValue(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
+                            //matchBucket.addValue(Match.Participant[]);
+                            System.out.println(matchBucket.getKDAAcrossAllGames());
 
                             singleThreadPool.submit(MatchTask);
                         }
@@ -268,6 +275,15 @@ public class Match_HistoryController extends HelloApplication {
         });
 
         return MatchTask;
+    }
+
+    public static int getParticipantIndexByPuuid(List<Match.Participant> participants, String puuid) {
+        for (int i = 0; i < participants.size(); i++) {
+            if (participants.get(i).getPuuid().equals(puuid)) {
+                return i; // Return index of matched participant
+            }
+        }
+        return -1; // Return -1 if not found
     }
 
     //MenuBar Button Methods

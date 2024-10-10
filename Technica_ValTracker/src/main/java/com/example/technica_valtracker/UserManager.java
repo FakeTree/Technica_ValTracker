@@ -113,10 +113,32 @@ public class UserManager {
 
     /// Send users from memory to DB via UserDAO
     // Note: Make sure that duplicates cannot occur
-    // This method likely wont get used
+    // This method likely won't get used
     private void saveUsersToDB() {
         for (User user : userList) {
             userDAO.addNewUser(user);  // Persist each user to the database
+        }
+    }
+
+    // Method for returning a reference to a stored user with their email
+    public User getUserByEmail(String email) {
+        // Iterate through the list of users and find a user with the matching email
+        for (User user : userList) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                return user;
+            }
+        }
+        // If no user is found, return null and optionally print a message
+        System.out.println("No user found with email: " + email);
+        return null;
+    }
+
+    // Method to update the database. This is called when a user as added or removed a friend
+    public void updateUserFriends(User user) {
+        if (userDAO != null) {
+            userDAO.updateFriends(user.getEmail(), user.getFriends());
+        } else {
+            System.out.println("UserDAO is not initialized.");
         }
     }
 }

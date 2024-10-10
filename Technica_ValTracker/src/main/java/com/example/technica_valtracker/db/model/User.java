@@ -1,8 +1,14 @@
 package com.example.technica_valtracker.db.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Arrays;
+
 // TODO TESTING ONLY REMOVE LATER
 import java.security.SecureRandom;
 import com.fasterxml.jackson.annotation.*;
+import com.example.technica_valtracker.UserManager;
+
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,14 +22,26 @@ public class User {
     private String userId;
     private String region;
 
+
+    // New field for storing friends' email addresses as strings.
+    // This was done for simplicity on injection
+    private List<String> friends;
+
     // Constructors
     // any other time login Constructor. Strings are in a SPECIFIC ORDER
-    public User(String userId, String email, String password, String riotId, String region) {
+    public User(String userId, String email, String password, String riotId, String region, String friendsString) {
         this.riotId = riotId;
         this.password = password;
         this.email = email;
         this.userId = userId;
         this.region = region;
+
+        // Method to pass friends
+        this.friends = parseFriends(friendsString);
+
+        // Test
+        System.out.println("Friends: " + this.friends);
+
 
     }
 
@@ -66,14 +84,34 @@ public class User {
     public Boolean getLoggedIn() {
         return isLoggedIn;
     }
-
     public void setLoggedIn(Boolean loggedIn) {
         isLoggedIn = loggedIn;
     }
 
-    /// Placeholder for a 'do something' after login
-    public void IHaveBeenAccessed() {
-        System.out.println("I have been accessed! My email is " + email);
+    public List<String> getFriends() {
+        validateAndCleanFriends();
+        return friends; }
+
+    public void setFriends(List<String> friends) { this.friends = friends; }
+
+
+
+
+    // Method to add a friend
+    public void addFriend(String email) {
+        if (!friends.contains(email)) {
+            friends.add(email);
+            // Notify the UserManager to update the database
+            UserManager.getInstance().updateUserFriends(this);
+        } }
+
+    // Method to remove a friend
+    public void removeFriend(String email) {
+        if (friends.contains(email)) {
+            friends.remove(email);
+            // Notify the UserManager to update the database
+            UserManager.getInstance().updateUserFriends(this);
+        }
     }
 
     // Override toString() for easy debugging
@@ -107,6 +145,38 @@ public class User {
         }
 
         return sb.toString();
+    }
+
+    // Method to parse the friends string into a list
+    private List<String> parseFriends(String friendsString) {
+        // No friends
+        if (friendsString == null || friendsString.isEmpty()) {
+            return new ArrayList<>();
+        }
+        // Assuming friendsString is a comma-separated string of emails
+        String[] friendsArray = friendsString.split(",");
+        return new ArrayList<>(Arrays.asList(friendsArray));
+    }
+
+    // Method to make sure that all friends exist in the program
+    // This was made so that there was an automated way of removing friends who may have deleted their
+    // account but are still contained as a friend in another account
+    public void validateAndCleanFriends() {
+        List<String> validFriends = new ArrayList<>();
+        for (String friendEmail : friends) {
+            // Check if the friend exists using UserManager
+            if (UserManager.getInstance().getUserByEmail(friendEmail) != null) {
+                validFriends.add(friendEmail);
+            } else {
+                System.out.println("Friend with email " + friendEmail + " does not exist and will be removed.");
+            }
+        }
+
+        // If any friends were removed, update the friends list and persist changes
+        if (validFriends.size() != friends.size()) {
+            friends = validFriends;
+            UserManager.getInstance().updateUserFriends(this);
+        }
     }
 
 }

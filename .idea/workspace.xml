@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="User test class added">
+    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="Open, login and register screen was made pretty. A logo was added. A slogan was added.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/HelloApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/UserManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/UserManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/HelloController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/HelloController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/hello-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/login-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/login-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/register-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/register-view.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/test/java/com/example/technica_valtracker/db/model/UserTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/test/java/com/example/technica_valtracker/db/model/UserTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/dao/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +25,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="0.1.2-Beta" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
@@ -52,19 +56,19 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.UserTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;0.1.2-Beta-Miles&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.HelloApplication.executor": "Run",
+    "JUnit.UserTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "0.1.3-Beta-Miles",
+    "kotlin-language-version-configured": "true",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0"
   }
-}</component>
+}]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task id="LOCAL-00001" summary="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added">
@@ -82,11 +86,39 @@
       <option name="presentableId" value="Default" />
       <updated>1726641237486</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Open, login and register screen was made pretty. A logo was added. A slogan was added.">
+      <option name="closed" value="true" />
+      <created>1726804941465</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1726804941465</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Open, login and register screen was made pretty. A logo was added. A slogan was added.">
+      <option name="closed" value="true" />
+      <created>1726804949864</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1726804949864</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />
-    <option name="LAST_COMMIT_MESSAGE" value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />
+    <MESSAGE value="Open, login and register screen was made pretty. A logo was added. A slogan was added." />
+    <option name="LAST_COMMIT_MESSAGE" value="Open, login and register screen was made pretty. A logo was added. A slogan was added." />
   </component>
 </project>

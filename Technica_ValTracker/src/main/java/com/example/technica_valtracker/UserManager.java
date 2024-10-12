@@ -1,5 +1,6 @@
 package com.example.technica_valtracker;
 
+import com.example.technica_valtracker.db.model.League;
 import com.example.technica_valtracker.db.model.User;
 import com.example.technica_valtracker.db.dao.UserDAO;
 
@@ -21,6 +22,23 @@ public class UserManager {
 
     // Others
     private List<User> userList;
+
+    private UserStats userStats;
+    private List<UserStats> userStatList = new ArrayList<>();
+
+    public UserStats getUserStats() { return userStats; }
+    public void setUserStats(UserStats userStats) { this.userStats = userStats; }
+
+    public List<UserStats> getUserStatList() { return userStatList; }
+    public void setUserStatList(List<League> leagues) {
+        List<UserStats> userStatList = getUserStatList();
+        for (League league : leagues) {
+            UserStats stats = new UserStats(league.getQueueType(), league.getWinrate(), league.getLeaguePoints());
+            userStatList.add(stats);
+        }
+
+        this.userStatList = userStatList;
+    }
 
 
     // Private constructor to prevent instantiation from outside
@@ -117,6 +135,62 @@ public class UserManager {
     private void saveUsersToDB() {
         for (User user : userList) {
             userDAO.addNewUser(user);  // Persist each user to the database
+        }
+    }
+
+    public class UserStats {
+        private String mode;
+        private int winrate;
+        private double kda;
+        private double csPerMin;
+        private int leaguePoints;
+
+        public UserStats(String mode, int winrate, double kda, double csPerMin, int leaguePoints) {
+            this.mode = mode;
+            this.winrate = winrate;
+            this.kda = kda;
+            this.csPerMin = csPerMin;
+            this.leaguePoints = leaguePoints;
+        }
+
+        // Overloaded constructor for when KDA and winrate aren't available
+        public UserStats(String mode, int winrate, int leaguePoints) {
+            this.mode = mode;
+            this.winrate = winrate;
+            this.leaguePoints = leaguePoints;
+            this.kda = 0;
+            this.csPerMin = 0;
+        }
+
+        public String getMode() { return mode; }
+        public void setMode(String mode) { this.mode = mode; }
+
+        public int getWinrate() {
+            return winrate;
+        }
+        public void setWinrate(int winrate) {
+            this.winrate = winrate;
+        }
+
+        public double getKda() {
+            return kda;
+        }
+        public void setKda(double kda) {
+            this.kda = kda;
+        }
+
+        public double getCsPerMin() {
+            return csPerMin;
+        }
+        public void setCsPerMin(double csPerMin) {
+            this.csPerMin = csPerMin;
+        }
+
+        public int getLeaguePoints() {
+            return leaguePoints;
+        }
+        public void setLeaguePoints(int leaguePoints) {
+            this.leaguePoints = leaguePoints;
         }
     }
 }

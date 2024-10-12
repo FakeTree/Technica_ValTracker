@@ -1,6 +1,8 @@
 package com.example.technica_valtracker.controller;
 
 import com.example.technica_valtracker.HelloApplication;
+import com.example.technica_valtracker.UserManager;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
@@ -43,8 +45,36 @@ public class FriendsController {
     @FXML private Label compareFriendLP;
     @FXML private Label friendPageHeaderLabel;
 
+    @FXML private Label userWinrate;
+    @FXML private Label userLeaguePoints;
+
+    private UserManager userManager = UserManager.getInstance();
+
+    /**
+     * Declares an initialise method that is called just before the scene UI is fully loaded
+     */
+    @FXML
+    protected void initialize() {
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                try {
+                    init();
+                }
+                catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
+    protected void init() throws IOException {
+        UserManager.UserStats rankedStats = userManager.getUserStatList().getFirst();
+
+        userWinrate.setText(String.valueOf(rankedStats.getWinrate()));
+        userLeaguePoints.setText(String.valueOf(rankedStats.getLeaguePoints()));
 
 
+    }
 
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
@@ -88,11 +118,13 @@ public class FriendsController {
 
     @FXML
     public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
+        // clear cached user stat data
+        userManager.getUserStatList().clear();
 
         //switch to the login/signup screen
         Stage stage = (Stage) friendPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
     }
 

@@ -31,7 +31,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Friends">
             <items>
-              <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" text="Friends" />
+              <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" text="Friends" onAction="#OnFriendsMenuClick" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Account">

@@ -117,7 +117,7 @@
                                                 <Font name="Arial Bold" size="14.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="comparePlayerWinrate" layoutX="197.0" layoutY="29.0" text="0%" />
+                                          <Label fx:id="userWinrate" layoutX="197.0" layoutY="29.0" text="0%" />
                                        </children></Pane>
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: LightSteelBlue;">
                                        <children>
@@ -139,7 +139,7 @@
                                        </children></Pane>
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: LightSteelBlue;">
                                        <children>
-                                          <Label fx:id="comparePlayerLP" layoutX="197.0" layoutY="29.0" text="0000" />
+                                          <Label fx:id="userLeaguePoints" layoutX="197.0" layoutY="29.0" text="0000" />
                                           <Label layoutX="202.0" layoutY="6.0" text="LP">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />

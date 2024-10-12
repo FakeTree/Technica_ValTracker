@@ -164,6 +164,8 @@ public class DashboardController {
     @FXML
     private Label statLoadStatusText;
 
+    private UserManager userManager = UserManager.getInstance();
+
     //MenuBar Button Methods
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
@@ -205,16 +207,17 @@ public class DashboardController {
 
     @FXML
     public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
+        // clear cached user stat data
+        userManager.getUserStatList().clear();
+
         //switch to the login/signup screen
         Stage stage = (Stage) statPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
     }
 
     /* Internal controller properties */
-
-    private UserManager userManager = UserManager.getInstance();
 
     // Create thread pools for executing API query tasks in background threads
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
@@ -454,6 +457,7 @@ public class DashboardController {
                                 }
                                 // Inject values retrieved from API into application
                                 setLeagueValues(league);
+
                             }
                             else {
                                 for (League league : leaguesList) {
@@ -490,6 +494,9 @@ public class DashboardController {
                                     }
                                 });
                             }
+                            // Cache winrate and leaguePoints data
+                            userManager.setUserStatList(leaguesList);
+
                             // Hide loading pane and display dashboard
                             statLoadPane.setVisible(false);
                             statVBox.setVisible(true);

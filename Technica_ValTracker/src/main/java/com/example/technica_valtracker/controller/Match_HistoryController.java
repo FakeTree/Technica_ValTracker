@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
@@ -198,19 +199,18 @@ public class Match_HistoryController extends HelloApplication {
                         else {
                             System.out.println("Success!"); // TODO REMOVE TESTING ONLY
 
-
                             try {
                                 String json = AllMatchIdsTask.getValue().getJson();
                                 System.out.println(json); // TODO REMOVE TEST ONLY
 
                                 matchBucket.setMatchListByPUUID(json);
                                 List<String> matches = matchBucket.getMatchIds();
-                                for(String matchID : matches){
+
+                                for(String matchID : matches) {
                                     Task<ResponseBody> MatchTask = getMatchTask(matchID, region);
                                     System.out.println("Submitting match task..."); // TODO REMOVE TESTING ONLY
                                     singleThreadPool.submit(MatchTask);
                                 }
-
 
                             } catch (JsonProcessingException e) {
                                 throw new RuntimeException(e);
@@ -273,9 +273,10 @@ public class Match_HistoryController extends HelloApplication {
                             int usrIdx = getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
                             matchBucket.addValue(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             //matchBucket.addValue(Match.Participant[]);
-                            System.out.println("Overall KDA: " + matchBucket.getKDAAcrossAllGames());
+                            System.out.println("Match KDA: " + match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
+                            System.out.println("Avg KDA: " + matchBucket.getKDAAcrossAllGames());
 
-                            singleThreadPool.submit(MatchTask);
+//                            singleThreadPool.submit(MatchTask);
                         }
                     }
                 });
@@ -336,10 +337,13 @@ public class Match_HistoryController extends HelloApplication {
     }
     @FXML
     public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
+        // clear cached user stat data
+        userManager.getUserStatList().clear();
+
         //switch to the login/signup screen
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 450, 450);
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
     }
     private void showAlert(int status, String detail) {

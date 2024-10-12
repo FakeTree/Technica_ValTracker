@@ -424,66 +424,76 @@ public class DashboardController {
                     @Override public void run() {
                         statLoadStatusText.setText("Loading league data...");
 
-                        // Remove any league entries that aren't of the Ranked Solo or Ranked Flex mode
-                        leaguesList.removeIf(league -> (Objects.equals(league.getQueueType(), "CHERRY")));
-
-                        // Check how many League objects were returned from the response and parse them accordingly
-                        if (leaguesList.size() == 1) {
-                            League league = leaguesList.getFirst();
-
-                            // Set ranked emblem image reference based on tier
-                            league.setRankedEmblem();
-
-                            // Focus the correct toggle button depending on queue type (solo or flexed)
-                            if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
-                                soloToggleButton.setSelected(true);
-                                flexToggleButton.setDisable(true);
-                            }
-                            else {
-                                flexToggleButton.setSelected(true);
-                                soloToggleButton.setDisable(true);
-                            }
-                            // Inject values retrieved from API into application
-                            setLeagueValues(league);
+                        if (leaguesList.isEmpty()) {
+                            // If no data was returned from API, go ahead and display the dashboard
+                            statLoadPane.setVisible(false);
+                            statVBox.setVisible(true);
                         }
                         else {
-                            for (League league : leaguesList) {
+                            // Remove any league entries that aren't of the Ranked Solo or Ranked Flex mode
+                            leaguesList.removeIf(league -> (Objects.equals(league.getQueueType(), "CHERRY")));
+
+                            // Check how many League objects were returned from the response and parse them accordingly
+                            if (leaguesList.size() == 1) {
+                                League league = leaguesList.getFirst();
+
+                                // Calculate winrate
                                 league.setWinrate();
+
+                                // Set ranked emblem image reference based on tier
                                 league.setRankedEmblem();
-                            }
 
-                            League leagueOne = leaguesList.get(0);
-                            League leagueTwo = leaguesList.get(1);
-
-                            // Check the queue value of the first League object in the response array
-                            if (Objects.equals(leagueOne.getQueueType(), "RANKED_SOLO_5x5")) {
-                                soloToggleButton.setSelected(true);
-                                soloLeague = leagueOne;
-                                flexLeague = leagueTwo;
-                                setLeagueValues(soloLeague);        // Inject retrieved values into FXML
+                                // Focus the correct toggle button depending on queue type (solo or flexed)
+                                if (Objects.equals(league.getQueueType(), "RANKED_SOLO_5x5")) {
+                                    soloToggleButton.setSelected(true);
+                                    flexToggleButton.setDisable(true);
+                                }
+                                else {
+                                    flexToggleButton.setSelected(true);
+                                    soloToggleButton.setDisable(true);
+                                }
+                                // Inject values retrieved from API into application
+                                setLeagueValues(league);
                             }
                             else {
-                                flexToggleButton.setSelected(true);
-                                flexLeague = leagueOne;
-                                soloLeague = leagueTwo;
-                                setLeagueValues(flexLeague);
-                            }
-                            // Create Listener to detect when the selected mode changes and update the displayed values
-                            modeToggle.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-                                public void changed(ObservableValue<? extends Toggle> ov,
-                                                    Toggle oldToggle, Toggle newToggle) {
-                                    if (modeToggle.getSelectedToggle() == soloToggleButton) {
-                                        setLeagueValues(soloLeague);
-                                    }
-                                    else {
-                                        setLeagueValues(flexLeague);
-                                    }
+                                for (League league : leaguesList) {
+                                    league.setWinrate();
+                                    league.setRankedEmblem();
                                 }
-                            });
+
+                                League leagueOne = leaguesList.get(0);
+                                League leagueTwo = leaguesList.get(1);
+
+                                // Check the queue value of the first League object in the response array
+                                if (Objects.equals(leagueOne.getQueueType(), "RANKED_SOLO_5x5")) {
+                                    soloToggleButton.setSelected(true);
+                                    soloLeague = leagueOne;
+                                    flexLeague = leagueTwo;
+                                    setLeagueValues(soloLeague);        // Inject retrieved values into FXML
+                                }
+                                else {
+                                    flexToggleButton.setSelected(true);
+                                    flexLeague = leagueOne;
+                                    soloLeague = leagueTwo;
+                                    setLeagueValues(flexLeague);
+                                }
+                                // Create Listener to detect when the selected mode changes and update the displayed values
+                                modeToggle.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+                                    public void changed(ObservableValue<? extends Toggle> ov,
+                                                        Toggle oldToggle, Toggle newToggle) {
+                                        if (modeToggle.getSelectedToggle() == soloToggleButton) {
+                                            setLeagueValues(soloLeague);
+                                        }
+                                        else {
+                                            setLeagueValues(flexLeague);
+                                        }
+                                    }
+                                });
+                            }
+                            // Hide loading pane and display dashboard
+                            statLoadPane.setVisible(false);
+                            statVBox.setVisible(true);
                         }
-                        // Hide loading pane and display dashboard
-                        statLoadPane.setVisible(false);
-                        statVBox.setVisible(true);
                     }
                 });
             }

@@ -150,6 +150,11 @@ public class Match_HistoryController extends HelloApplication {
         String puuid = currentUser.getUserId();
         String region = currentUser.getRegion().toLowerCase();
 
+        // TODO REMOVE TESTING ONLY
+        System.out.println(riotId);
+        System.out.println(puuid);
+        System.out.println(region);
+
         Task<ResponseBody> AllMatchIdsTask = getAllMatchIdsTask(puuid, region, riotId);
 
         singleThreadPool.submit(AllMatchIdsTask);
@@ -196,10 +201,13 @@ public class Match_HistoryController extends HelloApplication {
 
                             try {
                                 String json = AllMatchIdsTask.getValue().getJson();
+                                System.out.println(json); // TODO REMOVE TEST ONLY
+
                                 matchBucket.setMatchListByPUUID(json);
                                 List<String> matches = matchBucket.getMatchIds();
                                 for(String matchID : matches){
-                                    Task<ResponseBody> MatchTask = getMatchTask(matchID);
+                                    Task<ResponseBody> MatchTask = getMatchTask(matchID, region);
+                                    System.out.println("Submitting match task..."); // TODO REMOVE TESTING ONLY
                                     singleThreadPool.submit(MatchTask);
                                 }
 
@@ -217,12 +225,12 @@ public class Match_HistoryController extends HelloApplication {
         return AllMatchIdsTask;
     }
 
-    private @NotNull Task<ResponseBody> getMatchTask(String matchID) throws IOException {
+    private @NotNull Task<ResponseBody> getMatchTask(String matchID, String region) throws IOException {
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override
             protected ResponseBody call() throws Exception {
-                String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchID);
+                String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchID, region);
                 System.out.println(matchReqUrl+"?api_key="+Constants.RIOT_API_KEY);
                 return getQuery(matchReqUrl, Constants.requestHeaders);
             }
@@ -265,7 +273,7 @@ public class Match_HistoryController extends HelloApplication {
                             int usrIdx = getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
                             matchBucket.addValue(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             //matchBucket.addValue(Match.Participant[]);
-                            System.out.println(matchBucket.getKDAAcrossAllGames());
+                            System.out.println("Overall KDA: " + matchBucket.getKDAAcrossAllGames());
 
                             singleThreadPool.submit(MatchTask);
                         }

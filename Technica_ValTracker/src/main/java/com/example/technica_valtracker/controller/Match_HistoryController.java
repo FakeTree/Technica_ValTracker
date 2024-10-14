@@ -1,5 +1,9 @@
 package com.example.technica_valtracker.controller;
 
+/**
+ * Controller class responsible for handling the match history view.
+ * Manages UI elements and asynchronous tasks for loading and displaying match history.
+ */
 import atlantafx.base.theme.Styles;
 import com.example.technica_valtracker.Constants;
 import com.example.technica_valtracker.HelloApplication;
@@ -21,37 +25,36 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToggleGroup;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.TimeUnit;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
 
+/**
+ * Controller for the Match History scene.
+ * Handles the initialization, user interface updates, and task execution for loading match history data.
+ */
 public class Match_HistoryController extends HelloApplication {
 
-    //FXML ELEMENTS
+    // FXML ELEMENTS
 
-    //Buttons
+    // Buttons
     @FXML private Button soloModeButton;
     @FXML private Button flexModeButton;
 
-    //Static Labels
+    // Static Labels
     @FXML private Label HistoryPageHeaderLabel;
 
-    //Changing Labels
-
+    // Changing Labels
     @FXML private Label HistoryMatch1_Win;
     @FXML private Label HistoryMatch1_Mode;
     @FXML private Label HistoryMatch1_KDA;
@@ -100,30 +103,26 @@ public class Match_HistoryController extends HelloApplication {
     @FXML private Label HistoryMatch5_VisionScore;
 
     // Boxes
-    @FXML
-    private VBox pageBox;
-    @FXML
-    private VBox statVBox;
+    @FXML private VBox pageBox;
+    @FXML private VBox statVBox;
 
-    //ImageViews
+    // ImageViews
     @FXML private ImageView HistoryMatch1_ChampImage;
     @FXML private ImageView HistoryMatch2_ChampImage;
     @FXML private ImageView HistoryMatch3_ChampImage;
     @FXML private ImageView HistoryMatch4_ChampImage;
     @FXML private ImageView HistoryMatch5_ChampImage;
 
-
-    /* Internal controller properties */
+    // Internal controller properties
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     private UserManager userManager = UserManager.getInstance();
     MatchBucket matchBucket = new MatchBucket();
     User currentUser = userManager.getCurrentUser();
 
-//METHODS
-
     /**
-     * Declares an initialise method that is called just before the scene UI is fully loaded
+     * Called after the FXML file has been loaded.
+     * Initializes the controller and sets up any necessary components.
      */
     @FXML
     protected void initialize() {
@@ -131,8 +130,7 @@ public class Match_HistoryController extends HelloApplication {
             @Override public void run() {
                 try {
                     init();
-                }
-                catch (IOException e) {
+                } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -140,9 +138,10 @@ public class Match_HistoryController extends HelloApplication {
     }
 
     /**
-     * Initialise the dashboard view with data retrieved from the API.
-     * Sets up the view's UI elements (loading, header, mode toggle), gets the current User instance,
-     * and executes the tasks which perform the API requests and injections into the FXML file.
+     * Initializes the view by fetching match history data from the API.
+     * Retrieves the user's match history and updates the UI with the data.
+     *
+     * @throws IOException If an I/O error occurs while fetching the data.
      */
     public void init() throws IOException {
 
@@ -161,6 +160,14 @@ public class Match_HistoryController extends HelloApplication {
         singleThreadPool.submit(AllMatchIdsTask);
     }
 
+    /**
+     * Creates a task that retrieves all match IDs for the current user.
+     *
+     * @param puuid The user's PUUID (Player Unique ID).
+     * @param region The region of the player.
+     * @param riotId The user's Riot ID.
+     * @return A {@link Task} that fetches all match IDs.
+     */
     private @NotNull Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
 
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
@@ -174,8 +181,8 @@ public class Match_HistoryController extends HelloApplication {
         };
 
         /*
-         * Event handler that runs when the SummonerTasks succeeds; deserialises the JSON output to a Summoner object
-         * and sets the corresponding FXML properties.
+         * Event handler that runs when the task succeeds;
+         * Deserializes the JSON output and updates the match history UI.
          */
         AllMatchIdsTask.setOnSucceeded(new EventHandler() {
 
@@ -185,16 +192,11 @@ public class Match_HistoryController extends HelloApplication {
                     @Override public void run() {
 
                         ResponseBody allMatchIdsQuery = AllMatchIdsTask.getValue();
-                        //statLoadStatusText.setText("Loading summoner data...");
 
                         if (allMatchIdsQuery.isError()) {
                             System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
                             ErrorMessage error = allMatchIdsQuery.getMessage();
                             showAlert(error.getStatus(), error.getDetail());
-
-                            // Hide loading pane and display dashboard
-                            //statLoadPane.setVisible(false);
-                            //statVBox.setVisible(true);
                         }
                         else {
                             System.out.println("Success!"); // TODO REMOVE TESTING ONLY
@@ -225,6 +227,14 @@ public class Match_HistoryController extends HelloApplication {
         return AllMatchIdsTask;
     }
 
+    /**
+     * Creates a task that retrieves match data for a given match ID.
+     *
+     * @param matchID The ID of the match to fetch.
+     * @param region The region of the player.
+     * @return A {@link Task} that fetches match data.
+     * @throws IOException If an I/O error occurs while fetching the match data.
+     */
     private @NotNull Task<ResponseBody> getMatchTask(String matchID, String region) throws IOException {
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
@@ -237,8 +247,8 @@ public class Match_HistoryController extends HelloApplication {
         };
 
         /*
-         * Event handler that runs when the SummonerTasks succeeds; deserialises the JSON output to a Summoner object
-         * and sets the corresponding FXML properties.
+         * Event handler that runs when the task succeeds;
+         * Deserializes the JSON output and updates the match data in the UI.
          */
         MatchTask.setOnSucceeded(new EventHandler() {
 
@@ -248,16 +258,11 @@ public class Match_HistoryController extends HelloApplication {
                     @Override public void run() {
 
                         ResponseBody matchQuery = MatchTask.getValue();
-                        //statLoadStatusText.setText("Loading summoner data...");
 
                         if (matchQuery.isError()) {
                             System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
                             ErrorMessage error = matchQuery.getMessage();
                             showAlert(error.getStatus(), error.getDetail());
-
-                            // Hide loading pane and display dashboard
-                            //statLoadPane.setVisible(false);
-                            //statVBox.setVisible(true);
                         }
                         else {
 
@@ -296,57 +301,90 @@ public class Match_HistoryController extends HelloApplication {
         return MatchTask;
     }
 
-    //MenuBar Button Methods
+    /**
+     * Handles the event when the "Match History" menu item is clicked.
+     * Switches the view to the match history scene.
+     *
+     * @param actionEvent The event that triggered this action.
+     * @throws IOException If an error occurs during scene loading.
+     */
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
-
-        //switch to the match history scene
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("match_history-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
     }
+
+    /**
+     * Handles the event when the "Home" menu item is clicked.
+     * Switches the view to the dashboard scene.
+     *
+     * @param actionEvent The event that triggered this action.
+     * @throws IOException If an error occurs during scene loading.
+     */
     @FXML
     public void OnHomeMenuClick(ActionEvent actionEvent) throws IOException {
 
-
-        //switch to the dashboard scene
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Dashboard-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
-
     }
+
+    /**
+     * Handles the event when the "Friends" menu item is clicked.
+     * Switches the view to the friends scene.
+     *
+     * @param actionEvent The event that triggered this action.
+     * @throws IOException If an error occurs during scene loading.
+     */
     @FXML
     private void OnFriendsMenuClick(ActionEvent actionEvent) throws IOException {
-        //switch to the Friends scene
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Friends-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
-
     }
+
+    /**
+     * Handles the event when the "Account" menu item is clicked.
+     * Switches the view to the account scene.
+     *
+     * @param actionEvent The event that triggered this action.
+     * @throws IOException If an error occurs during scene loading.
+     */
     @FXML
     private void OnAccountMenuClick(ActionEvent actionEvent) throws IOException {
-
-        //switch to the Account scene
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("account-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
-
     }
+
+    /**
+     * Handles the event when the "Log Out" menu item is clicked.
+     * Clears the user session and switches to the login/signup screen.
+     *
+     * @param actionEvent The event that triggered this action.
+     * @throws IOException If an error occurs during scene loading.
+     */
     @FXML
     public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
-        // clear cached user stat data
         userManager.getUserStatList().clear();
 
-        //switch to the login/signup screen
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
     }
+
+    /**
+     * Displays an alert with the provided error status and message.
+     *
+     * @param status The error status code.
+     * @param detail The detailed error message.
+     */
     private void showAlert(int status, String detail) {
         var alert = new Alert(Alert.AlertType.ERROR);
 

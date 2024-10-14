@@ -271,24 +271,22 @@ public class Match_HistoryController extends HelloApplication {
                             matchBucket.addMatch(match.getMetadata().getMatchId(), match);
                             // Get Player Number
                             int usrIdx = getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
-<<<<<<< Updated upstream
-                            matchBucket.addValue(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
-                            //matchBucket.addValue(Match.Participant[]);
-                            System.out.println("Match KDA: " + match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
-                            System.out.println("Avg KDA: " + matchBucket.getKDAAcrossAllGames());
-
-//                            singleThreadPool.submit(MatchTask);
-=======
 
                             matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             if (match.getInfo().getParticipants().get(usrIdx).getWin())
-                                matchBucket.addWinRate(1);
-                            matchBucket.addGoldPerMin(match.getInfo().getParticipants().get(usrIdx).getGoldEarned());
-                            //matchBucket.addValue(Match.Participant[]);
+                                matchBucket.addWinRate();
+                            double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned()/
+                                    (match.getInfo().getGameDuration()/60.0f);
+                            matchBucket.addGoldPerMin(GoldpMin);
+                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).gettotalMinionsKilled() /
+                                    (match.getInfo().getGameDuration()/60.0f);
+                            matchBucket.addCSpMin(CSpMin);
                             System.out.println("KDA: "+matchBucket.getKDAAcrossAllGames());
                             System.out.println("Win Rate: "+matchBucket.getWinRateAcrossAllGames());
+                            System.out.println("CS per Min: "+matchBucket.getCSpMinAcrossAllGames());
+                            System.out.println("Gold per min: "+matchBucket.getGoldPerMinAcrossAllGames());
+
                             singleThreadPool.submit(MatchTask);
->>>>>>> Stashed changes
                         }
                     }
                 });

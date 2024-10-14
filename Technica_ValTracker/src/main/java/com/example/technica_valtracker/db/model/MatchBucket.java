@@ -13,7 +13,8 @@ public class MatchBucket {
     private Map<String, Match> matchArray = new HashMap<String, Match>();
     private List<String> matchIds = new ArrayList<String>();
     private List<Double> AllKDA = new ArrayList<>();
-    private List<Double> AllWinRate = new ArrayList<>();
+    private List<Double> AllCSpMin = new ArrayList<>();
+    private int AllWinRate;
     private List<Double> GoldPerMin = new ArrayList<>();
 
     public void addMatch(String matchID, Match match) {matchArray.put(matchID, match);}
@@ -33,22 +34,28 @@ public class MatchBucket {
     // Getter for values list
     public List<Double> getKDA() {
         return AllKDA;
+    }// Method to add a double value
+    public void addCSpMin(double value) {
+        AllCSpMin.add(value);
+    }
+    public double getCSpMinAcrossAllGames(){
+        double sum = 0;
+        for (double value : AllCSpMin) {
+            sum += value;
+        }
+        return AllCSpMin.isEmpty() ? 0 : sum / AllCSpMin.size();
+    }
+    // Getter for values list
+    public List<Double> getCSpMin() {
+        return AllCSpMin;
     }
 
     // Method to add a double value
-    public void addWinRate(double value) {
-        AllWinRate.add(value);
+    public void addWinRate() {
+        AllWinRate +=1;
     }
     public double getWinRateAcrossAllGames(){
-        double sum = 0;
-        for (double value : AllWinRate) {
-            sum += value;
-        }
-        return AllWinRate.isEmpty() ? 0 : sum / AllWinRate.size();
-    }
-    // Getter for values list
-    public List<Double> getWinRate() {
-        return AllWinRate;
+        return (double) AllWinRate /matchArray.size();
     }
 
     public void setMatchListByPUUID(String res) throws IOException {
@@ -64,7 +71,7 @@ public class MatchBucket {
     public void addGoldPerMin(double value) {
         GoldPerMin.add(value);
     }
-    public double getGoldPerMin(){
+    public double getGoldPerMinAcrossAllGames(){
         double sum = 0;
         for (double value : GoldPerMin) {
             sum += value;

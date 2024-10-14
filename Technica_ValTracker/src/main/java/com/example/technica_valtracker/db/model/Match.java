@@ -197,6 +197,7 @@ public class Match {
         private String championName;
         private String puuid;
         private Challenges challenges; // Change from Map to Challenges class
+        private int totalMinionsKilled;
         private boolean win;
 
         // Getters and Setters
@@ -246,6 +247,15 @@ public class Match {
 
         public void setGoldEarned(int goldEarned) {
             this.goldEarned = goldEarned;
+        }
+
+        // Getters and Setters
+        public int gettotalMinionsKilled() {
+            return assists;
+        }
+
+        public void settotalMinionsKilled(int totalMinionsKilled) {
+            this.totalMinionsKilled = totalMinionsKilled;
         }
 
         public Challenges getChallenges() {

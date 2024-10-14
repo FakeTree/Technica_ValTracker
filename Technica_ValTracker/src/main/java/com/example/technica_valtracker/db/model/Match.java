@@ -43,6 +43,15 @@ public class Match {
         this.info = info;
     }
 
+    public static int getParticipantIndexByPuuid(List<Match.Participant> participants, String puuid) {
+        for (int i = 0; i < participants.size(); i++) {
+            if (participants.get(i).getPuuid().equals(puuid)) {
+                return i; // Return index of matched participant
+            }
+        }
+        return -1; // Return -1 if not found
+    }
+
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Metadata {
         private String dataVersion;

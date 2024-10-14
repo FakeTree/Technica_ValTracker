@@ -270,7 +270,7 @@ public class Match_HistoryController extends HelloApplication {
                             }
                             matchBucket.addMatch(match.getMetadata().getMatchId(), match);
                             // Get Player Number
-                            int usrIdx = getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
+                            int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
 
                             matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             if (match.getInfo().getParticipants().get(usrIdx).getWin())
@@ -294,15 +294,6 @@ public class Match_HistoryController extends HelloApplication {
         });
 
         return MatchTask;
-    }
-
-    public static int getParticipantIndexByPuuid(List<Match.Participant> participants, String puuid) {
-        for (int i = 0; i < participants.size(); i++) {
-            if (participants.get(i).getPuuid().equals(puuid)) {
-                return i; // Return index of matched participant
-            }
-        }
-        return -1; // Return -1 if not found
     }
 
     //MenuBar Button Methods

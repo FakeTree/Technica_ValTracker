@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="User test class added">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/Match.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/Match.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/MatchBucket.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/MatchBucket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -109,7 +107,7 @@
       <workItem from="1728261867880" duration="3196000" />
       <workItem from="1728271378728" duration="20633000" />
       <workItem from="1728459242198" duration="3778000" />
-      <workItem from="1728902455191" duration="1571000" />
+      <workItem from="1728902455191" duration="1898000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />

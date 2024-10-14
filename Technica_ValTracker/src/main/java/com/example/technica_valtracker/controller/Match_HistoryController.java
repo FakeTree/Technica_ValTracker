@@ -271,12 +271,24 @@ public class Match_HistoryController extends HelloApplication {
                             matchBucket.addMatch(match.getMetadata().getMatchId(), match);
                             // Get Player Number
                             int usrIdx = getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
+<<<<<<< Updated upstream
                             matchBucket.addValue(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             //matchBucket.addValue(Match.Participant[]);
                             System.out.println("Match KDA: " + match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             System.out.println("Avg KDA: " + matchBucket.getKDAAcrossAllGames());
 
 //                            singleThreadPool.submit(MatchTask);
+=======
+
+                            matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
+                            if (match.getInfo().getParticipants().get(usrIdx).getWin())
+                                matchBucket.addWinRate(1);
+                            matchBucket.addGoldPerMin(match.getInfo().getParticipants().get(usrIdx).getGoldEarned());
+                            //matchBucket.addValue(Match.Participant[]);
+                            System.out.println("KDA: "+matchBucket.getKDAAcrossAllGames());
+                            System.out.println("Win Rate: "+matchBucket.getWinRateAcrossAllGames());
+                            singleThreadPool.submit(MatchTask);
+>>>>>>> Stashed changes
                         }
                     }
                 });

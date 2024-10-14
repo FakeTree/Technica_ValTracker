@@ -193,9 +193,11 @@ public class Match {
         private int assists;
         private int baronKills;
         private int deaths;
+        private int goldEarned;
         private String championName;
         private String puuid;
         private Challenges challenges; // Change from Map to Challenges class
+        private boolean win;
 
         // Getters and Setters
         public int getAssists() {
@@ -238,12 +240,27 @@ public class Match {
             this.puuid = puuid;
         }
 
+        public int getGoldEarned() {
+            return goldEarned;
+        }
+
+        public void setGoldEarned(int goldEarned) {
+            this.goldEarned = goldEarned;
+        }
+
         public Challenges getChallenges() {
             return challenges;
         }
 
         public void setChallenges(Challenges challenges) {
             this.challenges = challenges;
+        }
+        public Boolean getWin() {
+            return win;
+        }
+
+        public void setWin(Boolean win) {
+            this.win = win;
         }
     }
 

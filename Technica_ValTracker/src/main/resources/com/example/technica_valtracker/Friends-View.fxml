@@ -70,12 +70,12 @@
                      <children>
                         <ComboBox fx:id= "FriendComboBox" prefWidth="150.0" promptText="Select a friend" >
                         </ComboBox>
-                        <Button mnemonicParsing="false" text="Submit" />
+                        <Button fx:id="FriendSelectButton" mnemonicParsing="false" text="select" onAction="#FriendSelectButtonClick" />
                      </children>
                   </HBox>
                   <HBox fx:id="modeButtonGroupHBox" alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="509.0">
                      <children>
-                        <ToggleButton fx:id="soloToggleButton" mnemonicParsing="false" text="Ranked Solo">
+                        <ToggleButton fx:id="soloModeButton" mnemonicParsing="false" text="Ranked Solo" toggleGroup="$modeToggle">
                            <toggleGroup>
                               <ToggleGroup fx:id="modeToggle" />
                            </toggleGroup>
@@ -83,7 +83,7 @@
                               <Font size="14.0" />
                            </font>
                         </ToggleButton>
-                        <ToggleButton fx:id="flexToggleButton" mnemonicParsing="false" text="Ranked Flex" toggleGroup="$modeToggle">
+                        <ToggleButton fx:id="flexModeButton" mnemonicParsing="false" text="Ranked Flex" toggleGroup="$modeToggle">
                            <font>
                               <Font size="14.0" />
                            </font>

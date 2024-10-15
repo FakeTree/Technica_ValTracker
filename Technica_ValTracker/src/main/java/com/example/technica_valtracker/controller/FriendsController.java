@@ -2,18 +2,15 @@ package com.example.technica_valtracker.controller;
 
 import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
+import com.example.technica_valtracker.db.model.User;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
-import javafx.scene.Parent;
-import javafx.scene.Node;
-import javafx.scene.control.Alert.AlertType;
 
 import java.io.IOException;
 
@@ -28,7 +25,7 @@ public class FriendsController {
     @FXML private MenuItem Friends_Menu;
     @FXML private MenuItem Account_Menu;
     //TEXTFIELD
-    @FXML private TextField compareFriendSearchBox;
+    @FXML private ComboBox<String> FriendComboBox;
     //BUTTONS
     @FXML private Button compareFriendSearchButton;
     @FXML private Button soloModeButton;
@@ -70,8 +67,18 @@ public class FriendsController {
     protected void init() throws IOException {
         UserManager.UserStats rankedStats = userManager.getUserStatList().getFirst();
 
+        User User = UserManager.getInstance().getCurrentUser();
+
+
         userWinrate.setText(String.valueOf(rankedStats.getWinrate()));
         userLeaguePoints.setText(String.valueOf(rankedStats.getLeaguePoints()));
+
+
+
+        FriendComboBox.getItems().setAll(User.getFriends());
+
+        System.out.println(User.getFriends());
+
 
 
     }

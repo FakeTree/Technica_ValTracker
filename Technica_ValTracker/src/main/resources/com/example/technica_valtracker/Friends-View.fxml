@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.collections.FXCollections?>
 
 <VBox fx:id="parentVBox" prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.FriendsController">
     <children>
@@ -67,7 +68,8 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="527.0">
                      <children>
-                        <ComboBox prefWidth="150.0" promptText="Select a friend" />
+                        <ComboBox fx:id= "FriendComboBox" prefWidth="150.0" promptText="Select a friend" >
+                        </ComboBox>
                         <Button mnemonicParsing="false" text="Submit" />
                      </children>
                   </HBox>

@@ -209,6 +209,12 @@ public class HelloController {
             return;
         }
 
+        // Check if the email already exists in UserManager
+        if (userManager.getUserByEmail(email) != null) {
+            showAlert(AlertType.ERROR, "Registration Error", "Email address is already in use. Please use a different email.");
+            return;
+        }
+
         // Validate the password
         if (!Validation.isPasswordValid(password)) {
             showAlert(AlertType.ERROR, "Invalid Password", "Invalid password format. Must be 8 chars long, 1 Capital and 1 Numeral.");
@@ -232,7 +238,7 @@ public class HelloController {
         }
 
         // Create a new User object
-        User newUser = new User(puuid, email, hashedPassword, riotID, selectedRegion);
+        User newUser = new User(puuid, email, hashedPassword, riotID, selectedRegion, null);
 
         // Check if the UserManager is initialized
         if (userManager == null) {

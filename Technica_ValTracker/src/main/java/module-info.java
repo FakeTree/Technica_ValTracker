@@ -11,6 +11,7 @@ module com.example.technica_valtracker {
     requires annotations;
 
     opens com.example.technica_valtracker to javafx.fxml;
+    opens com.example.technica_valtracker.controller.match_panes to javafx.fxml;
     exports com.example.technica_valtracker;
 
     exports com.example.technica_valtracker.api to javafx.fxml;

@@ -162,6 +162,9 @@ public class Match {
         private String gameVersion;
         private int mapId;
         private List<Participant> participants;
+        private int queueId;
+        @JsonIgnore
+        private String queueMode;
 
         /**
          * Gets the result at the end of the game.
@@ -378,6 +381,42 @@ public class Match {
         public void setParticipants(List<Participant> participants) {
             this.participants = participants;
         }
+
+        /**
+         * Gets the queueId of the match.
+         * @return The queueId as an integer.
+         */
+        public int getQueueId() { return queueId; }
+
+        /**
+         * Sets the queueId of the match.
+         * @param queueId The queueId to set.
+         */
+        public void setQueueId(int queueId) { this.queueId = queueId; }
+
+        /**
+         * Gets the queueMode of the match.
+         * @return The queue mode as a String.
+         */
+        public String getQueueMode() { return queueMode; }
+
+        /**
+         * Sets the queueMode based on the queueId.
+         */
+        public void setQueueMode() {
+            if (queueId == 420) {
+                queueMode = "Ranked Solo";
+            }
+            else if (queueId == 440) {
+                queueMode = "Ranked Flex";
+            }
+            else {
+                queueMode = "N/A";
+            }
+        }
+
+
+
     }
 
     /**
@@ -388,7 +427,9 @@ public class Match {
         private int assists;
         private int baronKills;
         private int deaths;
+        private int kills;
         private int goldEarned;
+        private int championId;
         private String championName;
         private String puuid;
         private Challenges challenges; // Change from Map to Challenges class
@@ -451,6 +492,36 @@ public class Match {
         public void setDeaths(int deaths) {
             this.deaths = deaths;
         }
+
+        /**
+         * Gets the number of kills completed by the participant.
+         *
+         * @return the number of kills.
+         */
+        public int getKills() {
+            return kills;
+        }
+
+        /**
+         * Sets the number of kills completed by the participant.
+         *
+         * @param kills the number of kills to set.
+         */
+        public void setKills(int kills) {
+            this.kills = kills;
+        }
+
+        /**
+         * Sets the champion ID the participant played.
+         * @return The integer indicating champion ID.
+         */
+        public int getChampionId() { return championId; }
+
+        /**
+         * Gets the champion ID the participant played.
+         * @param championID The integer of the champion ID to set.
+         */
+        public void setChampionId(int championID) { this.championId = championID; }
 
         /**
          * Gets the name of the champion the participant played.

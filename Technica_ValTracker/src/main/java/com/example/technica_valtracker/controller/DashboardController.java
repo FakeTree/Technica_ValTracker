@@ -6,6 +6,7 @@ import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.controller.match_panes.MiniMatchPane;
 import com.example.technica_valtracker.db.model.*;
 import com.example.technica_valtracker.utils.URLBuilder;
 import static com.example.technica_valtracker.api.Query.getQuery;
@@ -147,10 +148,9 @@ public class DashboardController {
     ToggleGroup modeToggle;
 
     // Boxes
-    @FXML
-    private VBox pageBox;
-    @FXML
-    private VBox statVBox;
+    @FXML private VBox pageBox;
+    @FXML private VBox statVBox;
+    @FXML private VBox matchesVBox;
 
     // Loading pane elements
     @FXML
@@ -352,11 +352,19 @@ public class DashboardController {
         Task<Boolean> ProcessMatchesTask = new Task<Boolean>() {
             @Override protected Boolean call() throws Exception {
                 boolean tasksFinished = false;
+                int matchCounter = 3;
 
                 // Get individual match data from matchId list
                 for (String matchId : matchIds) {
-                    Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid);
-                    fixedThreadPool.submit(MatchTask);
+                    if (matchCounter > 0) {
+                        Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid, true);
+                        fixedThreadPool.submit(MatchTask);
+                        matchCounter--;
+                    }
+                    else {
+                        Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid, false);
+                        fixedThreadPool.submit(MatchTask);
+                    }
                 }
 
                 // Wait for tasks to finish
@@ -409,7 +417,7 @@ public class DashboardController {
      * @param puuid String indicating player ID to query.
      * @return ResponseBody with the JSON string and error status indicator.
      */
-    private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid) throws IOException {
+    private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override
@@ -442,15 +450,50 @@ public class DashboardController {
                             // Get Player Number
                             int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), puuid);
 
+                            match.getInfo().getParticipants().get(usrIdx).setMinionKillTotal();
+
                             matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             if (match.getInfo().getParticipants().get(usrIdx).getWin())
                                 matchBucket.addWinRate();
                             double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned()/
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addGoldPerMin(GoldpMin);
-                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).gettotalMinionsKilled() /
+                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).getMinionKillTotal() /
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addCSpMin(CSpMin);
+
+                            // Create a MiniMatchPane and inject FXML values
+                            if (createPane) {
+                                MiniMatchPane miniMatchPane = new MiniMatchPane();
+                                // Match Result (Victory / Defeat)
+                                miniMatchPane.setMatchResultText(match.getInfo().getParticipants().get(usrIdx).getWin());
+
+                                // Mode (Ranked Solo / Ranked Flex)
+                                match.getInfo().setQueueMode();
+                                miniMatchPane.setMatchModeText(match.getInfo().getQueueMode());
+
+                                // Champion name & icon
+                                miniMatchPane.setMatchChampText(match.getInfo().getParticipants().get(usrIdx)
+                                        .getChampionName());
+                                miniMatchPane.setMatchChampImg(match.getInfo().getParticipants().get(usrIdx).getChampionId());
+
+                                // K/D/A
+                                String KDA = String.format("%d/%d/%d", match.getInfo().getParticipants().get(usrIdx).getKills(),
+                                        match.getInfo().getParticipants().get(usrIdx).getDeaths(),
+                                        match.getInfo().getParticipants().get(usrIdx).getAssists());
+                                miniMatchPane.setMatchKdaValue(KDA);
+
+                                // KDA (ratio)
+                                String kdRatio = String.format("%.2f", match.getInfo().getParticipants().get(usrIdx)
+                                        .getChallenges().getKda());
+                                miniMatchPane.setMatchKdValue(kdRatio);
+
+                                // CS/Min
+                                String csPerMin = String.format("%.2f", CSpMin);
+                                miniMatchPane.setMatchCSMinValue(csPerMin);
+
+                                matchesVBox.getChildren().add(miniMatchPane);
+                            }
                         }
                     }
                 });

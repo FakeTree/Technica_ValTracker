@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<fx:root prefHeight="80.0" prefWidth="464.0" style="-fx-background-color: #9580FF66;" type="javafx.scene.layout.Pane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/22">
+   <Label fx:id="matchResultText" layoutX="15.0" layoutY="7.0" text="RESULT">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Label>
+   <Label fx:id="matchModeText" layoutX="15.0" layoutY="30.0" text="MODE">
+      <font>
+         <Font size="16.0" />
+      </font>
+   </Label>
+   <Label fx:id="matchChampText" layoutX="15.0" layoutY="52.0" maxWidth="90.0" minHeight="0.0" minWidth="90.0" text="Champion" />
+   <Pane fx:id="matchChampPane" layoutX="125.0" layoutY="10.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+      <children>
+         <ImageView fx:id="matchChampImg" fitHeight="55.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true" />
+      </children>
+   </Pane>
+   <Label fx:id="MatchKDALabel" layoutX="207.0" layoutY="7.0" text="K/D/A">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Label>
+   <Label fx:id="matchKdaValue" layoutX="207.0" layoutY="34.0" text="00/00/00">
+      <font>
+         <Font size="22.0" />
+      </font>
+   </Label>
+   <Label fx:id="MatchKDLabel" layoutX="315.0" layoutY="7.0" text="KDA">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Label>
+   <Label fx:id="matchKDValue" layoutX="315.0" layoutY="34.0" text="0.00">
+      <font>
+         <Font size="22.0" />
+      </font>
+   </Label>
+   <Label fx:id="MatchCSMinLabel" layoutX="385.0" layoutY="7.0" text="CS/min">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Label>
+   <Label fx:id="matchCSMinValue" layoutX="385.0" layoutY="34.0" text="0.00">
+      <font>
+         <Font size="22.0" />
+      </font>
+   </Label>
+</fx:root>

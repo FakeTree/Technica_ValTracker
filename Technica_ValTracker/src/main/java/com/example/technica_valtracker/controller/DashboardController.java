@@ -6,10 +6,7 @@ import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
-import com.example.technica_valtracker.db.model.Champion;
-import com.example.technica_valtracker.db.model.League;
-import com.example.technica_valtracker.db.model.Summoner;
-import com.example.technica_valtracker.db.model.User;
+import com.example.technica_valtracker.db.model.*;
 import com.example.technica_valtracker.utils.URLBuilder;
 import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
@@ -19,7 +16,6 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -222,10 +218,13 @@ public class DashboardController {
     // Create thread pools for executing API query tasks in background threads
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
+    ExecutorService matchIdThreadPool = Executors.newSingleThreadExecutor(threadFactory);
+    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(20, threadFactory);
 
     League soloLeague;      // Stores the user's Solo mode stats
     League flexLeague;      // Stores the user's Flex mode stats
 
+    MatchBucket matchBucket = new MatchBucket();    // Stores user's match history data
 
     /**
      * Declares an initialise method that is called just before the scene UI is fully loaded
@@ -250,6 +249,7 @@ public class DashboardController {
      * and executes the tasks which perform the API requests and injections into the FXML file.
      */
     protected void init() throws IOException {
+
         // Show loading screen with progress bar
         statLoadPane.setVisible(true);
         statLoadProgressBar.isIndeterminate();
@@ -263,9 +263,8 @@ public class DashboardController {
         modeToggle = new ToggleGroup();
         modeToggle.getToggles().addAll(soloToggleButton, flexToggleButton);
 
-        // Get the currently logged in user's details
+        // Get the current user's riotID, playerId (userId), and region.
         User currentUser = userManager.getCurrentUser();
-
         String riotId = currentUser.getRiotID();
         String puuid = currentUser.getUserId();
         String region = currentUser.getRegion().toLowerCase();
@@ -273,14 +272,196 @@ public class DashboardController {
         // Execute the API query Tasks
         Task<ResponseBody> SummonerTask = getSummonerTask(puuid, region, riotId);
         Task<Champion[]> ChampionTask = getChampionTask(puuid, region);
+        Task<ResponseBody> MatchIdTask = getAllMatchIdsTask(puuid, region);
 
-        // Task<> QueryStatusTask = get....
-        // task.start() ;
-
+        matchIdThreadPool.submit(MatchIdTask);
         singleThreadPool.submit(SummonerTask);
         singleThreadPool.submit(ChampionTask);
-        // when all tasks are done, make the thingy visible
     }
+
+    /**
+     * Creates a task that retrieves all match IDs for the current user.
+     *
+     * @param puuid The user's PUUID (Player Unique ID).
+     * @param region The region of the player.
+     * @return A {@link Task} that fetches all match IDs.
+     */
+    private @NotNull Task<ResponseBody> getAllMatchIdsTask(String puuid, String region) {
+
+        // Declare a Task which performs the API query and returns the JSON string or error if failed.
+        Task<ResponseBody> AllMatchIdsTask = new Task<ResponseBody>() {
+
+            @Override
+            protected ResponseBody call() throws Exception {
+                String matchReqUrl = URLBuilder.buildMatchIDsRequestUrl(puuid, region);
+                return getQuery(matchReqUrl, Constants.requestHeaders);
+            }
+        };
+
+        /*
+         * Event handler that runs when the task succeeds;
+         * Deserializes the JSON output and updates the match history UI.
+         */
+        AllMatchIdsTask.setOnSucceeded(new EventHandler() {
+
+            @Override public void handle(Event event) {
+                // Switch from the background thread to the application thread to update UI
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+
+                        ResponseBody allMatchIdsQuery = AllMatchIdsTask.getValue();
+
+                        if (allMatchIdsQuery.isError()) {
+                            ErrorMessage error = allMatchIdsQuery.getMessage();
+                            showAlert(error.getStatus(), error.getDetail());
+                        }
+                        else {
+                            System.out.println("matchId success");
+
+                            // Add match id list to matchBucket
+                            try {
+                                List<String> matchIds = getMatchIdListFromJson(allMatchIdsQuery.getJson());
+                                matchBucket.setMatchIds(matchIds);
+                                System.out.println(matchBucket.getMatchIds()); // TODO REMOVE TESTING ONLY
+
+                                Task<Boolean> ProcessMatchesTask = getProcessMatchesTask(matchBucket.getMatchIds(), region, puuid);
+                                matchIdThreadPool.submit(ProcessMatchesTask);
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                });
+            }
+        });
+        return AllMatchIdsTask;
+    }
+
+    /**
+     * Gets a Task which iterates through a list of match IDs and retrieves individual match information including KDA
+     * (average kill ratio) and CS/min (creep score per minute), returning a boolean indicating if the queries were
+     * successful. If the Tasks were all completed (return true), calculates the average KDA and cs/min across all matches and
+     * injects the values into their corresponding FXML fields.
+     * @param matchIds List of match IDs to query.
+     * @param region String indicating region server to query.
+     * @param puuid String indicating player ID to query.
+     * @return Boolean indicating whether the query loop was successful.
+     */
+    private @NotNull Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
+        // Create a Task which iterates through a list of matchIDs and retrieves individual match data.
+        Task<Boolean> ProcessMatchesTask = new Task<Boolean>() {
+            @Override protected Boolean call() throws Exception {
+                boolean tasksFinished = false;
+
+                // Get individual match data from matchId list
+                for (String matchId : matchIds) {
+                    Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid);
+                    System.out.println("Submitting task...");
+                    fixedThreadPool.submit(MatchTask);
+                }
+
+                // Wait for tasks to finish
+                try {
+                    fixedThreadPool.shutdown();
+                    if (fixedThreadPool.awaitTermination(10, TimeUnit.SECONDS)) {
+                        // If all queued tasks have finished, return true
+                        tasksFinished = true;
+                    }
+                } catch (InterruptedException e) {
+                    // tasksFinished remains false if error occurred.
+                }
+
+                return tasksFinished;
+            }
+        };
+
+        // Check task completion state; if tasks were completed, get average KDA and CS/min and inject into FXML.
+        // If tasks were not completed, show alert popup.
+        ProcessMatchesTask.setOnSucceeded(new EventHandler() {
+            @Override public void handle(Event event) {
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        boolean isTasksDone = ProcessMatchesTask.getValue();
+
+                        if (isTasksDone) {
+                            // Format values to 2 decimal places
+                            String avgKda = String.format("%.2f", matchBucket.getKDAAcrossAllGames());
+                            String avgCsPerMin = String.format("%.2f", matchBucket.getCSpMinAcrossAllGames());
+
+                            // Set FXML values in dashboard for average kda and cs/min
+                            kdValue.setText(avgKda);
+                            csMinValue.setText(avgCsPerMin);
+                        }
+                        else {
+                            showAlert(501, "Match query failed!");
+                        }
+                    }
+                });
+            }
+        });
+        return ProcessMatchesTask;
+    }
+
+    /**
+     * Gets a Task which retrieves data for a single match and inserts individual match data values into a Match object
+     * and a MatchBucket instance.
+     * @param matchId String indicating match ID to query.
+     * @param region String indicating region server to query.
+     * @param puuid String indicating player ID to query.
+     * @return ResponseBody with the JSON string and error status indicator.
+     */
+    private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid) throws IOException {
+        // Declare a Task which performs the API query and returns the JSON string or error if failed.
+        Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
+            @Override
+            protected ResponseBody call() throws Exception {
+                String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchId, region);
+                return getQuery(matchReqUrl, Constants.requestHeaders);
+            }
+        };
+
+        MatchTask.setOnSucceeded(new EventHandler() {
+            @Override public void handle(Event event) {
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        ResponseBody matchQuery = MatchTask.getValue();
+
+                        if (matchQuery.isError()) {
+                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            ErrorMessage error = matchQuery.getMessage();
+                            showAlert(error.getStatus(), error.getDetail());
+                        }
+                        else {
+                            String json = MatchTask.getValue().getJson();
+                            Match match = null;
+                            try {
+                                match = getMatchArrayFromJson(json);
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                            matchBucket.addMatch(match.getMetadata().getMatchId(), match);
+                            // Get Player Number
+                            int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), puuid);
+
+                            matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
+                            if (match.getInfo().getParticipants().get(usrIdx).getWin())
+                                matchBucket.addWinRate();
+                            double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned()/
+                                    (match.getInfo().getGameDuration()/60.0f);
+                            matchBucket.addGoldPerMin(GoldpMin);
+                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).gettotalMinionsKilled() /
+                                    (match.getInfo().getGameDuration()/60.0f);
+                            matchBucket.addCSpMin(CSpMin);
+                        }
+                    }
+                });
+            }
+        });
+
+        return MatchTask;
+    }
+
+
 
     /**
      * Gets a Task which queries the API for the user's Summoner data and returns the ResponseBody.
@@ -401,7 +582,6 @@ public class DashboardController {
     /**
      * Gets a Task which queries the API for the user's League data returned as an array of League objects.
      * If the Task succeeds, parse the array and update the dashboard view accordingly.
-     * TODO Task failure implementation, better error handling in general
      * TODO implement runLater into setonSucceed handler method if needed
      * @param summonerId The user's summonerID.
      * @param region The user's region

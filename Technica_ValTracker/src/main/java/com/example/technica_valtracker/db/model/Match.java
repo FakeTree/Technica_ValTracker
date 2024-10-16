@@ -4,6 +4,8 @@ import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
 import com.example.technica_valtracker.api.error.ErrorResponseInterceptor;
 import static com.example.technica_valtracker.utils.Deserialiser.getErrorMessageFromJson;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -391,6 +393,9 @@ public class Match {
         private String puuid;
         private Challenges challenges; // Change from Map to Challenges class
         private int totalMinionsKilled;
+        private int neutralMinionsKilled;
+        @JsonIgnore
+        private int minionKillTotal;
         private boolean win;
 
         /**
@@ -518,6 +523,35 @@ public class Match {
         public void settotalMinionsKilled(int totalMinionsKilled) {
             this.totalMinionsKilled = totalMinionsKilled;
         }
+
+        /**
+         * Gets the number of neutral minions killed by the participant.
+         * @return the number of neutral minions killed.
+         */
+        public int getNeutralMinionsKilled() {
+            return neutralMinionsKilled;
+        }
+
+        /**
+         * Sets the number of neutral minions killed by the participant.
+         * @param neutralMinionsKilled the number of neutral minions killed to set.
+         */
+        public void setNeutralMinionsKilled(int neutralMinionsKilled) {
+            this.neutralMinionsKilled = neutralMinionsKilled;
+        }
+
+        /**
+         * Get total number of creeps killed (totalMinionsKilled + neutralMinionsKilled)
+         */
+        public int getMinionKillTotal() { return minionKillTotal; }
+
+        /**
+         * Calculate and set total number of creeps killed (totalMinionsKilled + neutralMinionsKilled)
+         */
+        public void setMinionKillTotal() {
+            minionKillTotal = totalMinionsKilled + neutralMinionsKilled;
+        }
+
 
         /**
          * Gets the challenges completed by the participant.

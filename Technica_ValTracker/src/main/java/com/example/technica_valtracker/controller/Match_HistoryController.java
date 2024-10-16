@@ -277,13 +277,17 @@ public class Match_HistoryController extends HelloApplication {
                             // Get Player Number
                             int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
 
+                            // Set the minion kill total to calculate creep score
+                            match.getInfo().getParticipants().get(usrIdx).setMinionKillTotal();
+
                             matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
                             if (match.getInfo().getParticipants().get(usrIdx).getWin())
                                 matchBucket.addWinRate();
                             double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned()/
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addGoldPerMin(GoldpMin);
-                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).gettotalMinionsKilled() /
+
+                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).getMinionKillTotal() /
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addCSpMin(CSpMin);
                             System.out.println("KDA: "+matchBucket.getKDAAcrossAllGames());

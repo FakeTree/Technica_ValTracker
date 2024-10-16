@@ -356,7 +356,6 @@ public class DashboardController {
                 // Get individual match data from matchId list
                 for (String matchId : matchIds) {
                     Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid);
-                    System.out.println("Submitting task...");
                     fixedThreadPool.submit(MatchTask);
                 }
 

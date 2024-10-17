@@ -138,6 +138,28 @@ public class UserManager {
         }
     }
 
+    // Method for returning a reference to a stored user with their email
+    public User getUserByEmail(String email) {
+        // Iterate through the list of users and find a user with the matching email
+        for (User user : userList) {
+            if (user.getEmail().equalsIgnoreCase(email)) {
+                return user;
+            }
+        }
+        // If no user is found, return null and optionally print a message
+        System.out.println("No user found with email: " + email);
+        return null;
+    }
+
+    // Method to update the database. This is called when a user as added or removed a friend
+    public void updateUserFriends(User user) {
+        if (userDAO != null) {
+            userDAO.updateFriends(user.getEmail(), user.getFriends());
+        } else {
+            System.out.println("UserDAO is not initialized.");
+        }
+    }
+
     public class UserStats {
         private String mode;
         private int winrate;

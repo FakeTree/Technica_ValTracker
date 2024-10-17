@@ -94,9 +94,6 @@ public class User {
 
     public void setFriends(List<String> friends) { this.friends = friends; }
 
-
-
-
     // Method to add a friend
     public void addFriend(String email) {
         if (!friends.contains(email)) {

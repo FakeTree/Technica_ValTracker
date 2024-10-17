@@ -241,7 +241,7 @@ public class Match_HistoryController extends HelloApplication {
             @Override
             protected ResponseBody call() throws Exception {
                 String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchID, region);
-                System.out.println(matchReqUrl+"?api_key="+Constants.RIOT_API_KEY);
+//                System.out.println(matchReqUrl+"?api_key="+Constants.RIOT_API_KEY);
                 return getQuery(matchReqUrl, Constants.requestHeaders);
             }
         };
@@ -290,10 +290,10 @@ public class Match_HistoryController extends HelloApplication {
                             double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).getMinionKillTotal() /
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addCSpMin(CSpMin);
-                            System.out.println("KDA: "+matchBucket.getKDAAcrossAllGames());
-                            System.out.println("Win Rate: "+matchBucket.getWinRateAcrossAllGames());
-                            System.out.println("CS per Min: "+matchBucket.getCSpMinAcrossAllGames());
-                            System.out.println("Gold per min: "+matchBucket.getGoldPerMinAcrossAllGames());
+//                            System.out.println("KDA: "+matchBucket.getKDAAcrossAllGames());
+//                            System.out.println("Win Rate: "+matchBucket.getWinRateAcrossAllGames());
+//                            System.out.println("CS per Min: "+matchBucket.getCSpMinAcrossAllGames());
+//                            System.out.println("Gold per min: "+matchBucket.getGoldPerMinAcrossAllGames());
 
                             singleThreadPool.submit(MatchTask);
                         }

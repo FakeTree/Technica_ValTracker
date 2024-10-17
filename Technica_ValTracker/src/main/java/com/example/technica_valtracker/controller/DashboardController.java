@@ -219,12 +219,12 @@ public class DashboardController {
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     ExecutorService matchIdThreadPool = Executors.newSingleThreadExecutor(threadFactory);
-    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(20, threadFactory);
+    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(25, threadFactory);
 
     League soloLeague;      // Stores the user's Solo mode stats
     League flexLeague;      // Stores the user's Flex mode stats
 
-    MatchBucket matchBucket = new MatchBucket();    // Stores user's match history data
+    MatchBucket matchBucket = new MatchBucket();        // Stores user's match history data
 
     /**
      * Declares an initialise method that is called just before the scene UI is fully loaded
@@ -277,6 +277,7 @@ public class DashboardController {
         matchIdThreadPool.submit(MatchIdTask);
         singleThreadPool.submit(SummonerTask);
         singleThreadPool.submit(ChampionTask);
+
     }
 
     /**
@@ -305,6 +306,7 @@ public class DashboardController {
         AllMatchIdsTask.setOnSucceeded(new EventHandler() {
 
             @Override public void handle(Event event) {
+                System.out.println("Match ID Task succeeded."); // TODO REMOVE
                 // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
@@ -386,6 +388,7 @@ public class DashboardController {
         // If tasks were not completed, show alert popup.
         ProcessMatchesTask.setOnSucceeded(new EventHandler() {
             @Override public void handle(Event event) {
+                System.out.println("Process Match Task succeeded."); // TODO REMOVE
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         boolean isTasksDone = ProcessMatchesTask.getValue();
@@ -532,6 +535,7 @@ public class DashboardController {
          */
         SummonerTask.setOnSucceeded(new EventHandler() {
             @Override public void handle(Event event) {
+                System.out.println("Summoner Task succeeded."); // TODO REMOVE
                 // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
@@ -592,6 +596,7 @@ public class DashboardController {
 
         ChampionTask.setOnSucceeded(new EventHandler() {
             @Override public void handle(Event event) {
+                System.out.println("Champion Task succeeded."); // TODO REMOVE
                 Champion[] champions = ChampionTask.getValue();
 
                 // Set each champion's name and image link based on its champion ID
@@ -641,6 +646,7 @@ public class DashboardController {
 
         LeagueTask.setOnSucceeded(new EventHandler() {
             @Override public void handle(Event event) {
+                System.out.println("League Task succeeded."); // TODO REMOVE
                 // Retrieve array returned by task and convert to LinkedList to process the elements
                 League[] leagues = LeagueTask.getValue();
                 List<League> leaguesList = new LinkedList<League>(Arrays.asList(leagues));

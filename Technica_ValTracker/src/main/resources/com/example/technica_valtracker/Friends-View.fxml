@@ -15,7 +15,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.collections.FXCollections?>
 
 <VBox fx:id="parentVBox" prefHeight="650.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.FriendsController">
     <children>
@@ -68,9 +67,17 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="527.0">
                      <children>
-                        <ComboBox fx:id= "FriendComboBox" prefWidth="150.0" promptText="Select a friend" >
+                        <ComboBox fx:id="FriendComboBox" prefWidth="150.0" promptText="Select a friend">
                         </ComboBox>
-                        <Button fx:id="FriendSelectButton" mnemonicParsing="false" text="select" onAction="#FriendSelectButtonClick" />
+                        <Button fx:id="FriendSelectButton" mnemonicParsing="false" onAction="#FriendSelectButtonClick" text="select" />
+                        <Label fx:id="loadingLabel" text="Loading friend's stats..." visible="false">
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox fx:id="modeButtonGroupHBox" alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="509.0">
@@ -123,7 +130,7 @@
                                        </children></Pane>
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: LightSteelBlue;">
                                        <children>
-                                          <Label fx:id="comparePlayerKDA" layoutX="188.0" layoutY="29.0" text="00/00/00" />
+                                          <Label fx:id="userKda" layoutX="201.0" layoutY="29.0" text="0.00" />
                                           <Label layoutX="197.0" layoutY="7.0" text="KDA">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />
@@ -132,7 +139,7 @@
                                        </children></Pane>
                                     <Pane prefHeight="85.0" prefWidth="430.0" style="-fx-background-color: LightSteelBlue;">
                                        <children>
-                                          <Label fx:id="comparePlayerCS" layoutX="198.0" layoutY="29.0" text="000" />
+                                          <Label fx:id="userCSpMin" layoutX="198.0" layoutY="29.0" text="0.00" />
                                           <Label layoutX="176.0" layoutY="6.0" text="Average CS">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />
@@ -199,7 +206,7 @@
                                        </children></Pane>
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: LightSteelBlue;">
                                        <children>
-                                          <Label fx:id="compareFriendKDA" alignment="CENTER" contentDisplay="CENTER" layoutX="188.0" layoutY="29.0" text="00/00/00" />
+                                          <Label fx:id="compareFriendKDA" alignment="CENTER" contentDisplay="CENTER" layoutX="201.0" layoutY="29.0" text="0.00" />
                                           <Label layoutX="197.0" layoutY="7.0" text="KDA">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />
@@ -208,7 +215,7 @@
                                        </children></Pane>
                                     <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: LightSteelBlue;">
                                        <children>
-                                          <Label fx:id="CompareFriendCS" layoutX="197.0" layoutY="29.0" text="000" />
+                                          <Label fx:id="compareFriendCS" layoutX="204.0" layoutY="29.0" text="0.00" />
                                           <Label layoutX="176.0" layoutY="6.0" text="Average CS">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />

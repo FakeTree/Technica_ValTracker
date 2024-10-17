@@ -24,6 +24,17 @@ public class MatchBucket {
     private List<Double> GoldPerMin = new ArrayList<>();
 
     /**
+     * Clears all lists.
+     */
+    public void resetBucket() {
+        matchArray.clear();
+        matchIds.clear();
+        AllKDA.clear();
+        AllCSpMin.clear();
+        GoldPerMin.clear();
+    }
+
+    /**
      * Adds a match to the match array.
      *
      * @param matchID the match ID.

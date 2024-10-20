@@ -22,12 +22,14 @@ import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
@@ -55,6 +57,7 @@ public class FriendsController {
     @FXML public Pane FriendKDABox;
     @FXML public Pane FriendCSBox;
     @FXML public Pane FriendLPBox;
+    @FXML public ImageView WinrateImageView;
 
 
     //TOGGLES
@@ -86,13 +89,13 @@ public class FriendsController {
     private ToggleButton flexModeButton;
     //LABELS
     @FXML
-    private Label comparePlayerWinrate;
+    private Label userWinrate;
     @FXML
-    private Label comparePlayerKDA;
+    private Label userKda;
     @FXML
-    private Label comparePlayerCS;
+    private Label userCSpMin;
     @FXML
-    private Label comparePlayerLP;
+    private Label userLeaguePoints;
     @FXML
     private Label compareFriendHeadingLabel;
     @FXML
@@ -107,10 +110,7 @@ public class FriendsController {
     private Label friendPageHeaderLabel;
     @FXML private Label loadingLabel;
 
-    @FXML private Label userWinrate;
-    @FXML private Label userLeaguePoints;
-    @FXML private Label userKda;
-    @FXML private Label userCSpMin;
+
 
     private UserManager userManager = UserManager.getInstance();
 
@@ -146,6 +146,11 @@ public class FriendsController {
     }
 
     protected void init() throws IOException {
+
+        //set images for categories
+        FileInputStream crowninputstream = new FileInputStream("Crown.png");
+        Image Crown = new Image(crowninputstream);
+        WinrateImageView.setImage(Crown);
         // Get current user instance and data
         UserManager.UserStats rankedStats = userManager.getUserStatList().getFirst();
         User User = UserManager.getInstance().getCurrentUser();
@@ -240,9 +245,9 @@ public class FriendsController {
 
         compareFriendHeadingLabel.setText(friendRiotID);
 
-        System.out.println(friendRiotID);//TESTING
-        System.out.println(friendRegion);//TESTING
-        System.out.println(friendPUUID);//TESTING
+        //System.out.println(friendRiotID);//TESTING
+        //System.out.println(friendRegion);//TESTING
+       //System.out.println(friendPUUID);//TESTING
 
 
         Task<ResponseBody> SummonerTask = getSummonerTask(friendPUUID, friendRegion, friendRiotID);
@@ -250,6 +255,17 @@ public class FriendsController {
 
         matchIdThreadPool.submit(MatchIdTask);
         singleThreadPool.submit(SummonerTask);
+
+        System.out.println("USER WINRATE =" + userWinrate.getText());//TESTING
+
+       // if (Integer.parseInt(userWinrate.getText()) < Integer.parseInt(compareFriendWinrate.getText())) {
+      //      System.out.println("Player SUcks");
+      //      UserWinrateBox.setStyle("-fx-background-color: Green;");
+      //  }
+
+        //if (userWinrate.getText() <) {}
+
+
 
         SetCompareGUI();
     }
@@ -620,6 +636,9 @@ public class FriendsController {
                             // Cache winrate and leaguePoints data
                             userManager.setUserStatList(leaguesList);
 
+                            //edit GUI to match stats
+                            SetCompareGUI();
+
                             // Hide loading pane and display dashboard
                             //statLoadPane.setVisible(false);
                            // statVBox.setVisible(true);
@@ -643,7 +662,80 @@ public class FriendsController {
 
     }
 
-    private void SetCompareGUI(){
+    private  void SetCompareGUI(){
+        //Declaring Variables
+        int PlayerWinrate = Integer.parseInt(userWinrate.getText());
+        int FriendWinrate = Integer.parseInt(compareFriendWinrate.getText());
+        double PlayerKDA = Double.parseDouble(userKda.getText());
+        double FriendKDA = Double.parseDouble(compareFriendKDA.getText());
+        double PlayerCS = Double.parseDouble(userCSpMin.getText());
+        double FriendCS = Double.parseDouble(compareFriendCS.getText());
+        int PlayerLP = Integer.parseInt(userLeaguePoints.getText());
+        int FriendLP = Integer.parseInt(compareFriendLP.getText());
+
+
+
+        //changing the colour of background panes based on who is better
+        if(PlayerWinrate < FriendWinrate){
+
+            UserWinrateBox.setStyle("-fx-background-color: LightCoral");
+            FriendWinrateBox.setStyle("-fx-background-color: Lightgreen");
+
+
+        } else if (PlayerWinrate > FriendWinrate){
+            UserWinrateBox.setStyle("-fx-background-color: LightGreen");
+            FriendWinrateBox.setStyle("-fx-background-color: LightCoral");
+        }
+
+        if(PlayerKDA < FriendKDA){
+
+            UserKDABox.setStyle("-fx-background-color: LightCoral");
+            FriendKDABox.setStyle("-fx-background-color: Lightgreen");
+
+
+        } else if (PlayerKDA > FriendKDA){
+            UserKDABox.setStyle("-fx-background-color: LightGreen");
+            FriendKDABox.setStyle("-fx-background-color: LightCoral");
+        }
+
+        if(PlayerCS < FriendCS){
+
+            UserCSBox.setStyle("-fx-background-color: LightCoral");
+            FriendCSBox.setStyle("-fx-background-color: Lightgreen");
+
+        } else if (PlayerCS > FriendCS){
+            UserCSBox.setStyle("-fx-background-color: LightGreen");
+            FriendCSBox.setStyle("-fx-background-color: LightCoral");
+
+        }
+
+        if(PlayerLP < FriendLP){
+
+            UserLPBox.setStyle("-fx-background-color: LightCoral");
+            FriendLPBox.setStyle("-fx-background-color: Lightgreen");
+        } else if (PlayerLP > FriendLP){
+            UserLPBox.setStyle("-fx-background-color: LightGreen");
+            FriendLPBox.setStyle("-fx-background-color: LightCoral");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

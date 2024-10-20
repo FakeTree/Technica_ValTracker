@@ -22,6 +22,7 @@ import javafx.scene.control.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -29,10 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -45,7 +43,18 @@ import static com.example.technica_valtracker.utils.Deserialiser.getMatchArrayFr
 
 public class FriendsController {
 
+
     //FXML ELEMENTS
+
+    //PANES
+    @FXML public Pane UserWinrateBox;
+    @FXML public Pane UserKDABox;
+    @FXML public Pane UserCSBox;
+    @FXML public Pane UserLPBox;
+    @FXML public Pane FriendWinrateBox;
+    @FXML public Pane FriendKDABox;
+    @FXML public Pane FriendCSBox;
+    @FXML public Pane FriendLPBox;
 
 
     //TOGGLES
@@ -155,7 +164,7 @@ public class FriendsController {
         userLeaguePoints.setText(String.valueOf(rankedStats.getLeaguePoints()));
 
         // TODO REMOVE -- TESTING FRIENDS FEATURE
-        User.addFriend("test@mail.com");
+        User.addFriend("c@c.com");
         FriendComboBox.getItems().setAll(User.getFriends());
 
 
@@ -241,6 +250,8 @@ public class FriendsController {
 
         matchIdThreadPool.submit(MatchIdTask);
         singleThreadPool.submit(SummonerTask);
+
+        SetCompareGUI();
     }
 
     /**
@@ -631,5 +642,16 @@ public class FriendsController {
 
 
     }
+
+    private void SetCompareGUI(){
+
+
+
+
+
+    }
+
+
+
 }
 

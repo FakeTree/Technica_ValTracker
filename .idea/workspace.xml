@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="Updated the Graphics for the Compare screen - Edited layout and added fxid for panes and imageviews to dynamically change based on stats">
-      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/Compare_images/Crown.png" afterDir="false" />
+    <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="committing crown icon and some code ot display it">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/FriendsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/FriendsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/Compare_images/Crown.png" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/images/Crown.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/Friends-View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/Friends-View.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,6 +79,7 @@
 }</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources\images" />
       <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources" />
       <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources\Stylesheet" />
     </key>
@@ -125,7 +125,8 @@
       <workItem from="1729305660055" duration="1295000" />
       <workItem from="1729392866882" duration="1977000" />
       <workItem from="1729394915055" duration="4702000" />
-      <workItem from="1729406041778" duration="8324000" />
+      <workItem from="1729406041778" duration="10007000" />
+      <workItem from="1729417709082" duration="2730000" />
     </task>
     <task id="LOCAL-00002" summary="Updated the Graphics for the Compare screen - Edited layout and added fxid for panes and imageviews to dynamically change based on stats">
       <option name="closed" value="true" />
@@ -135,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1729399614515</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="committing crown icon and some code ot display it">
+      <option name="closed" value="true" />
+      <created>1729415564933</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729415564933</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,7 +153,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />
     <MESSAGE value="Updated the Graphics for the Compare screen - Edited layout and added fxid for panes and imageviews to dynamically change based on stats" />
-    <option name="LAST_COMMIT_MESSAGE" value="Updated the Graphics for the Compare screen - Edited layout and added fxid for panes and imageviews to dynamically change based on stats" />
+    <MESSAGE value="committing crown icon and some code ot display it" />
+    <option name="LAST_COMMIT_MESSAGE" value="committing crown icon and some code ot display it" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

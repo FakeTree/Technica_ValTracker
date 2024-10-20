@@ -6,7 +6,6 @@ import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
-import com.example.technica_valtracker.controller.match_panes.MiniMatchPane;
 import com.example.technica_valtracker.db.model.*;
 
 import com.example.technica_valtracker.utils.URLBuilder;
@@ -29,9 +28,7 @@ import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -128,11 +125,14 @@ public class FriendsController {
 
     MatchBucket matchBucket = new MatchBucket();    // Stores match history data
 
+
+
     /**
      * Declares an initialise method that is called just before the scene UI is fully loaded
      */
     @FXML
     protected void initialize() {
+
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -146,11 +146,7 @@ public class FriendsController {
     }
 
     protected void init() throws IOException {
-
-        //set images for categories
-        FileInputStream crowninputstream = new FileInputStream("Crown.png");
-        Image Crown = new Image(crowninputstream);
-        WinrateImageView.setImage(Crown);
+        
         // Get current user instance and data
         UserManager.UserStats rankedStats = userManager.getUserStatList().getFirst();
         User User = UserManager.getInstance().getCurrentUser();

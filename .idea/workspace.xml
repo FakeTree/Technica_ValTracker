@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="User test class added">
+      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/match_panes/LargeMatchPane.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/controller/match_panes/LargeMatchPane.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/Match.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/Match.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/Match_history-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/Match_history-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,6 +22,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -56,7 +62,7 @@
     &quot;Application.Match_HistoryController.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UserTest.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;0.1.2-Beta-William-MatchHistory&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;0.1.2-Beta-Annette-CompTool&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Enopo/UNI/Technica_ValTracker/users.db&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -108,12 +114,28 @@
       <workItem from="1728271378728" duration="20633000" />
       <workItem from="1728459242198" duration="3778000" />
       <workItem from="1728902455191" duration="3060000" />
+      <workItem from="1729323377937" duration="1264000" />
+      <workItem from="1729486718419" duration="390000" />
+      <workItem from="1729487125220" duration="319000" />
+      <workItem from="1729487503697" duration="3111000" />
+      <workItem from="1729491451731" duration="8175000" />
     </task>
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />

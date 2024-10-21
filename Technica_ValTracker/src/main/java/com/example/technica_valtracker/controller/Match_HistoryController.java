@@ -307,8 +307,8 @@ public class Match_HistoryController extends HelloApplication {
                                 largeMatchPane.setMatchResultText(match.getInfo().getParticipants().get(usrIdx).getWin());
 
                                 // Mode (Ranked Solo / Ranked Flex)
-                                match.getInfo().setQueueMode();
-                                largeMatchPane.setMatchModeText(match.getInfo().getQueueMode());
+                                match.getInfo().getGameMode();
+                                largeMatchPane.setMatchModeText(match.getInfo().getGameMode());
 
                                 // Mode (Ranked Solo / Ranked Flex)
                                 Instant instant = Instant.ofEpochMilli( match.getInfo().getGameCreation() );

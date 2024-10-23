@@ -20,7 +20,7 @@ public class UserManager {
     private User currentUser;
 
     // Others
-    private List<User> userList;
+    private static List<User> userList;
 
 
     // Private constructor to prevent instantiation from outside
@@ -121,7 +121,7 @@ public class UserManager {
     }
 
     // Method for returning a reference to a stored user with their email
-    public User getUserByEmail(String email) {
+    public static User getUserByEmail(String email) {
         // Iterate through the list of users and find a user with the matching email
         for (User user : userList) {
             if (user.getEmail().equalsIgnoreCase(email)) {

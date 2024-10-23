@@ -84,11 +84,22 @@ public class Manage_FriendsController {
     }
     @FXML
     private void onAddConfirm() {
-        // Action when the 'Add' button is pressed
-        String newFriend = emailTextField.getText();
-        if (!newFriend.isEmpty()) {
-            friendsListView.getItems().add(newFriend);
-            emailTextField.clear(); // Clear the text field after adding
+        String email = emailTextField.getText();
+
+        if (!email.isEmpty()) {
+            // Check if the email exists in the database
+            User user = UserManager.getUserByEmail(email);
+
+            if (user != null) {
+                // If user exists, add the email to the friendsListView
+                friendsListView.getItems().add(email);
+                emailTextField.clear(); // Clear the text field after adding
+            } else {
+                // If user does not exist, show an alert or an error message
+                showAlert("User not found", "The email you entered is not in the system.");
+            }
+        } else {
+            showAlert("Input Error", "Please enter a valid email address.");
         }
     }
 
@@ -110,5 +121,13 @@ public class Manage_FriendsController {
         stage.setScene(scene);
     }
 
+    // Helper method to show an alert
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
 }

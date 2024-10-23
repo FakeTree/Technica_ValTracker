@@ -3,8 +3,9 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<VBox fx:id="parentVBox" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.Manage_FriendsController">
+<VBox fx:id="parentVBox" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.technica_valtracker.controller.Manage_FriendsController">
     <children>
         <MenuBar fx:id="menuBar">
             <menus>
@@ -21,13 +22,13 @@
                 <Menu mnemonicParsing="false" text="Friends">
                     <items>
                         <MenuItem fx:id="ManageFriends_Menu" mnemonicParsing="false" onAction="#OnManageFriendsMenuClick" text="Manage Friends" />
-                        <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" onAction="#OnFriendsMenuClick" text="Friends" />
+                        <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" onAction="#OnFriendsMenuClick" text="Compare Friends" />
                     </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Account">
                     <items>
                         <MenuItem fx:id="Account_Menu" mnemonicParsing="false" text="Account" />
-                        <MenuItem fx:id="Logout" mnemonicParsing="false" text="Log out" onAction="#onLogOutMenuClick" />
+                        <MenuItem fx:id="Logout" mnemonicParsing="false" onAction="#onLogOutMenuClick" text="Log out" />
                     </items>
                 </Menu>
             </menus>
@@ -39,7 +40,10 @@
             <padding>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
-            <Label text="Manage your Friends"/>
+            <Label text="Manage your Friends">
+            <font>
+               <Font name="Arial Bold" size="42.0" />
+            </font></Label>
             <HBox spacing="20.0" VBox.vgrow="ALWAYS">
                 <VBox spacing="10.0">
                     <ListView fx:id="friendsListView" />

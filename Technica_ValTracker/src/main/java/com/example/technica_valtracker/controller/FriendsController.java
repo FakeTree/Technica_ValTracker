@@ -66,6 +66,24 @@ public class FriendsController {
         stage.setScene(scene);
 
     }
+    /**
+     * Handles the action when the "Manage Friends" menu item is clicked.
+     *
+     * This method switches the current scene to the manage friends screen.
+     * It loads the corresponding FXML file for the manage friends view.
+     *
+     * @param 'event the event triggered when the menu item is clicked
+     * @throws IOException if there is an issue loading the FXML file
+     */
+    @FXML
+    private void OnManageFriendsMenuClick(ActionEvent actionEvent) throws IOException {
+        //switch to the Friends scene
+        Stage stage = (Stage) friendPageHeaderLabel.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Manage-Friends.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+        stage.setScene(scene);
+
+    }
     @FXML
     private void OnFriendsMenuClick(ActionEvent actionEvent) throws IOException {
         //switch to the Friends scene

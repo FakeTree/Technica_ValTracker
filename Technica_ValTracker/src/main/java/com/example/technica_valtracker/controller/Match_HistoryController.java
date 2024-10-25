@@ -64,9 +64,9 @@ public class Match_HistoryController extends HelloApplication {
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     ExecutorService matchIdThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     ExecutorService fixedThreadPool = Executors.newFixedThreadPool(25, threadFactory);
-    private UserManager userManager = UserManager.getInstance();
+    public UserManager userManager = UserManager.getInstance();
     SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-    MatchBucket matchBucket = new MatchBucket();
+    public MatchBucket matchBucket = new MatchBucket();
     User currentUser = userManager.getCurrentUser();
 
     /**
@@ -117,7 +117,8 @@ public class Match_HistoryController extends HelloApplication {
      * @param riotId The user's Riot ID.
      * @return A {@link Task} that fetches all match IDs.
      */
-    private @NotNull Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
+    @NotNull
+    public Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
 
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> AllMatchIdsTask = new Task<ResponseBody>() {
@@ -186,7 +187,8 @@ public class Match_HistoryController extends HelloApplication {
      * @param puuid String indicating player ID to query.
      * @return Boolean indicating whether the query loop was successful.
      */
-    private @NotNull Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
+    @NotNull
+    public Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
         // Create a Task which iterates through a list of matchIDs and retrieves individual match data.
         Task<Boolean> ProcessMatchesTask = new Task<Boolean>() {
             @Override protected Boolean call() throws Exception {
@@ -255,7 +257,8 @@ public class Match_HistoryController extends HelloApplication {
      * @param puuid String indicating player ID to query.
      * @return ResponseBody with the JSON string and error status indicator.
      */
-    private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
+    @NotNull
+    public Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override

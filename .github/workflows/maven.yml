@@ -30,6 +30,11 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package -f Technica_ValTracker/pom.xml 
+    - name: deploy_javadocs
+      uses: JamesIves/github-pages-deploy-action@v4.2.3
+      with:
+        branch: docs
+        folder: docs
 
 
 

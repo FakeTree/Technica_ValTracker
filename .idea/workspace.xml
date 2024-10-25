@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="committing crown icon and some code ot display it">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/FriendsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/FriendsController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/Compare_images/Crown.png" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/images/Crown.png" afterDir="false" />
@@ -19,6 +20,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -55,6 +57,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.Application Start.executor": "Run",
+    "Application.HelloApplication.executor": "Run",
+    "Application.Match_HistoryController.executor": "Run",
+    "JUnit.UserTest.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "0.1.2-Beta-William-MatchHistoryExtension",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Enopo/UNI/Technica_ValTracker/users.db",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
@@ -84,6 +106,7 @@
       <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources\Stylesheet" />
     </key>
   </component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Application Start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.technica_valtracker.HelloApplication" />
@@ -122,6 +145,11 @@
       <workItem from="1728271378728" duration="20633000" />
       <workItem from="1728459242198" duration="3778000" />
       <workItem from="1728902455191" duration="3060000" />
+      <workItem from="1729323377937" duration="1264000" />
+      <workItem from="1729486718419" duration="390000" />
+      <workItem from="1729487125220" duration="319000" />
+      <workItem from="1729487503697" duration="3111000" />
+      <workItem from="1729491451731" duration="8918000" />
       <workItem from="1729305660055" duration="1295000" />
       <workItem from="1729392866882" duration="1977000" />
       <workItem from="1729394915055" duration="4702000" />
@@ -149,6 +177,17 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Region is forced in Registration, Database and user accommodate new region field, Removed DB check in user import, Remove fixed userID in registration, Skeleton for PUUID call wants more API work done, Password hashing is added" />

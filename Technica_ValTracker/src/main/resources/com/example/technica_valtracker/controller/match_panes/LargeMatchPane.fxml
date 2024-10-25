@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<fx:root prefHeight="80.0" prefWidth="967.0" style="-fx-background-color: #9580FF66;" type="javafx.scene.layout.Pane" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+    <Label fx:id="HistoryMatch_Win" layoutX="80.0" layoutY="10.0" text="RESULT">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_Mode" layoutX="89.0" layoutY="38.0" text="MODE">
+        <font>
+            <Font size="16.0" />
+        </font>
+    </Label>
+    <Pane layoutX="174.0" layoutY="5.0" maxHeight="55.0" maxWidth="55.0" minHeight="55.0" minWidth="55.0" prefHeight="0.0" prefWidth="0.0" style="-fx-border-color: black; -fx-background-color: whitesmoke;">
+      <children>
+            <ImageView fx:id="HistoryMatch1_ChampImage" fitHeight="48.0" fitWidth="55.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
+      </children>
+    </Pane>
+    <Label fx:id="HistoryMatch1_ChampName" layoutX="174.0" layoutY="57.0" text="Champion" textAlignment="CENTER">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+    <Label layoutX="293.0" layoutY="7.0" text="KDA">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_KDA" layoutX="268.0" layoutY="34.0" text="00/00/00">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <Label layoutX="381.0" layoutY="7.0" text="KD">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_KD" layoutX="373.0" layoutY="34.0" text="0.00">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <Label layoutX="424.0" layoutY="7.0" text="CS/min">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_CSpermin" layoutX="435.0" layoutY="34.0" text="0.00">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <Label layoutX="23.0" layoutY="10.0" text="Date">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_Date" layoutX="11.0" layoutY="38.0" text="1/1/2024">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+    <Label layoutX="608.0" layoutY="7.0" text="Building Damage">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_Goldpermin" layoutX="527.0" layoutY="35.0" text="0.00">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <Label layoutX="507.0" layoutY="7.0" text="Gold/min">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_BuildingDamage" layoutX="660.0" layoutY="34.0" text="0.00">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+    <Label layoutX="779.0" layoutY="7.0" text="Vision Score">
+        <font>
+            <Font name="System Bold" size="18.0" />
+        </font>
+    </Label>
+    <Label fx:id="HistoryMatch1_VisionScore" layoutX="810.0" layoutY="34.0" text="0.00">
+        <font>
+            <Font size="22.0" />
+        </font>
+    </Label>
+</fx:root>

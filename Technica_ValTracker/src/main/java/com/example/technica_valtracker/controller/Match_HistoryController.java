@@ -10,10 +10,12 @@ import com.example.technica_valtracker.HelloApplication;
 import com.example.technica_valtracker.UserManager;
 import com.example.technica_valtracker.api.ResponseBody;
 import com.example.technica_valtracker.api.error.ErrorMessage;
+import com.example.technica_valtracker.controller.match_panes.LargeMatchPane;
 import com.example.technica_valtracker.db.model.*;
 import com.example.technica_valtracker.utils.URLBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -21,20 +23,21 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import static com.example.technica_valtracker.api.Query.getQuery;
 import static com.example.technica_valtracker.utils.Deserialiser.*;
@@ -47,76 +50,22 @@ public class Match_HistoryController extends HelloApplication {
 
     // FXML ELEMENTS
 
-    // Buttons
-    @FXML private Button soloModeButton;
-    @FXML private Button flexModeButton;
-
     // Static Labels
     @FXML private Label HistoryPageHeaderLabel;
-
-    // Changing Labels
-    @FXML private Label HistoryMatch1_Win;
-    @FXML private Label HistoryMatch1_Mode;
-    @FXML private Label HistoryMatch1_KDA;
-    @FXML private Label HistoryMatch1_KD;
-    @FXML private Label HistoryMatch1_CSpermin;
-    @FXML private Label HistoryMatch1_Date;
-    @FXML private Label HistoryMatch1_Goldpermin;
-    @FXML private Label HistoryMatch1_BuildingDamage;
-    @FXML private Label HistoryMatch1_VisionScore;
-    @FXML private Label HistoryMatch2_Win;
-    @FXML private Label HistoryMatch2_Mode;
-    @FXML private Label HistoryMatch2_KDA;
-    @FXML private Label HistoryMatch2_KD;
-    @FXML private Label HistoryMatch2_CSpermin;
-    @FXML private Label HistoryMatch2_Date;
-    @FXML private Label HistoryMatch2_Goldpermin;
-    @FXML private Label HistoryMatch2_BuildingDamage;
-    @FXML private Label HistoryMatch2_VisionScore;
-    @FXML private Label HistoryMatch3_Win;
-    @FXML private Label HistoryMatch3_Mode;
-    @FXML private Label HistoryMatch3_KDA;
-    @FXML private Label HistoryMatch3_KD;
-    @FXML private Label HistoryMatch3_CSpermin;
-    @FXML private Label HistoryMatch3_Date;
-    @FXML private Label HistoryMatch3_Goldpermin;
-    @FXML private Label HistoryMatch3_BuildingDamage;
-    @FXML private Label HistoryMatch3_VisionScore;
-    @FXML private Label HistoryMatch4_Win;
-    @FXML private Label HistoryMatch4_Mode;
-    @FXML private Label HistoryMatch4_KDA;
-    @FXML private Label HistoryMatch4_KD;
-    @FXML private Label HistoryMatch4_CSpermin;
-    @FXML private Label HistoryMatch4_Date;
-    @FXML private Label HistoryMatch4_Goldpermin;
-    @FXML private Label HistoryMatch4_BuildingDamage;
-    @FXML private Label HistoryMatch4_VisionScore;
-    @FXML private Label HistoryMatch5_Win;
-    @FXML private Label HistoryMatch5_Mode;
-    @FXML private Label HistoryMatch5_KDA;
-    @FXML private Label HistoryMatch5_KD;
-    @FXML private Label HistoryMatch5_CSpermin;
-    @FXML private Label HistoryMatch5_Date;
-    @FXML private Label HistoryMatch5_Goldpermin;
-    @FXML private Label HistoryMatch5_BuildingDamage;
-    @FXML private Label matchOneCSMinLabel114;
-    @FXML private Label HistoryMatch5_VisionScore;
 
     // Boxes
     @FXML private VBox pageBox;
     @FXML private VBox statVBox;
-
-    // ImageViews
-    @FXML private ImageView HistoryMatch1_ChampImage;
-    @FXML private ImageView HistoryMatch2_ChampImage;
-    @FXML private ImageView HistoryMatch3_ChampImage;
-    @FXML private ImageView HistoryMatch4_ChampImage;
-    @FXML private ImageView HistoryMatch5_ChampImage;
+    @FXML private ScrollPane matchScrollBox;
+    @FXML private VBox matchContainer;
 
     // Internal controller properties
     ThreadFactory threadFactory = Executors.defaultThreadFactory();
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
+    ExecutorService matchIdThreadPool = Executors.newSingleThreadExecutor(threadFactory);
+    ExecutorService fixedThreadPool = Executors.newFixedThreadPool(25, threadFactory);
     private UserManager userManager = UserManager.getInstance();
+    SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
     MatchBucket matchBucket = new MatchBucket();
     User currentUser = userManager.getCurrentUser();
 
@@ -209,9 +158,10 @@ public class Match_HistoryController extends HelloApplication {
                                 List<String> matches = matchBucket.getMatchIds();
 
                                 for(String matchID : matches) {
-                                    Task<ResponseBody> MatchTask = getMatchTask(matchID, region);
+                                    //Task<ResponseBody> MatchTask = getMatchTask(matchID, region);
                                     System.out.println("Submitting match task..."); // TODO REMOVE TESTING ONLY
-                                    singleThreadPool.submit(MatchTask);
+                                    Task<Boolean> ProcessMatchesTask = getProcessMatchesTask(matchBucket.getMatchIds(), region, puuid);
+                                    matchIdThreadPool.submit(ProcessMatchesTask);
                                 }
 
                             } catch (JsonProcessingException e) {
@@ -226,37 +176,99 @@ public class Match_HistoryController extends HelloApplication {
         });
         return AllMatchIdsTask;
     }
+    /**
+     * Gets a Task which iterates through a list of match IDs and retrieves individual match information including KDA
+     * (average kill ratio) and CS/min (creep score per minute), returning a boolean indicating if the queries were
+     * successful. If the Tasks were all completed (return true), calculates the average KDA and cs/min across all matches and
+     * injects the values into their corresponding FXML fields.
+     * @param matchIds List of match IDs to query.
+     * @param region String indicating region server to query.
+     * @param puuid String indicating player ID to query.
+     * @return Boolean indicating whether the query loop was successful.
+     */
+    private @NotNull Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
+        // Create a Task which iterates through a list of matchIDs and retrieves individual match data.
+        Task<Boolean> ProcessMatchesTask = new Task<Boolean>() {
+            @Override protected Boolean call() throws Exception {
+                boolean tasksFinished = false;
+                int matchCounter = 0;
+
+                // Get individual match data from matchId list
+                for (String matchId : matchIds) {
+                    if (matchCounter < 20) {
+                        Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid, true);
+                        fixedThreadPool.submit(MatchTask);
+                        matchCounter++;
+                        if(matchCounter%10 == 0) {
+                            TimeUnit.SECONDS.sleep(1);
+                            System.out.println("WAITING... STOP PINGING SO MUCH");
+                        }
+
+                    }
+                    else {
+                        Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid, false);
+                        fixedThreadPool.submit(MatchTask);
+                    }
+                }
+
+                // Wait for tasks to finish
+                try {
+                    fixedThreadPool.shutdown();
+                    if (fixedThreadPool.awaitTermination(10, TimeUnit.SECONDS)) {
+                        // If all queued tasks have finished, return true
+                        tasksFinished = true;
+                    }
+                } catch (InterruptedException e) {
+                    // tasksFinished remains false if error occurred.
+                }
+
+                return tasksFinished;
+            }
+        };
+
+        // Check task completion state; if tasks were completed, get average KDA and CS/min and inject into FXML.
+        // If tasks were not completed, show alert popup.
+        ProcessMatchesTask.setOnSucceeded(new EventHandler() {
+            @Override public void handle(Event event) {
+                System.out.println("Process Match Task succeeded."); // TODO REMOVE
+                Platform.runLater(new Runnable() {
+                    @Override public void run() {
+                        boolean isTasksDone = ProcessMatchesTask.getValue();
+
+                        if (isTasksDone) {
+                        }
+                        else {
+                            showAlert(501, "Match query failed!");
+                        }
+                    }
+                });
+            }
+        });
+        return ProcessMatchesTask;
+    }
 
     /**
-     * Creates a task that retrieves match data for a given match ID.
-     *
-     * @param matchID The ID of the match to fetch.
-     * @param region The region of the player.
-     * @return A {@link Task} that fetches match data.
-     * @throws IOException If an I/O error occurs while fetching the match data.
+     * Gets a Task which retrieves data for a single match and inserts individual match data values into a Match object
+     * and a MatchBucket instance.
+     * @param matchId String indicating match ID to query.
+     * @param region String indicating region server to query.
+     * @param puuid String indicating player ID to query.
+     * @return ResponseBody with the JSON string and error status indicator.
      */
-    private @NotNull Task<ResponseBody> getMatchTask(String matchID, String region) throws IOException {
+    private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
         // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override
             protected ResponseBody call() throws Exception {
-                String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchID, region);
-//                System.out.println(matchReqUrl+"?api_key="+Constants.RIOT_API_KEY);
+                String matchReqUrl = URLBuilder.buildMatchRequestUrl(matchId, region);
                 return getQuery(matchReqUrl, Constants.requestHeaders);
             }
         };
 
-        /*
-         * Event handler that runs when the task succeeds;
-         * Deserializes the JSON output and updates the match data in the UI.
-         */
         MatchTask.setOnSucceeded(new EventHandler() {
-
             @Override public void handle(Event event) {
-                // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
-
                         ResponseBody matchQuery = MatchTask.getValue();
 
                         if (matchQuery.isError()) {
@@ -265,7 +277,6 @@ public class Match_HistoryController extends HelloApplication {
                             showAlert(error.getStatus(), error.getDetail());
                         }
                         else {
-
                             String json = MatchTask.getValue().getJson();
                             Match match = null;
                             try {
@@ -275,9 +286,8 @@ public class Match_HistoryController extends HelloApplication {
                             }
                             matchBucket.addMatch(match.getMetadata().getMatchId(), match);
                             // Get Player Number
-                            int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), currentUser.getUserId());
+                            int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), puuid);
 
-                            // Set the minion kill total to calculate creep score
                             match.getInfo().getParticipants().get(usrIdx).setMinionKillTotal();
 
                             matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
@@ -286,16 +296,70 @@ public class Match_HistoryController extends HelloApplication {
                             double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned()/
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addGoldPerMin(GoldpMin);
-
                             double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).getMinionKillTotal() /
                                     (match.getInfo().getGameDuration()/60.0f);
                             matchBucket.addCSpMin(CSpMin);
-//                            System.out.println("KDA: "+matchBucket.getKDAAcrossAllGames());
-//                            System.out.println("Win Rate: "+matchBucket.getWinRateAcrossAllGames());
-//                            System.out.println("CS per Min: "+matchBucket.getCSpMinAcrossAllGames());
-//                            System.out.println("Gold per min: "+matchBucket.getGoldPerMinAcrossAllGames());
 
-                            singleThreadPool.submit(MatchTask);
+                            // Create a MiniMatchPane and inject FXML values
+                            if (createPane) {
+                                LargeMatchPane largeMatchPane = new LargeMatchPane();
+                                // Match Result (Victory / Defeat)
+                                largeMatchPane.setMatchResultText(match.getInfo().getParticipants().get(usrIdx).getWin());
+
+                                // Mode (Ranked Solo / Ranked Flex)
+                                match.getInfo().getGameMode();
+                                largeMatchPane.setMatchModeText(match.getInfo().getGameMode());
+
+                                // Mode (Ranked Solo / Ranked Flex)
+                                Instant instant = Instant.ofEpochMilli( match.getInfo().getGameCreation() );
+                                Date date = Date.from( instant );
+                                String formatDate = formatPattern.format(date);
+                                largeMatchPane.setHistoryMatch1_Date(formatDate);
+
+                                // Champion name & icon
+                                largeMatchPane.setMatchChampText(match.getInfo().getParticipants().get(usrIdx)
+                                        .getChampionName());
+                                largeMatchPane.setMatchChampImg(match.getInfo().getParticipants().get(usrIdx).getChampionId());
+
+                                // K/D/A
+                                String KDA = String.format("%d/%d/%d", match.getInfo().getParticipants().get(usrIdx).getKills(),
+                                        match.getInfo().getParticipants().get(usrIdx).getDeaths(),
+                                        match.getInfo().getParticipants().get(usrIdx).getAssists());
+                                largeMatchPane.setMatchKdaValue(KDA);
+
+                                // KDA (ratio)
+                                String kdRatio = String.format("%.2f", match.getInfo().getParticipants().get(usrIdx)
+                                        .getChallenges().getKda());
+                                largeMatchPane.setMatchKdValue(kdRatio);
+
+                                // CS/Min
+                                String csPerMin = String.format("%.2f", CSpMin);
+                                largeMatchPane.setMatchCSMinValue(csPerMin);
+
+                                // Gold/Min
+                                String goldPerMin = String.format("%.2f", GoldpMin);
+                                largeMatchPane.setHistoryMatch1_Goldpermin(goldPerMin);
+
+                                // Building Damage
+                                int buildingDamage = match.getInfo().getParticipants().get(usrIdx).getdamageDealtToBuildings();
+                                String buildingDamageString = String.valueOf(buildingDamage);
+                                largeMatchPane.setHistoryMatch1_BuildingDamage(buildingDamageString);
+
+                                // VisionScore
+                                int visionScore = match.getInfo().getParticipants().get(usrIdx).getvisionScore();
+                                String visionScoreString = String.valueOf(visionScore);
+                                largeMatchPane.setHistoryMatch1_VisionScore(visionScoreString);
+
+                                matchContainer.setFillWidth(true); // Makes the VBox fill its width to the parent container
+                                matchContainer.getChildren().add(largeMatchPane);
+                                matchContainer.prefHeightProperty().bind(
+                                        Bindings.createDoubleBinding(() ->
+                                                        matchContainer.getChildren().stream().mapToDouble(node -> node.prefHeight(-1)).sum() + matchContainer.getSpacing() * (matchContainer.getChildren().size() - 1),
+                                                matchContainer.getChildren()
+                                        )
+                                );
+
+                            }
                         }
                     }
                 });

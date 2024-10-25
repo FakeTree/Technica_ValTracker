@@ -435,6 +435,8 @@ public class Match {
         private Challenges challenges; // Change from Map to Challenges class
         private int totalMinionsKilled;
         private int neutralMinionsKilled;
+        private int damageDealtToBuildings;
+        private int visionScore;
         @JsonIgnore
         private int minionKillTotal;
         private boolean win;
@@ -609,6 +611,38 @@ public class Match {
          */
         public void setNeutralMinionsKilled(int neutralMinionsKilled) {
             this.neutralMinionsKilled = neutralMinionsKilled;
+        }
+
+        /**
+         * Gets the number of neutral minions killed by the participant.
+         * @return the number of neutral minions killed.
+         */
+        public int getdamageDealtToBuildings() {
+            return damageDealtToBuildings;
+        }
+
+        /**
+         * Sets the number of neutral minions killed by the participant.
+         * @param damageDealtToBuildings the number of neutral minions killed to set.
+         */
+        public void setdamageDealtToBuildings(int damageDealtToBuildings) {
+            this.damageDealtToBuildings = damageDealtToBuildings;
+        }
+
+        /**
+         * Gets the number of neutral minions killed by the participant.
+         * @return the number of neutral minions killed.
+         */
+        public int getvisionScore() {
+            return visionScore;
+        }
+
+        /**
+         * Sets the number of neutral minions killed by the participant.
+         * @param visionScore the number of neutral minions killed to set.
+         */
+        public void setvisionScore(int visionScore) {
+            this.visionScore = visionScore;
         }
 
         /**

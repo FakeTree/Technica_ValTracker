@@ -165,7 +165,7 @@ public class FriendsController {
         userLeaguePoints.setText(String.valueOf(rankedStats.getLeaguePoints()));
 
         // TODO REMOVE -- TESTING FRIENDS FEATURE
-        //User.addFriend("c@c.com");
+        User.addFriend("c@c.com");
         FriendComboBox.getItems().setAll(User.getFriends());
 
 
@@ -270,7 +270,7 @@ public class FriendsController {
         matchIdThreadPool.submit(MatchIdTask);
         singleThreadPool.submit(SummonerTask);
 
-        System.out.println("USER WINRATE =" + userWinrate.getText());//TESTING
+        //System.out.println("USER WINRATE =" + userWinrate.getText());//TESTING
 
        // if (Integer.parseInt(userWinrate.getText()) < Integer.parseInt(compareFriendWinrate.getText())) {
       //      System.out.println("Player SUcks");

@@ -54,6 +54,17 @@ public class Manage_FriendsController {
     private Button onDelete; // Button to delete a friend
 
 
+    User User = UserManager.getInstance().getCurrentUser();
+
+
+    @FXML
+    protected void initialize() {
+        List<String> Friends = User.getFriends();
+        friendsListView.getItems().setAll(Friends);;
+
+    }
+
+
     /**
      * Handles the action when the "Match History" menu item is clicked.
      *
@@ -130,7 +141,7 @@ public class Manage_FriendsController {
                 friendsListView.getItems().add(email);
                 emailTextField.clear(); // Clear the text field after adding
                 //add friend to user in DB
-                User User = UserManager.getInstance().getCurrentUser();
+
                 User.addFriend(email);
 
                 // Show a success alert indicating that the user was added as a friend

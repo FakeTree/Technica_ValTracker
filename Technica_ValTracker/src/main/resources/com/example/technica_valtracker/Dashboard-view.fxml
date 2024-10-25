@@ -31,7 +31,8 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Friends">
             <items>
-              <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" onAction="#OnFriendsMenuClick" text="Friends" />
+               <MenuItem fx:id="ManageFriends_Menu" mnemonicParsing="false" onAction="#OnManageFriendsMenuClick" text="Manage Friends" />
+              <MenuItem fx:id="Friends_Menu" mnemonicParsing="false" onAction="#OnFriendsMenuClick" text="Compare Friends" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Account">

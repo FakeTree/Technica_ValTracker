@@ -182,6 +182,15 @@ public class DashboardController {
 
     }
     @FXML
+    private void OnManageFriendsMenuClick(ActionEvent actionEvent) throws IOException {
+        //switch to the Friends scene
+        Stage stage = (Stage) statPageHeaderLabel.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Manage-Friends.fxml"));
+        Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
+        stage.setScene(scene);
+
+    }
+    @FXML
     private void OnFriendsMenuClick(ActionEvent actionEvent) throws IOException {
         //switch to the Friends scene
         Stage stage = (Stage) statPageHeaderLabel.getScene().getWindow();

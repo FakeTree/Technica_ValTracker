@@ -62,9 +62,9 @@ public class Match_HistoryController extends HelloApplication {
     ExecutorService singleThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     ExecutorService matchIdThreadPool = Executors.newSingleThreadExecutor(threadFactory);
     ExecutorService fixedThreadPool = Executors.newFixedThreadPool(25, threadFactory);
-    private UserManager userManager = UserManager.getInstance();
+    public UserManager userManager = UserManager.getInstance();
     SimpleDateFormat formatPattern = new SimpleDateFormat("dd/MM/yyyy");
-    MatchBucket matchBucket = new MatchBucket();
+    public MatchBucket matchBucket = new MatchBucket();
     User currentUser = userManager.getCurrentUser();
 
     /**
@@ -108,7 +108,8 @@ public class Match_HistoryController extends HelloApplication {
      * @param riotId The user's Riot ID.
      * @return A {@link Task} that fetches all match IDs.
      */
-    private @NotNull Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
+    @NotNull
+    public Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
         Task<ResponseBody> AllMatchIdsTask = new Task<ResponseBody>() {
             @Override
             protected ResponseBody call() throws Exception {
@@ -158,7 +159,8 @@ public class Match_HistoryController extends HelloApplication {
      * @param puuid The player ID to query.
      * @return A {@link Task} that fetches and processes match data.
      */
-    private @NotNull Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
+    @NotNull
+    public Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
         Task<Boolean> ProcessMatchesTask = new Task<Boolean>() {
             @Override
             protected Boolean call() throws Exception {
@@ -218,7 +220,8 @@ public class Match_HistoryController extends HelloApplication {
      * @return A {@link Task} that fetches and processes a single match.
      * @throws IOException If an I/O error occurs while querying the match.
      */
-    private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
+    @NotNull
+    public Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override
             protected ResponseBody call() throws Exception {
@@ -387,7 +390,7 @@ public class Match_HistoryController extends HelloApplication {
      * @param status The error status code.
      * @param detail The detailed error message.
      */
-    private void showAlert(int status, String detail) {
+    public void showAlert(int status, String detail) {
         var alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error");
         alert.setHeaderText("There was a problem while loading the dashboard data");

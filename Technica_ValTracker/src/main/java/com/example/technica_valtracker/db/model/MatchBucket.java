@@ -32,6 +32,7 @@ public class MatchBucket {
         AllKDA.clear();
         AllCSpMin.clear();
         GoldPerMin.clear();
+        AllWinRate = 0;
     }
 
     /**
@@ -128,6 +129,9 @@ public class MatchBucket {
      * @return the win rate as a percentage.
      */
     public double getWinRateAcrossAllGames() {
+        if (AllWinRate == 0) {
+            return 0.0;
+        }
         return (double) AllWinRate / matchArray.size();
     }
 

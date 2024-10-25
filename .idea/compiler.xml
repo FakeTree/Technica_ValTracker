@@ -9,5 +9,8 @@
         <module name="Technica_ValTracker" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="untitled" target="22" />
+    </bytecodeTargetLevel>
   </component>
 </project>

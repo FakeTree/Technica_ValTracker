@@ -1,125 +1,129 @@
-//package com.example.technica_valtracker.db.model;
-//
-//import com.example.technica_valtracker.api.ResponseBody;
-//import com.example.technica_valtracker.api.error.ErrorMessage;
-//import com.example.technica_valtracker.utils.URLBuilder;
-//import kotlin.text.Regex;
-//import okhttp3.HttpUrl;
-//import okhttp3.mockwebserver.MockResponse;
-//import okhttp3.mockwebserver.MockWebServer;
-//import org.apache.commons.lang3.RandomStringUtils;
-//import org.junit.jupiter.api.Test;
-//import com.example.technica_valtracker.Constants;
-//
-//import java.io.IOException;
-//import java.util.List;
-//
-//import static com.example.technica_valtracker.api.Query.getQuery;
-//import static org.junit.jupiter.api.Assertions.assertEquals;
-//import static org.junit.jupiter.api.Assertions.assertFalse;
-//
-//public class MatchTest {
-//
-//    MockWebServer server;
-//
-//    @Test
-//    // Test for Incorrect query data
-//    public void getMatchsByPuuid_whenResponseBodyHas400ErrorStatusCode_shouldReturnResponseBodyWithErrorCodeAndDetail() throws IOException {
-//        server = new MockWebServer();
-//        server.start();
-//        HttpUrl requestUrl = server.url("/lol/league/v4/entries/by-summoner/");
-//        server.enqueue(new MockResponse().setResponseCode(400)
-//                .setBody("{\"status\": {\"message\":\"Data not found\",\"status_code\":400}"));
-//
-//        Match match = new Match();
-//        ErrorMessage error = new ErrorMessage(400, "API fetch error: Bad request");
-//        ResponseBody body = new ResponseBody(error);
-//
-//        String[] reqHeaders = new String[]{"X-Riot-Token", "API_KEY"};
-//
-//        ResponseBody Matches = getQuery(URLBuilder.buildMatchRequestUrl("puuid", "region"), Constants.requestHeaders);
-//        System.out.println(URLBuilder.buildMatchRequestUrl("puuid", "region"));
-//
-//        assertEquals(Matches.getMessage().getStatus(), body.getMessage().getStatus());
-//        assertEquals(Matches.getMessage().getDetail(), body.getMessage().getDetail());
-//
-//        server.shutdown();
-//    }
-//
-//    @Test
-//    // Test out of date queries
-//    public void getMatchsByPuuid_whenResponseBodyHas403ErrorStatusCode_shouldReturnResponseBodyWithErrorCodeAndDetail() throws IOException {
-//        server = new MockWebServer();
-//        server.start();
-//        HttpUrl requestUrl = server.url("/lol/league/v4/entries/by-summoner/");
-//        server.enqueue(new MockResponse().setResponseCode(403)
-//                .setBody("{\"status\": {\"message\":\"Data not found\",\"status_code\":403}"));
-//
-//        Match match = new Match();
-//        ErrorMessage error = new ErrorMessage(403, "API fetch error: Forbidden");
-//        ResponseBody body = new ResponseBody(error);
-//        String PUUID = "B_BHDZwmQBwqszCtpjEHiTq1zZrcQZicLGyGhbA3M8jCk8WFRGGqoAA_uUc0vMzaVRBt7nZ_i_UMhA";
-//        String Region = "EUW";
-//
-//        String[] reqHeaders = new String[]{"X-Riot-Token", "RGAPI-00000000-a3a8-4cee-86db-4dcba95e8f5d"};
-//
-//        ResponseBody Matches = getQuery(URLBuilder.buildMatchRequestUrl(PUUID, Region), reqHeaders);
-//        System.out.println(URLBuilder.buildMatchRequestUrl(PUUID, Region));
-//
-//        assertEquals(Matches.getMessage().getStatus(), body.getMessage().getStatus());
-//        assertEquals(Matches.getMessage().getDetail(), body.getMessage().getDetail());
-//
-//        server.shutdown();
-//    }
-//
-//    @Test
-//    // Test out of date queries
-//    public void getMatchsByPuuid_whenResponseBodyHasCorrectStructure_shouldReturnResponseBodyWithErrorCodeAndDetail() throws IOException {
-//        Match match = new Match();
-//        String PUUID = "zV2VdJjeV2rwsVndLJiA3s9FsTgo-3smdaLF0QfiN3EbYcfYmP4dbNRVwz9AE8JeIN2s3hoyDhyiDw";
-//        String Region = "oc1";
-//        Match m = new Match();
-//        ResponseBody Matches = getQuery(URLBuilder.buildMatchRequestUrl(PUUID, Region), Constants.requestHeaders);
-//        m.setMatchListByPUUID(Matches);
-//        List<String> actual = m.getMatchIds();
-//        String expectedRegex = "[A-Z0-9_]+";
-//
-//        System.out.println(m.getMatchIds());
-//        for(int i = 0; i < actual.size(); i++) {
-//            assertEquals(true, actual.get(i).matches(expectedRegex));
-//        }
-//
-//    }
-//}
-////
-////    @Test
-////    public void getMatchsByPuuid_whenResponseIsValid_shouldReturnResponseBodyWithJSONStringAndErrorIsFalse() throws IOException {
-////        server = new MockWebServer();
-////        server.start();
-////        String url = String.format("/lol/match/v5/matches/by-puuid/%s/ids",
-////                RandomStringUtils.randomAlphanumeric(40));
-////        HttpUrl requestUrl = server.url(url);
-////
-////        final String body = String.format("[\n" +
-////                        "\"OC1_%s\",\n" +
-////                        "\"OC1_%s\",\n" +
-////                        "\"OC1_%s\"\n]",
-////                RandomStringUtils.randomNumeric(9),
-////                RandomStringUtils.randomNumeric(9),
-////                RandomStringUtils.randomNumeric(9));
-////        String[] reqHeaders = new String [] {"X-Riot-Token", "API-KEY"};
-////
-////        Match match = new Match();
-////        ResponseBody testResponse = new ResponseBody(body, false);
-////
-////        server.enqueue(new MockResponse().setResponseCode(200).setBody(body));
-////
-////        ResponseBody responseBody = match.getMatchListByPUUID("summonerId", "region", String.valueOf(requestUrl), reqHeaders);
-////        assertEquals(responseBody.getJson().getClass(), testResponse.getJson().getClass());
-////        assertFalse(responseBody.isError());
-////        server.shutdown();
-////    }
-////}
-////
-////
-////
+package com.example.technica_valtracker.db.model;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class MatchTest {
+
+    private Match match;
+    private Match.Info info;
+    private Match.Participant participant;
+    private Match.Challenges challenges;
+
+    @BeforeEach
+    void setUp() {
+        // Initialize a Match instance with mock data
+        match = new Match();
+
+        // Create and set metadata
+        Match.Metadata metadata = new Match.Metadata();
+        metadata.setMatchId("sample_match_id");
+        metadata.setParticipants(List.of("puuid1", "puuid2", "puuid3"));
+        match.setMetadata(metadata);
+
+        // Create and set match info
+        info = new Match.Info();
+        info.setGameMode("Ranked");
+        info.setQueueId(420);  // Ranked Solo
+        match.setInfo(info);
+
+        // Create and set participant data
+        participant = new Match.Participant();
+        participant.setPuuid("puuid1");
+        participant.setKills(10);
+        participant.setAssists(5);
+        participant.setDeaths(2);
+        participant.settotalMinionsKilled(100);
+        participant.setNeutralMinionsKilled(20);
+        participant.setWin(true);
+
+        // Create and set challenges
+        challenges = new Match.Challenges();
+        challenges.setKda(7.5);
+        participant.setChallenges(challenges);
+
+        // Add participants to match info
+        info.setParticipants(List.of(participant));
+    }
+
+    @Test
+    void testGetParticipantIndexByPuuid() {
+        // Test finding participant by PUUID
+        int index = Match.getParticipantIndexByPuuid(info.getParticipants(), "puuid1");
+        assertEquals(0, index);
+
+        index = Match.getParticipantIndexByPuuid(info.getParticipants(), "puuid2");
+        assertEquals(-1, index, "Participant with PUUID 'puuid2' should not be found");
+    }
+
+    @Test
+    void testGetSetGameMode() {
+        // Test getting and setting the game mode
+        assertEquals("Ranked", info.getGameMode());
+
+        info.setGameMode("Normal");
+        assertEquals("Normal", info.getGameMode());
+    }
+
+    @Test
+    void testSetQueueMode() {
+        // Test queue mode is set based on queue ID
+        info.setQueueMode();
+        assertEquals("Ranked Solo", info.getQueueMode());
+
+        info.setQueueId(440);  // Ranked Flex
+        info.setQueueMode();
+        assertEquals("Ranked Flex", info.getQueueMode());
+
+        info.setQueueId(999);  // Invalid queue ID
+        info.setQueueMode();
+        assertEquals("N/A", info.getQueueMode());
+    }
+
+    @Test
+    void testParticipantKillStats() {
+        // Test participant kills, assists, and deaths
+        assertEquals(10, participant.getKills());
+        assertEquals(5, participant.getAssists());
+        assertEquals(2, participant.getDeaths());
+
+        participant.setKills(15);
+        assertEquals(15, participant.getKills());
+    }
+
+    @Test
+    void testParticipantMinionKillTotal() {
+        // Test calculation of total minion kills
+        participant.setMinionKillTotal();
+        assertEquals(120, participant.getMinionKillTotal(), "Minion kill total should be the sum of total and neutral minions");
+    }
+
+    @Test
+    void testParticipantWinStatus() {
+        // Test participant win status
+        assertTrue(participant.getWin());
+
+        participant.setWin(false);
+        assertFalse(participant.getWin());
+    }
+
+    @Test
+    void testChallengesKDA() {
+        // Test participant KDA calculation
+        assertEquals(7.5, challenges.getKda(), 0.01);
+
+        challenges.setKda(5.0);
+        assertEquals(5.0, challenges.getKda(), 0.01);
+    }
+
+    @Test
+    void testMetadata() {
+        // Test metadata fields
+        assertEquals("sample_match_id", match.getMetadata().getMatchId());
+        assertEquals(3, match.getMetadata().getParticipants().size());
+    }
+}

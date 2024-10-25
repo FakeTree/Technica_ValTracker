@@ -1,3 +1,8 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
+
 package com.example.technica_valtracker;
 
 
@@ -6,7 +11,13 @@ package com.example.technica_valtracker;
 
 
 public class Constants {
-    //replace string below with your api key
-    public static String RIOT_API_KEY = "RGAPI-7961a5e1-81e4-4b07-962a-feba42b51052";
-    public static String[] requestHeaders = new String[] { "X-Riot-Token", RIOT_API_KEY };
+    public static String RIOT_API_KEY = "RGAPI-16e1a174-8425-4791-8398-37f23b7ce4e8";
+    public static String[] requestHeaders;
+
+    public Constants() {
+    }
+
+    static {
+        requestHeaders = new String[]{"X-Riot-Token", RIOT_API_KEY};
+    }
 }

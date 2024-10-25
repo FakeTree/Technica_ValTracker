@@ -104,7 +104,8 @@ public class UserDAO implements IUserDAO {
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("riotId"),
-                        rs.getString("region") // Add this line for the new field
+                        rs.getString("region"),
+                        rs.getString("friends")
                 );
             }
         } catch (SQLException e) {
@@ -125,7 +126,8 @@ public class UserDAO implements IUserDAO {
                         rs.getString("email"),
                         rs.getString("password"),
                         rs.getString("riotId"),
-                        rs.getString("region") // Add this line for the new field
+                        rs.getString("region"),
+                        rs.getString("friends")
                 );
                 users.add(user);
             }
@@ -148,5 +150,18 @@ public class UserDAO implements IUserDAO {
             e.printStackTrace();
         }
         return false; // RiotID not found
+    }
+
+    // A method to update and change the friends field in the database
+    public void updateFriends(String email, List<String> friends) {
+        String friendsString = String.join(",", friends); // Convert the list to a comma-separated string
+        String query = "UPDATE user SET friends = ? WHERE email = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, friendsString);
+            pstmt.setString(2, email);
+            pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

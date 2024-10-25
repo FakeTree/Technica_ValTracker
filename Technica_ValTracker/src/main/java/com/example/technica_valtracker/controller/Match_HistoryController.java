@@ -48,12 +48,10 @@ import static com.example.technica_valtracker.utils.Deserialiser.*;
  */
 public class Match_HistoryController extends HelloApplication {
 
-    // FXML ELEMENTS
+    // FXML Elements
 
-    // Static Labels
     @FXML private Label HistoryPageHeaderLabel;
 
-    // Boxes
     @FXML private VBox pageBox;
     @FXML private VBox statVBox;
     @FXML private ScrollPane matchScrollBox;
@@ -93,19 +91,12 @@ public class Match_HistoryController extends HelloApplication {
      * @throws IOException If an I/O error occurs while fetching the data.
      */
     public void init() throws IOException {
-
         System.out.println("INIT!"); // TODO REMOVE TESTING ONLY
         String riotId = currentUser.getRiotID();
         String puuid = currentUser.getUserId();
         String region = currentUser.getRegion().toLowerCase();
 
-        // TODO REMOVE TESTING ONLY
-        System.out.println(riotId);
-        System.out.println(puuid);
-        System.out.println(region);
-
         Task<ResponseBody> AllMatchIdsTask = getAllMatchIdsTask(puuid, region, riotId);
-
         singleThreadPool.submit(AllMatchIdsTask);
     }
 
@@ -118,10 +109,7 @@ public class Match_HistoryController extends HelloApplication {
      * @return A {@link Task} that fetches all match IDs.
      */
     private @NotNull Task<ResponseBody> getAllMatchIdsTask(String puuid, String region, String riotId) {
-
-        // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> AllMatchIdsTask = new Task<ResponseBody>() {
-
             @Override
             protected ResponseBody call() throws Exception {
                 String matchReqUrl = URLBuilder.buildMatchIDsRequestUrl(puuid, region);
@@ -129,43 +117,28 @@ public class Match_HistoryController extends HelloApplication {
             }
         };
 
-        /*
-         * Event handler that runs when the task succeeds;
-         * Deserializes the JSON output and updates the match history UI.
-         */
         AllMatchIdsTask.setOnSucceeded(new EventHandler() {
-
             @Override public void handle(Event event) {
-                // Switch from the background thread to the application thread to update UI
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
-
                         ResponseBody allMatchIdsQuery = AllMatchIdsTask.getValue();
 
                         if (allMatchIdsQuery.isError()) {
-                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            System.out.println("Response returned error!");
                             ErrorMessage error = allMatchIdsQuery.getMessage();
                             showAlert(error.getStatus(), error.getDetail());
-                        }
-                        else {
-                            System.out.println("Success!"); // TODO REMOVE TESTING ONLY
-
+                        } else {
+                            System.out.println("Success!");
                             try {
                                 String json = AllMatchIdsTask.getValue().getJson();
-                                System.out.println(json); // TODO REMOVE TEST ONLY
-
                                 matchBucket.setMatchListByPUUID(json);
                                 List<String> matches = matchBucket.getMatchIds();
 
-                                for(String matchID : matches) {
-                                    //Task<ResponseBody> MatchTask = getMatchTask(matchID, region);
-                                    System.out.println("Submitting match task..."); // TODO REMOVE TESTING ONLY
+                                for (String matchID : matches) {
                                     Task<Boolean> ProcessMatchesTask = getProcessMatchesTask(matchBucket.getMatchIds(), region, puuid);
                                     matchIdThreadPool.submit(ProcessMatchesTask);
                                 }
 
-                            } catch (JsonProcessingException e) {
-                                throw new RuntimeException(e);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
@@ -176,68 +149,56 @@ public class Match_HistoryController extends HelloApplication {
         });
         return AllMatchIdsTask;
     }
+
     /**
-     * Gets a Task which iterates through a list of match IDs and retrieves individual match information including KDA
-     * (average kill ratio) and CS/min (creep score per minute), returning a boolean indicating if the queries were
-     * successful. If the Tasks were all completed (return true), calculates the average KDA and cs/min across all matches and
-     * injects the values into their corresponding FXML fields.
+     * Gets a Task which iterates through a list of match IDs and retrieves individual match information.
+     *
      * @param matchIds List of match IDs to query.
-     * @param region String indicating region server to query.
-     * @param puuid String indicating player ID to query.
-     * @return Boolean indicating whether the query loop was successful.
+     * @param region The region server to query.
+     * @param puuid The player ID to query.
+     * @return A {@link Task} that fetches and processes match data.
      */
     private @NotNull Task<Boolean> getProcessMatchesTask(List<String> matchIds, String region, String puuid) {
-        // Create a Task which iterates through a list of matchIDs and retrieves individual match data.
         Task<Boolean> ProcessMatchesTask = new Task<Boolean>() {
-            @Override protected Boolean call() throws Exception {
+            @Override
+            protected Boolean call() throws Exception {
                 boolean tasksFinished = false;
                 int matchCounter = 0;
 
-                // Get individual match data from matchId list
                 for (String matchId : matchIds) {
                     if (matchCounter < 20) {
                         Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid, true);
                         fixedThreadPool.submit(MatchTask);
                         matchCounter++;
-                        if(matchCounter%10 == 0) {
+                        if (matchCounter % 10 == 0) {
                             TimeUnit.SECONDS.sleep(1);
-                            System.out.println("WAITING... STOP PINGING SO MUCH");
+                            System.out.println("WAITING...");
                         }
-
-                    }
-                    else {
+                    } else {
                         Task<ResponseBody> MatchTask = getMatchTask(matchId, region, puuid, false);
                         fixedThreadPool.submit(MatchTask);
                     }
                 }
 
-                // Wait for tasks to finish
                 try {
                     fixedThreadPool.shutdown();
                     if (fixedThreadPool.awaitTermination(10, TimeUnit.SECONDS)) {
-                        // If all queued tasks have finished, return true
                         tasksFinished = true;
                     }
                 } catch (InterruptedException e) {
-                    // tasksFinished remains false if error occurred.
+                    // tasksFinished remains false if an error occurs.
                 }
 
                 return tasksFinished;
             }
         };
 
-        // Check task completion state; if tasks were completed, get average KDA and CS/min and inject into FXML.
-        // If tasks were not completed, show alert popup.
         ProcessMatchesTask.setOnSucceeded(new EventHandler() {
             @Override public void handle(Event event) {
-                System.out.println("Process Match Task succeeded."); // TODO REMOVE
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         boolean isTasksDone = ProcessMatchesTask.getValue();
-
-                        if (isTasksDone) {
-                        }
-                        else {
+                        if (!isTasksDone) {
                             showAlert(501, "Match query failed!");
                         }
                     }
@@ -248,15 +209,16 @@ public class Match_HistoryController extends HelloApplication {
     }
 
     /**
-     * Gets a Task which retrieves data for a single match and inserts individual match data values into a Match object
-     * and a MatchBucket instance.
-     * @param matchId String indicating match ID to query.
-     * @param region String indicating region server to query.
-     * @param puuid String indicating player ID to query.
-     * @return ResponseBody with the JSON string and error status indicator.
+     * Creates a task that retrieves data for a single match and updates the UI with match data.
+     *
+     * @param matchId The match ID to query.
+     * @param region The region server to query.
+     * @param puuid The player ID to query.
+     * @param createPane Whether to create a pane for the match.
+     * @return A {@link Task} that fetches and processes a single match.
+     * @throws IOException If an I/O error occurs while querying the match.
      */
     private @NotNull Task<ResponseBody> getMatchTask(String matchId, String region, String puuid, Boolean createPane) throws IOException {
-        // Declare a Task which performs the API query and returns the JSON string or error if failed.
         Task<ResponseBody> MatchTask = new Task<ResponseBody>() {
             @Override
             protected ResponseBody call() throws Exception {
@@ -272,93 +234,67 @@ public class Match_HistoryController extends HelloApplication {
                         ResponseBody matchQuery = MatchTask.getValue();
 
                         if (matchQuery.isError()) {
-                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            System.out.println("Response returned error!");
                             ErrorMessage error = matchQuery.getMessage();
                             showAlert(error.getStatus(), error.getDetail());
-                        }
-                        else {
+                        } else {
                             String json = MatchTask.getValue().getJson();
-                            Match match = null;
                             try {
-                                match = getMatchArrayFromJson(json);
+                                Match match = getMatchArrayFromJson(json);
+                                matchBucket.addMatch(match.getMetadata().getMatchId(), match);
+
+                                int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), puuid);
+                                match.getInfo().getParticipants().get(usrIdx).setMinionKillTotal();
+
+                                matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
+                                if (match.getInfo().getParticipants().get(usrIdx).getWin())
+                                    matchBucket.addWinRate();
+                                double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned() / (match.getInfo().getGameDuration() / 60.0f);
+                                matchBucket.addGoldPerMin(GoldpMin);
+                                double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).getMinionKillTotal() / (match.getInfo().getGameDuration() / 60.0f);
+                                matchBucket.addCSpMin(CSpMin);
+
+                                if (createPane) {
+                                    LargeMatchPane largeMatchPane = new LargeMatchPane();
+                                    largeMatchPane.setMatchResultText(match.getInfo().getParticipants().get(usrIdx).getWin());
+                                    largeMatchPane.setMatchModeText(match.getInfo().getGameMode());
+
+                                    Instant instant = Instant.ofEpochMilli(match.getInfo().getGameCreation());
+                                    Date date = Date.from(instant);
+                                    largeMatchPane.setHistoryMatch1_Date(formatPattern.format(date));
+
+                                    largeMatchPane.setMatchChampText(match.getInfo().getParticipants().get(usrIdx).getChampionName());
+                                    largeMatchPane.setMatchChampImg(match.getInfo().getParticipants().get(usrIdx).getChampionId());
+
+                                    String KDA = String.format("%d/%d/%d", match.getInfo().getParticipants().get(usrIdx).getKills(), match.getInfo().getParticipants().get(usrIdx).getDeaths(), match.getInfo().getParticipants().get(usrIdx).getAssists());
+                                    largeMatchPane.setMatchKdaValue(KDA);
+
+                                    String kdRatio = String.format("%.2f", match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
+                                    largeMatchPane.setMatchKdValue(kdRatio);
+
+                                    String csPerMin = String.format("%.2f", CSpMin);
+                                    largeMatchPane.setMatchCSMinValue(csPerMin);
+
+                                    String goldPerMin = String.format("%.2f", GoldpMin);
+                                    largeMatchPane.setHistoryMatch1_Goldpermin(goldPerMin);
+
+                                    int buildingDamage = match.getInfo().getParticipants().get(usrIdx).getdamageDealtToBuildings();
+                                    largeMatchPane.setHistoryMatch1_BuildingDamage(String.valueOf(buildingDamage));
+
+                                    int visionScore = match.getInfo().getParticipants().get(usrIdx).getvisionScore();
+                                    largeMatchPane.setHistoryMatch1_VisionScore(String.valueOf(visionScore));
+
+                                    matchContainer.setFillWidth(true);
+                                    matchContainer.getChildren().add(largeMatchPane);
+                                    matchContainer.prefHeightProperty().bind(
+                                            Bindings.createDoubleBinding(() ->
+                                                            matchContainer.getChildren().stream().mapToDouble(node -> node.prefHeight(-1)).sum() + matchContainer.getSpacing() * (matchContainer.getChildren().size() - 1),
+                                                    matchContainer.getChildren()
+                                            )
+                                    );
+                                }
                             } catch (JsonProcessingException e) {
                                 throw new RuntimeException(e);
-                            }
-                            matchBucket.addMatch(match.getMetadata().getMatchId(), match);
-                            // Get Player Number
-                            int usrIdx = Match.getParticipantIndexByPuuid(match.getInfo().getParticipants(), puuid);
-
-                            match.getInfo().getParticipants().get(usrIdx).setMinionKillTotal();
-
-                            matchBucket.addKDA(match.getInfo().getParticipants().get(usrIdx).getChallenges().getKda());
-                            if (match.getInfo().getParticipants().get(usrIdx).getWin())
-                                matchBucket.addWinRate();
-                            double GoldpMin = match.getInfo().getParticipants().get(usrIdx).getGoldEarned()/
-                                    (match.getInfo().getGameDuration()/60.0f);
-                            matchBucket.addGoldPerMin(GoldpMin);
-                            double CSpMin = (double) match.getInfo().getParticipants().get(usrIdx).getMinionKillTotal() /
-                                    (match.getInfo().getGameDuration()/60.0f);
-                            matchBucket.addCSpMin(CSpMin);
-
-                            // Create a MiniMatchPane and inject FXML values
-                            if (createPane) {
-                                LargeMatchPane largeMatchPane = new LargeMatchPane();
-                                // Match Result (Victory / Defeat)
-                                largeMatchPane.setMatchResultText(match.getInfo().getParticipants().get(usrIdx).getWin());
-
-                                // Mode (Ranked Solo / Ranked Flex)
-                                match.getInfo().getGameMode();
-                                largeMatchPane.setMatchModeText(match.getInfo().getGameMode());
-
-                                // Mode (Ranked Solo / Ranked Flex)
-                                Instant instant = Instant.ofEpochMilli( match.getInfo().getGameCreation() );
-                                Date date = Date.from( instant );
-                                String formatDate = formatPattern.format(date);
-                                largeMatchPane.setHistoryMatch1_Date(formatDate);
-
-                                // Champion name & icon
-                                largeMatchPane.setMatchChampText(match.getInfo().getParticipants().get(usrIdx)
-                                        .getChampionName());
-                                largeMatchPane.setMatchChampImg(match.getInfo().getParticipants().get(usrIdx).getChampionId());
-
-                                // K/D/A
-                                String KDA = String.format("%d/%d/%d", match.getInfo().getParticipants().get(usrIdx).getKills(),
-                                        match.getInfo().getParticipants().get(usrIdx).getDeaths(),
-                                        match.getInfo().getParticipants().get(usrIdx).getAssists());
-                                largeMatchPane.setMatchKdaValue(KDA);
-
-                                // KDA (ratio)
-                                String kdRatio = String.format("%.2f", match.getInfo().getParticipants().get(usrIdx)
-                                        .getChallenges().getKda());
-                                largeMatchPane.setMatchKdValue(kdRatio);
-
-                                // CS/Min
-                                String csPerMin = String.format("%.2f", CSpMin);
-                                largeMatchPane.setMatchCSMinValue(csPerMin);
-
-                                // Gold/Min
-                                String goldPerMin = String.format("%.2f", GoldpMin);
-                                largeMatchPane.setHistoryMatch1_Goldpermin(goldPerMin);
-
-                                // Building Damage
-                                int buildingDamage = match.getInfo().getParticipants().get(usrIdx).getdamageDealtToBuildings();
-                                String buildingDamageString = String.valueOf(buildingDamage);
-                                largeMatchPane.setHistoryMatch1_BuildingDamage(buildingDamageString);
-
-                                // VisionScore
-                                int visionScore = match.getInfo().getParticipants().get(usrIdx).getvisionScore();
-                                String visionScoreString = String.valueOf(visionScore);
-                                largeMatchPane.setHistoryMatch1_VisionScore(visionScoreString);
-
-                                matchContainer.setFillWidth(true); // Makes the VBox fill its width to the parent container
-                                matchContainer.getChildren().add(largeMatchPane);
-                                matchContainer.prefHeightProperty().bind(
-                                        Bindings.createDoubleBinding(() ->
-                                                        matchContainer.getChildren().stream().mapToDouble(node -> node.prefHeight(-1)).sum() + matchContainer.getSpacing() * (matchContainer.getChildren().size() - 1),
-                                                matchContainer.getChildren()
-                                        )
-                                );
-
                             }
                         }
                     }
@@ -393,7 +329,6 @@ public class Match_HistoryController extends HelloApplication {
      */
     @FXML
     public void OnHomeMenuClick(ActionEvent actionEvent) throws IOException {
-
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("Dashboard-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
@@ -440,7 +375,6 @@ public class Match_HistoryController extends HelloApplication {
     @FXML
     public void onLogOutMenuClick(ActionEvent actionEvent) throws IOException {
         userManager.getUserStatList().clear();
-
         Stage stage = (Stage) HistoryPageHeaderLabel.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
@@ -455,12 +389,10 @@ public class Match_HistoryController extends HelloApplication {
      */
     private void showAlert(int status, String detail) {
         var alert = new Alert(Alert.AlertType.ERROR);
-
         alert.setTitle("Error");
         alert.setHeaderText("There was a problem while loading the dashboard data");
         alert.setContentText(String.format("%d\n%s", status, detail));
         alert.initOwner(pageBox.getScene().getWindow());
-
         alert.show();
     }
 }

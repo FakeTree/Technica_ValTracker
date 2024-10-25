@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="34cd00ab-3724-4192-b5ea-6424143c10dc" name="Changes" comment="committing crown icon and some code ot display it">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Match_HistoryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/FriendsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/FriendsController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/Compare_images/Crown.png" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/images/Crown.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/Friends-View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/resources/com/example/technica_valtracker/Friends-View.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Manage_FriendsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/controller/Manage_FriendsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users.db" beforeDir="false" afterPath="$PROJECT_DIR$/users.db" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +26,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="0.1.2-Beta-Annette-CompTool" />
+        <entry key="$PROJECT_DIR$" value="0.1.2-Beta-Oscar-CompToolGUI" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -57,26 +55,6 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.Application Start.executor": "Run",
-    "Application.HelloApplication.executor": "Run",
-    "Application.Match_HistoryController.executor": "Run",
-    "JUnit.UserTest.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "0.1.2-Beta-William-MatchHistoryExtension",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Enopo/UNI/Technica_ValTracker/users.db",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
@@ -85,7 +63,7 @@
     &quot;Application.Match_HistoryController.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.UserTest.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;0.1.2-Beta-Oscar-CompToolGUI&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Integration&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Enopo/UNI/Technica_ValTracker/users.db&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -99,14 +77,6 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources\images" />
-      <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources" />
-      <recent name="C:\Users\Oscar\Uni\CAB302\ASSIGNMENT\Technica_ValTracker\src\main\resources\Stylesheet" />
-    </key>
-  </component>
-}]]></component>
   <component name="RunManager">
     <configuration name="Application Start" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.example.technica_valtracker.HelloApplication" />
@@ -155,6 +125,7 @@
       <workItem from="1729394915055" duration="4702000" />
       <workItem from="1729406041778" duration="10007000" />
       <workItem from="1729417709082" duration="2730000" />
+      <workItem from="1729846633621" duration="309000" />
     </task>
     <task id="LOCAL-00002" summary="Updated the Graphics for the Compare screen - Edited layout and added fxid for panes and imageviews to dynamically change based on stats">
       <option name="closed" value="true" />
@@ -194,16 +165,5 @@
     <MESSAGE value="Updated the Graphics for the Compare screen - Edited layout and added fxid for panes and imageviews to dynamically change based on stats" />
     <MESSAGE value="committing crown icon and some code ot display it" />
     <option name="LAST_COMMIT_MESSAGE" value="committing crown icon and some code ot display it" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/Technica_ValTracker/src/main/java/com/example/technica_valtracker/db/model/League.java</url>
-          <line>79</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

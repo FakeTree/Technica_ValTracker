@@ -129,6 +129,9 @@ public class Manage_FriendsController {
                 // If user exists, add the email to the friendsListView
                 friendsListView.getItems().add(email);
                 emailTextField.clear(); // Clear the text field after adding
+                //add friend to user in DB
+                User User = UserManager.getInstance().getCurrentUser();
+                User.addFriend(email);
 
                 // Show a success alert indicating that the user was added as a friend
                 showAlert("Friend Added", "You have successfully added user " + email + " as a friend.");

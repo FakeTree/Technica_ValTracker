@@ -31,12 +31,12 @@
     &quot;assignee&quot;: &quot;mcape6&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/FakeTree/Technica_ValTracker.git&quot;,
-    &quot;accountId&quot;: &quot;ac6dbb9c-c8a7-4610-a5a1-5940611e43a9&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/FakeTree/Technica_ValTracker.git",
+    "accountId": "4f4240c9-5320-4963-97f5-fc6e66b85c14"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
 }</component>

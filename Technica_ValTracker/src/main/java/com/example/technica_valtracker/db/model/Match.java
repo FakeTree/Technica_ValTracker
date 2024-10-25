@@ -50,7 +50,7 @@ public class Match {
     }
 
     /**
-     * @todo Need to utilise the Query class to manage this query.
+     * todo Need to utilise the Query class to manage this query.
      */
     public ResponseBody getMatchData(String matchID, String region, String url, String[] headers)throws IOException{
         String json;

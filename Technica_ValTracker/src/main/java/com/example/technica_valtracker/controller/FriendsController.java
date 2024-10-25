@@ -165,7 +165,7 @@ public class FriendsController {
         userLeaguePoints.setText(String.valueOf(rankedStats.getLeaguePoints()));
 
         // TODO REMOVE -- TESTING FRIENDS FEATURE
-        User.addFriend("c@c.com");
+        //User.addFriend("c@c.com");
         FriendComboBox.getItems().setAll(User.getFriends());
 
 
@@ -310,7 +310,7 @@ public class FriendsController {
                             try {
                                 List<String> matchIds = getMatchIdListFromJson(allMatchIdsQuery.getJson());
                                 matchBucket.setMatchIds(matchIds);
-                                System.out.println(matchBucket.getMatchIds()); // TODO REMOVE TESTING ONLY
+                                //System.out.println(matchBucket.getMatchIds()); // TODO REMOVE TESTING ONLY
 
                                 Task<Boolean> ProcessMatchesTask = getProcessMatchesTask(matchBucket.getMatchIds(), region, puuid, isUser);
 
@@ -471,7 +471,14 @@ public class FriendsController {
         return MatchTask;
     }
 
-
+    /**
+     * Gets a Task which queries the API for the user's Friend's Summoner data and returns the ResponseBody.
+     *      * If the Task is successful, injects the retrieved data into the corresponding FXML fields and
+     *      * submits the retrieved summonerId to a LeagueTask; otherwise displays an error message.
+     * @param friendRegion String indicating region server to query.
+     * @param friendPUUID String indicating player ID to query.
+     * @return ResponseBody with the JSON string and error status indicator.
+     */
     private @NotNull Task<ResponseBody> getSummonerTask(String friendPUUID, String friendRegion, String friendRiotID) {
         Summoner summoner = new Summoner();
 
@@ -525,7 +532,7 @@ public class FriendsController {
         return SummonerTask;
     }
 
-
+    //shows an alert when the task returns an error
     private void showAlert(int status, String detail) {
         var alert = new Alert(Alert.AlertType.ERROR);
 
@@ -538,7 +545,14 @@ public class FriendsController {
     }
 
 
-
+    /**
+     * Gets a Task which queries the API for the user's League data returned as an array of League objects.
+     * If the Task succeeds, parse the array and update the dashboard view accordingly.
+     *
+     * @param summonerId The friend's summonerID.
+     * @param region The friend's region
+     * @return The LeagueTask and its setonSucceeded handler.
+     */
     private @NotNull Task<League[]> getLeagueTask(String summonerId, String region) {
         Task<League[]> LeagueTask = new Task<League[]>() {
             @Override
@@ -648,6 +662,8 @@ public class FriendsController {
 
         return LeagueTask;
     }
+
+
 
     private void setLeagueValues(League league) {
         System.out.println(league);

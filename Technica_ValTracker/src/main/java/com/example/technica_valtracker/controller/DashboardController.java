@@ -163,6 +163,16 @@ public class DashboardController {
     private UserManager userManager = UserManager.getInstance();
 
     //MenuBar Button Methods
+
+    /**
+     * Handles the action when the "Match History" menu item is clicked.
+     *
+     * This method switches the current scene to the manage friends screen.
+     * It loads the corresponding FXML file for the manage friends view.
+     *
+     * @param 'event the event triggered when the menu item is clicked
+     * @throws IOException if there is an issue loading the FXML file
+     */
     @FXML
     private void OnMatchHistoryMenu(ActionEvent actionEvent) throws IOException {
 
@@ -172,6 +182,14 @@ public class DashboardController {
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         stage.setScene(scene);
     }
+
+    /**
+     * Handles the event when the "Home" menu item is clicked.
+     * Switches the view to the dashboard scene.
+     *
+     * @param actionEvent The event that triggered this action.
+     * @throws IOException If an error occurs during scene loading.
+     */
     @FXML
     public void OnHomeMenuClick(ActionEvent actionEvent) throws IOException {
         //switch to the dashboard scene
@@ -181,6 +199,16 @@ public class DashboardController {
         stage.setScene(scene);
 
     }
+
+    /**
+     * Handles the action when the "Manage Friends" menu item is clicked.
+     *
+     * This method switches the current scene to the manage friends screen.
+     * It loads the corresponding FXML file for the manage friends view.
+     *
+     * @param 'event the event triggered when the menu item is clicked
+     * @throws IOException if there is an issue loading the FXML file
+     */
     @FXML
     private void OnManageFriendsMenuClick(ActionEvent actionEvent) throws IOException {
         //switch to the Friends scene
@@ -190,6 +218,15 @@ public class DashboardController {
         stage.setScene(scene);
 
     }
+    /**
+     * Handles the action when the "Friends" menu item is clicked.
+     *
+     * This method switches the current scene to the friends screen.
+     * It loads the corresponding FXML file for the friends view.
+     *
+     * @param 'event the event triggered when the menu item is clicked
+     * @throws IOException if there is an issue loading the FXML file
+     */
     @FXML
     private void OnFriendsMenuClick(ActionEvent actionEvent) throws IOException {
         //switch to the Friends scene

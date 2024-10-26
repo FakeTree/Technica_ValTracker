@@ -94,15 +94,15 @@ public class Match_HistoryController extends HelloApplication {
      */
     public void init() throws IOException {
 
-        System.out.println("INIT!"); // TODO REMOVE TESTING ONLY
+        //System.out.println("INIT!"); // TODO REMOVE TESTING ONLY
         String riotId = currentUser.getRiotID();
         String puuid = currentUser.getUserId();
         String region = currentUser.getRegion().toLowerCase();
 
         // TODO REMOVE TESTING ONLY
-        System.out.println(riotId);
-        System.out.println(puuid);
-        System.out.println(region);
+        //System.out.println(riotId);
+       // System.out.println(puuid);
+        //System.out.println(region);
 
         Task<ResponseBody> AllMatchIdsTask = getAllMatchIdsTask(puuid, region, riotId);
 
@@ -144,23 +144,23 @@ public class Match_HistoryController extends HelloApplication {
                         ResponseBody allMatchIdsQuery = AllMatchIdsTask.getValue();
 
                         if (allMatchIdsQuery.isError()) {
-                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            //System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
                             ErrorMessage error = allMatchIdsQuery.getMessage();
                             showAlert(error.getStatus(), error.getDetail());
                         }
                         else {
-                            System.out.println("Success!"); // TODO REMOVE TESTING ONLY
+                           //System.out.println("Success!"); // TODO REMOVE TESTING ONLY
 
                             try {
                                 String json = AllMatchIdsTask.getValue().getJson();
-                                System.out.println(json); // TODO REMOVE TEST ONLY
+                                //System.out.println(json); // TODO REMOVE TEST ONLY
 
                                 matchBucket.setMatchListByPUUID(json);
                                 List<String> matches = matchBucket.getMatchIds();
 
                                 for(String matchID : matches) {
                                     //Task<ResponseBody> MatchTask = getMatchTask(matchID, region);
-                                    System.out.println("Submitting match task..."); // TODO REMOVE TESTING ONLY
+                                    //System.out.println("Submitting match task..."); // TODO REMOVE TESTING ONLY
                                     Task<Boolean> ProcessMatchesTask = getProcessMatchesTask(matchBucket.getMatchIds(), region, puuid);
                                     matchIdThreadPool.submit(ProcessMatchesTask);
                                 }
@@ -232,7 +232,7 @@ public class Match_HistoryController extends HelloApplication {
         // If tasks were not completed, show alert popup.
         ProcessMatchesTask.setOnSucceeded(new EventHandler() {
             @Override public void handle(Event event) {
-                System.out.println("Process Match Task succeeded."); // TODO REMOVE
+                //System.out.println("Process Match Task succeeded."); // TODO REMOVE
                 Platform.runLater(new Runnable() {
                     @Override public void run() {
                         boolean isTasksDone = ProcessMatchesTask.getValue();
@@ -275,7 +275,7 @@ public class Match_HistoryController extends HelloApplication {
                         ResponseBody matchQuery = MatchTask.getValue();
 
                         if (matchQuery.isError()) {
-                            System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
+                            //System.out.println("Response returned error!"); // TODO REMOVE TESTING ONLY
                             ErrorMessage error = matchQuery.getMessage();
                             showAlert(error.getStatus(), error.getDetail());
                         }
